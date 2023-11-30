@@ -93,7 +93,7 @@ import Lib
 
 main :: IO ()
 main = do
-    xs <- lines <$> readFile "..\\..\\data\\{{name}}.txt"
+    xs <- lines <$> readFile "..\\..\\data\\2023\\{{name}}.txt"
     putStr "Part 1: "
     print $ part1 xs
     putStr "Part 2: "
