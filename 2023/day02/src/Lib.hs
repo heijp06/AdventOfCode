@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Lib
     ( part1
     , part2
@@ -12,4 +14,4 @@ part2 :: [String] -> Int
 part2 = undefined
 
 possible :: Draw -> Bool
-possible = undefined
+possible Draw{..} = red <= 12 && green <= 13 && blue <= 14
