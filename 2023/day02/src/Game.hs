@@ -41,8 +41,9 @@ parseIdentifier = do
 
 number :: ReadP Int
 number = do
-    xs <- many1 digit
-    return $ read xs
+    -- xs <- many1 digit
+    -- return $ read xs
+    read <$> many1 digit
 
 digit :: ReadP Char
 digit = satisfy isDigit
