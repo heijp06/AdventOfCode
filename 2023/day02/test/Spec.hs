@@ -20,6 +20,10 @@ main = hspec $ do
                                                                                     , Draw { red = 0, green = 2, blue = 0 }
                                                                                     ]
                                                                           }
+
     describe "Part 1" $ do
         it "part1" $ part1 example `shouldBe` 8
+
+    describe "Part 2" $ do
+        it "part2" $ part2 example `shouldBe` 2286
 
