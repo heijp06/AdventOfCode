@@ -51,10 +51,12 @@ parseDraws = sepBy1 parseDraw (string "; ")
 parseDraw :: ReadP Draw
 parseDraw = do
     cubes <- Map.fromList <$> sepBy1 parseCube (string ", ")
-    return Draw { red = Map.findWithDefault 0 "red" cubes
-                , green = Map.findWithDefault 0 "green" cubes
-                , blue = Map.findWithDefault 0 "blue" cubes
+    return Draw { red = numberOf "red" cubes
+                , green = numberOf "green" cubes
+                , blue = numberOf "blue" cubes
                 }
+        where
+            numberOf = Map.findWithDefault 0
 
 parseCube :: ReadP (String, Int)
 parseCube = do
