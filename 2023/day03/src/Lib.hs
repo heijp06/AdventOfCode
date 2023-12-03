@@ -24,9 +24,10 @@ data Acc = Acc { previousPos :: Position
                }
 
 part1 :: [String] -> Int
-part1 xss = total . foldr (add connected) (Acc (0, 0) 0 0) . filter (`Map.member` connected) $ coordinates width height
+part1 xss = total $ foldr (add connected) (Acc (0, 0) 0 0) connectedCoordinates 
     where
         connected = allConnected $ buildGrid xss
+        connectedCoordinates = filter (`Map.member` connected) $ coordinates width height
         width = getWidth xss
         height = getHeight xss
 
