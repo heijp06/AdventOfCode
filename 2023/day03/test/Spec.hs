@@ -1,5 +1,6 @@
 import Test.Hspec hiding (example)
 
+import Data.Char (isDigit)
 import qualified Data.Map as Map
 
 import Lib
@@ -42,7 +43,7 @@ main = hspec $ do
         it "small grid" $ buildGrid [ "12.", "..#" ] `shouldBe` Map.fromList [ ((0, 0), '1'), ((1, 0), '2'), ((2, 1), '#') ]
 
     describe "symbols" $ do
-        it "symbols" $ symbols exampleGrid `shouldBe` Map.fromList [ ((3, 1), '*')
+        it "symbols" $ symbols (not . isDigit) exampleGrid `shouldBe` Map.fromList [ ((3, 1), '*')
                                                                            , ((6, 3), '#')
                                                                            , ((3, 4), '*')
                                                                            , ((5, 5) , '+')
@@ -50,7 +51,7 @@ main = hspec $ do
                                                                            , ((5, 8), '*') 
                                                                            ]
     describe "step" $ do
-        it "step symbols" $ step (symbols exampleGrid) exampleGrid `shouldBe` Map.fromList [ ((2, 0), '7')
+        it "step symbols" $ step (symbols (not . isDigit) exampleGrid) exampleGrid `shouldBe` Map.fromList [ ((2, 0), '7')
                                                                                            , ((2, 2), '3')
                                                                                            , ((3, 2), '5')
                                                                                            , ((6, 2), '6')
@@ -64,8 +65,11 @@ main = hspec $ do
                                                                                            , ((6, 9), '9')
                                                                                            ]
     describe "allConnected" $ do
-        it "allConnected" $ allConnected exampleGrid `shouldBe` buildGrid connected
+        it "allConnected" $ allConnected (not . isDigit) exampleGrid `shouldBe` buildGrid connected
 
     describe "Part 1" $ do
         it "part1 example -> 4361" $ part1 example `shouldBe` 4361
+
+    describe "Part 2" $ do
+        it "part2 example -> 467835" $ part2 example `shouldBe` 467835
 
