@@ -15,9 +15,6 @@ import Data.Char (digitToInt, isDigit)
 import Data.Map ((!))
 import qualified Data.Map as Map
 
-import Debug.Trace
-import Text.Printf (printf)
-
 type Position = (Int, Int)
 type Grid = Map.Map Position Char
 
@@ -44,11 +41,9 @@ part2 xss = foldr (add2 connectedToStar) 0 starPositions
 add2 :: [Number] -> Position -> Int -> Int
 add2 numbers (starX, starY) acc = acc + gearRatio
     where
-        connected = [ value number | number <- (trace (show numbers) numbers), isConnected number ]
+        connected = [ value number | number <- numbers, isConnected number ]
         isConnected Number{..} = abs (starY - snd start) <= 1 && starX >= fst start - 1 && starX <= fst end + 1
         gearRatio = if length connected == 2 then product connected else 0
-        -- gearRatio = if length (trace (show connected) connected) == 2 then product connected else 0
-        -- gearRatio = if length connected == 2 then product (trace (show connected) connected) else 0
 
 solve :: (Char -> Bool) -> [String] -> [Number]
 solve isSymbol xss = numbers $ foldr (add connected) (Acc (0, 0) 0 []) connectedCoordinates 
