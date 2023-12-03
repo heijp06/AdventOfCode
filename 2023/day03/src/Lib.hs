@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Lib
     ( Grid
     , allConnected
@@ -9,14 +11,35 @@ module Lib
     , symbols
     ) where
 
-import Data.Char (isDigit)
+import Data.Char (digitToInt, isDigit)
+import Data.Map ((!))
 import qualified Data.Map as Map
 
 type Position = (Int, Int)
 type Grid = Map.Map Position Char
 
+data Acc = Acc { previousPos :: Position
+               , factor :: Int
+               , total :: Int
+               }
+
 part1 :: [String] -> Int
-part1 = undefined
+part1 xss = total . foldr (add connected) (Acc (0, 0) 0 0) . filter (`Map.member` connected) $ coordinates width height
+    where
+        connected = allConnected $ buildGrid xss
+        width = getWidth xss
+        height = getHeight xss
+
+add :: Grid -> Position -> Acc -> Acc
+add connected pos@(x, y) Acc{..} = if isDigit char
+                                        then Acc pos newFactor (total + (digitToInt char) * newFactor)
+                                        else Acc pos 0 total
+    where
+        (prevX, prevY) = previousPos
+        char = connected ! pos
+        newFactor = if factor == 0
+                        then 1
+                        else if y == prevY && x == prevX - 1 then 10 * factor else 1
 
 part2 :: [String] -> Int
 part2 = undefined
