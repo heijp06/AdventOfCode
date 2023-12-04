@@ -18,8 +18,8 @@ score xs = if count == 0 then 0 else 2 ^ (count - 1)
     where
         (_, values) = splitInTwo ": " xs
         (left, right) = splitInTwo " | " values
-        winners = Set.fromList $ splitOn " " left
-        actual = Set.fromList $ splitOn " " right
+        winners = Set.fromList . filter (not . null) $ splitOn " " left
+        actual = Set.fromList . filter (not . null) $ splitOn " " right
         count = Set.size $ Set.intersection winners actual
 
 splitInTwo :: String -> String -> (String, String)
