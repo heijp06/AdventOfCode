@@ -16,3 +16,6 @@ main = hspec $ do
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 13
 
+    describe "Part 2" $ do
+        it "part2 example" $ part2 example `shouldBe` 30
+
