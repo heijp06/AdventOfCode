@@ -69,9 +69,10 @@ add connected pos@(x, y) Acc{..} = if isDigit char
     where
         (prevX, prevY) = previousPos
         char = connected ! pos
-        newFactor = if factor == 0
-                        then 1
-                        else if y == prevY && x == prevX - 1 then 10 * factor else 1
+        newFactor
+            | factor == 0 = 1
+            | y == prevY && x == prevX - 1 = 10 * factor
+            | otherwise = 1
 
 allConnected :: (Char -> Bool) -> Grid -> Grid
 allConnected isSymbol grid = fst . head . dropWhile (not . Map.null . snd) $ iterate doStep (Map.empty, start)
