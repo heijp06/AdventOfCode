@@ -17,15 +17,14 @@ score :: String -> Int
 score xs = let c = count xs in if c == 0 then 0 else 2 ^ (c - 1)
 
 add :: (Int, [Int]) -> String -> (Int, [Int])
-add (total, toAdd) xs = undefined
+add (total, toAdd) xs = (total + cards, newToAdd)
     where
         cards = count xs + copies
         copies = if null toAdd then 0 else sum toAdd
         newToAdd
-            | cards == 0 = undefined
-            | null toAdd = undefined
-            | otherwise = undefined
-
+            | cards == 0 = []
+            | null toAdd = [cards]
+            | otherwise = cards : [ c - 1 | c <- toAdd, c > 1 ]
 
 count :: String -> Int
 count xs = Set.size $ Set.intersection winners actual
