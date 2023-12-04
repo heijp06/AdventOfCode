@@ -16,23 +16,22 @@ part2 = fst . foldl add (0, [])
 score :: String -> Int
 score xs = let c = count xs in if c == 0 then 0 else 2 ^ (c - 1)
 
-add :: (Int, [Int]) -> String -> (Int, [Int])
+add :: (Int, [[Int]]) -> String -> (Int, [[Int]])
 add (total, toAdd) xs = (total + cards, newToAdd)
     where
-        cards = count xs + copies
-        copies = if null toAdd then 0 else sum toAdd
+        cards = 1 + if null toAdd then 0 else sum $ map head toAdd
+        won = count xs
+        tailsToAdd = [ cs | cs <- map tail toAdd, not $ null cs ]
         newToAdd
-            | cards == 0 = []
-            | null toAdd = [cards]
-            | otherwise = cards : [ c - 1 | c <- toAdd, c > 1 ]
+            | won == 0 = tailsToAdd
+            | otherwise = replicate won cards : tailsToAdd
 
 count :: String -> Int
-count xs = Set.size $ Set.intersection winners actual
+count xs = Set.size $ Set.intersection (numbers left) (numbers right)
     where
         (_, values) = splitInTwo ": " xs
         (left, right) = splitInTwo " | " values
-        winners = Set.fromList . filter (not . null) $ splitOn " " left
-        actual = Set.fromList . filter (not . null) $ splitOn " " right
+        numbers = Set.fromList . filter (not . null) . splitOn " "
 
 splitInTwo :: String -> String -> (String, String)
 splitInTwo delimiter xs = case splitOn delimiter xs of
