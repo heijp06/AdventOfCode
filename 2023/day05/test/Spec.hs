@@ -18,6 +18,11 @@ main = hspec $ do
     
     describe "seedRanges" $ do
         it "seedRanges example" $ seedRanges (head example) `shouldBe` [ (79, 14), (55, 13) ]
+    
+    describe "splitRange" $ do
+        it "splitRange" $ map (splitRange (Range 40 20 5))
+            [ (0, 10) , (18, 10) , (13, 10) , (21, 2) , (21, 10) , (30, 10) ] `shouldBe`
+            [ [ (0, 10) ], [ (18, 2), (40, 5), (25, 3) ], [ (13, 7), (40, 3) ], [ (41, 2) ], [ (41, 4), (25, 6) ], [ (30, 10) ] ]
 
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 35

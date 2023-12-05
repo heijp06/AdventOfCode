@@ -10,6 +10,7 @@ module Lib
     , part2
     , seedRanges
     , seeds
+    , splitRange
     ) where
 
 import Data.Char (isDigit)
@@ -84,3 +85,6 @@ seedRanges xs = zip evens odds
         ss = zip ([0..] :: [Int]) $ seeds xs
         evens = [ s | (i, s) <- ss, even i ]
         odds = [ s | (i, s) <- ss, odd i ]
+
+splitRange :: Range -> (Int, Int) -> [(Int, Int)]
+splitRange = undefined
