@@ -87,4 +87,10 @@ seedRanges xs = zip evens odds
         odds = [ s | (i, s) <- ss, odd i ]
 
 splitRange :: Range -> (Int, Int) -> [(Int, Int)]
-splitRange = undefined
+splitRange Range{..} (start, l)
+    | start + l <= source = [ (start, l) ]
+    | start >= source + len = [ (start, l) ]
+    | start >= source && start + l <= source + len = [ (destination + start - source, l) ]
+    | start < source && start + l <= source + len = [ (start, source - start), (destination, l - source + start) ]
+    | start >= source = [ (destination + start - source, source + len - start), ( source + len, start + l - source - len) ]
+    | otherwise = [ (start, source - start), (destination, len), (source + len, start + l - source - len) ]
