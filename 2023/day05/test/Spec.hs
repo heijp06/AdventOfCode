@@ -15,6 +15,9 @@ main = hspec $ do
     
     describe "seeds" $ do
         it "seeds example" $ seeds (head example) `shouldBe` [ 79, 14, 55, 13 ] 
+    
+    describe "seedRanges" $ do
+        it "seedRanges example" $ seedRanges (head example) `shouldBe` [ (79, 14), (55, 13) ]
 
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 35

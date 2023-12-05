@@ -8,6 +8,7 @@ module Lib
     , parse
     , part1
     , part2
+    , seedRanges
     , seeds
     ) where
 
@@ -78,4 +79,8 @@ seeds :: String -> [Int]
 seeds = map read . splitOn " " . drop (length "seeds: ")
 
 seedRanges :: String -> [(Int, Int)]
-seedRanges = undefined
+seedRanges xs = zip evens odds
+    where
+        ss = zip ([0..] :: [Int]) $ seeds xs
+        evens = [ s | (i, s) <- ss, even i ]
+        odds = [ s | (i, s) <- ss, odd i ]
