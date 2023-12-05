@@ -76,3 +76,6 @@ mapCategories n Mapping{..} = foldl mapRanges n [ seedToSoil
 
 seeds :: String -> [Int]
 seeds = map read . splitOn " " . drop (length "seeds: ")
+
+seedRanges :: String -> [(Int, Int)]
+seedRanges = undefined

@@ -19,6 +19,9 @@ main = hspec $ do
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 35
 
+    describe "Part 2" $ do
+        it "part2 example" $ part2 example `shouldBe` 46
+
 example :: [String]
 example = [ "seeds: 79 14 55 13"
           , ""
