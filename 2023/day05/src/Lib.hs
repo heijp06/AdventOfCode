@@ -3,9 +3,12 @@
 module Lib
     ( Mapping(..)
     , Range (..)
+    , mapCategories
+    , mapRanges
     , parse
     , part1
     , part2
+    , seeds
     ) where
 
 import Data.Char (isDigit)
@@ -13,7 +16,7 @@ import Data.List.Split (splitOn)
 
 data Range = Range { destination :: Int
                    , source :: Int
-                   , length :: Int
+                   , len :: Int
                    } deriving (Eq, Show)
 
 data Mapping = Mapping { seedToSoil :: [Range]
@@ -26,7 +29,10 @@ data Mapping = Mapping { seedToSoil :: [Range]
                        } deriving (Eq, Show)
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 xs = minimum $ map (`mapCategories` mapping) ss
+    where
+        mapping = parse xs
+        ss = seeds (head xs)
 
 part2 :: [String] -> Int
 part2 = undefined
@@ -53,3 +59,23 @@ range :: String -> Range
 range xs = case splitOn " " xs of
             [d, s, l] -> Range (read d) (read s) (read l)
             _ -> error $ "Cannot parse as range: " ++ xs
+
+mapRanges :: Int -> [Range] -> Int
+mapRanges n = foldl go n
+    where
+        go acc Range{..} = if n >= source && n - source < len
+                                then destination + n - source
+                                else acc
+
+mapCategories :: Int -> Mapping -> Int
+mapCategories n Mapping{..} = foldl mapRanges n [ seedToSoil
+                                                , soilToFertilizer
+                                                , fertilizerToWater
+                                                , waterToLight
+                                                , lightToTemperature
+                                                , temperatureToHumidity
+                                                , humidityToLocation
+                                                ]
+
+seeds :: String -> [Int]
+seeds = map read . splitOn " " . drop (length "seeds: ")

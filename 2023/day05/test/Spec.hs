@@ -7,6 +7,15 @@ main = hspec $ do
     describe "parse" $ do
         it "parse example" $ parse example `shouldBe` mapping
 
+    describe "mapRanges" $ do
+        it "mapRanges seed -> soil" $ [ mapRanges s (seedToSoil mapping) | s <- [ 79, 14, 55, 13] ] `shouldBe` [ 81, 14, 57, 13 ]
+
+    describe "mapCategories" $ do
+        it "mapCategories mapping" $ [ mapCategories s mapping | s <- [ 79, 14, 55, 13 ] ] `shouldBe` [ 82, 43, 86, 35 ]
+    
+    describe "seeds" $ do
+        it "seeds example" $ seeds (head example) `shouldBe` [ 79, 14, 55, 13 ] 
+
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 35
 
