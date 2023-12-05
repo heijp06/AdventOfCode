@@ -19,7 +19,7 @@ score xs = let c = count xs in if c == 0 then 0 else 2 ^ (c - 1)
 add :: (Int, [[Int]]) -> String -> (Int, [[Int]])
 add (total, toAdd) xs = (total + cards, newToAdd)
     where
-        cards = 1 + if null toAdd then 0 else sum $ map head toAdd
+        cards = 1 + sum (map head toAdd)
         won = count xs
         tailsToAdd = [ cs | cs <- map tail toAdd, not $ null cs ]
         newToAdd
