@@ -22,7 +22,11 @@ main = hspec $ do
     describe "splitRange" $ do
         it "splitRange" $ map (splitRange (Range 40 20 5))
             [ (0, 10) , (18, 10) , (13, 10) , (21, 2) , (21, 10) , (30, 10) ] `shouldBe`
-            [ [ (0, 10) ], [ (18, 2), (40, 5), (25, 3) ], [ (13, 7), (40, 3) ], [ (41, 2) ], [ (41, 4), (25, 6) ], [ (30, 10) ] ]
+            [ ([ (0, 10) ], []), ([ (18, 2), (25, 3) ], [ (40, 5) ]), ([ (13, 7) ], [ (40, 3) ]), ([], [ (41, 2) ]), ([ (25, 6) ], [ (41, 4) ]), ([ (30, 10) ], []) ]
+
+    describe "splitRanges" $ do
+        it "splitRanges" $ splitRanges (seedToSoil mapping) [(79, 14), (55, 13)] `shouldBe` [(81, 14), (57, 13)]
+        it "splitRanges [(49, 2), (97, 4)]" $ splitRanges (seedToSoil mapping) [(49, 2), (97, 4)] `shouldBe` [(49, 1), (100, 1), (52, 1), (99, 1), (50, 2)]
 
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 35

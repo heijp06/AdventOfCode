@@ -2,6 +2,7 @@
 
 module Lib
     ( Mapping(..)
+    , Pair
     , Range (..)
     , mapCategories
     , mapRanges
@@ -11,10 +12,14 @@ module Lib
     , seedRanges
     , seeds
     , splitRange
+    , splitRanges
     ) where
 
+import Control.Applicative (liftA2)
 import Data.Char (isDigit)
 import Data.List.Split (splitOn)
+
+type Pair = (Int, Int)
 
 data Range = Range { destination :: Int
                    , source :: Int
@@ -34,7 +39,7 @@ part1 :: [String] -> Int
 part1 xs = minimum . map (`mapCategories` parse xs) . seeds $ head xs
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 xs = minimum . map fst . splitCategories (parse xs) . seedRanges $ head xs
 
 parse :: [String] -> Mapping
 parse = snd . foldl add ("", Mapping [] [] [] [] [] [] []) . filter (not . null) . tail
@@ -79,18 +84,33 @@ mapCategories n Mapping{..} = foldl mapRanges n [ seedToSoil
 seeds :: String -> [Int]
 seeds = map read . splitOn " " . drop (length "seeds: ")
 
-seedRanges :: String -> [(Int, Int)]
+seedRanges :: String -> [Pair]
 seedRanges xs = zip evens odds
     where
         ss = zip ([0..] :: [Int]) $ seeds xs
         evens = [ s | (i, s) <- ss, even i ]
         odds = [ s | (i, s) <- ss, odd i ]
 
-splitRange :: Range -> (Int, Int) -> [(Int, Int)]
+splitRange :: Range -> Pair -> ([Pair], [Pair])
 splitRange Range{..} (start, l)
-    | start + l <= source = [ (start, l) ]
-    | start >= source + len = [ (start, l) ]
-    | start >= source && start + l <= source + len = [ (destination + start - source, l) ]
-    | start < source && start + l <= source + len = [ (start, source - start), (destination, l - source + start) ]
-    | start >= source = [ (destination + start - source, source + len - start), ( source + len, start + l - source - len) ]
-    | otherwise = [ (start, source - start), (destination, len), (source + len, start + l - source - len) ]
+    | start + l <= source = ([ (start, l) ], [])
+    | start >= source + len = ([ (start, l) ], [])
+    | start >= source && start + l <= source + len = ([], [ (destination + start - source, l) ])
+    | start < source && start + l <= source + len = ([ (start, source - start) ], [ (destination, l - source + start) ])
+    | start >= source = ([ ( source + len, start + l - source - len) ], [ (destination + start - source, source + len - start) ])
+    | otherwise = ([ (start, source - start), (source + len, start + l - source - len) ], [ (destination, len) ])
+
+splitRanges :: [Range] -> [Pair] -> [Pair]
+splitRanges rs pairs = liftA2 (++) fst snd $ foldl go (pairs, []) rs
+    where
+        go (toSplit, done) r = let xs = map (splitRange r) toSplit in (concatMap fst xs, concatMap snd xs ++ done)
+
+splitCategories :: Mapping -> [Pair] -> [Pair]
+splitCategories Mapping{..} pairs = foldl (flip splitRanges) pairs [ seedToSoil
+                                                                   , soilToFertilizer
+                                                                   , fertilizerToWater
+                                                                   , waterToLight
+                                                                   , lightToTemperature
+                                                                   , temperatureToHumidity
+                                                                   , humidityToLocation
+                                                                   ]
