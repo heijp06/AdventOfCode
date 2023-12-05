@@ -29,10 +29,7 @@ data Mapping = Mapping { seedToSoil :: [Range]
                        } deriving (Eq, Show)
 
 part1 :: [String] -> Int
-part1 xs = minimum $ map (`mapCategories` mapping) ss
-    where
-        mapping = parse xs
-        ss = seeds (head xs)
+part1 xs = minimum . map (`mapCategories` parse xs) . seeds $ head xs
 
 part2 :: [String] -> Int
 part2 = undefined
