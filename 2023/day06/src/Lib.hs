@@ -28,7 +28,7 @@ count :: Int -> Int -> Int
 count t d = t1 - t0 + 1 - delta
     where
         disc = t * t - 4 * d
-        root = sqrt $ fromIntegral disc
+        root = (sqrt $ fromIntegral disc) :: Double
         t0 = ceiling $ (fromIntegral t - root) / 2
         t1 = floor $ (fromIntegral t + root) / 2
-        delta = if floor root == ceiling root then 2 else 0
+        delta = if (floor root :: Int) == ceiling root then 2 else 0
