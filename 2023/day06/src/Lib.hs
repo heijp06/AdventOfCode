@@ -9,7 +9,7 @@ module Lib
 import Data.List.Split (splitOn)
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 = product . map (uncurry count) . parse
 
 part2 :: [String] -> Int
 part2 = undefined
@@ -21,4 +21,10 @@ numbers :: String -> [Int]
 numbers xs = [ read x | x <- tail $ splitOn " " xs, not $ null x ]
 
 count :: Int -> Int -> Int
-count = undefined
+count t d = t1 - t0 + 1 - delta
+    where
+        disc = t * t - 4 * d
+        root = sqrt $ fromIntegral disc
+        t0 = ceiling $ (fromIntegral t - root) / 2
+        t1 = floor $ (fromIntegral t + root) / 2
+        delta = if floor root == ceiling root then 2 else 0
