@@ -8,7 +8,7 @@ module Lib
 
 import Data.List (group, sort)
 
-data Card = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace
+data Card = Joker | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace
                 deriving (Eq, Ord, Show)
 
 instance Read Card where
@@ -36,18 +36,18 @@ data Ord a => Hand a = HighCard a
                      | FiveOfAKind a deriving (Eq, Ord, Show)
 
 part1 :: [String] -> Int
-part1 = sum . zipWith (*) [1..] . map snd . sort . map parse
+part1 = sum . zipWith (*) [1..] . map snd . sort . map (parse (const False))
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 = sum . zipWith (*) [1..] . map snd . sort . map (parse (==Jack))
 
-parse :: String -> (Hand [Card], Int)
-parse xs = case words xs of
-                [hand, bid] -> (parseHand hand, read bid)
+parse :: (Card -> Bool) -> String -> (Hand [Card], Int)
+parse f xs = case words xs of
+                [hand, bid] -> (parseHand f hand, read bid)
                 _ -> error $ "Cannot parse: " ++ xs
 
-parseHand :: String -> Hand [Card]
-parseHand xs = case sort . map length . group $ sort cards  of
+parseHand :: (Card -> Bool) -> String -> Hand [Card]
+parseHand f xs = case replaced of
                 [5] -> FiveOfAKind cards
                 [1, 4] -> FourOfAKind cards
                 [2, 3] -> FullHouse cards
@@ -58,3 +58,9 @@ parseHand xs = case sort . map length . group $ sort cards  of
                 _ -> error $ "Cannot parse hand: " ++ xs
     where
         cards = map (read . (:[])) xs :: [Card]
+        typeOfHand = sort . map length . group . sort $ filter (not . f) cards
+        jokers = length $ filter f cards
+        replaced
+            | jokers == 0 = typeOfHand
+            | jokers == 5 = [5]
+            | otherwise = init typeOfHand ++ [last typeOfHand + jokers]
