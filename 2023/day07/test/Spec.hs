@@ -14,6 +14,7 @@ main :: IO ()
 main = hspec $ do
     describe "parse" $ do
         it "parse" $ parse (const False) (head example) `shouldBe` (OnePair [ Three, Two, Ten, Three, King ], 765)
+        it "parse" $ parse (const False) (head example) `shouldBe` (OnePair [ Three, Two, Ten, Three, King ], 765)
 
     describe "Part 1" $ do
         it "part1 example" $ part1 example `shouldBe` 6440
