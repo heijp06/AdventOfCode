@@ -29,9 +29,6 @@ step network steps current (x:xs) = if next == "ZZZ"
                 'R' -> right
                 _ -> error $ "Invalid direction: " ++ [x]
 
--- step :: Network -> (Int, String) -> Char -> (Int, String)
--- step network (steps, current) dir = if next == "ZZZ" then (steps + 1, "ZZZ") else (steps + 1, next)
-
 parse :: [String] -> (String, Network)
 parse xs = (directions, network)
     where
