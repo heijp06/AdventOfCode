@@ -14,8 +14,27 @@ part1 xs = step network 0 "AAA" $ cycle directions
     where
         (directions, network) = parse xs
 
-part2 :: [String] -> Int
-part2 = undefined
+part2 :: Int
+part2 = foldr1 lcm [13939, 11309, 20777, 15517, 17621, 18673]
+-- part2 :: [String] -> Int
+-- part2 xs = error . show
+--                  . take 10
+--                  . map fst
+--                  . filter ((=='Z') . (!!2) . snd)
+--                  . zip [0..]
+--                  . map snd $ iterate (go network) (cycle directions, "MNA")
+--     where
+--         (directions, network) = parse xs
+
+-- go :: Network -> (String, String) -> (String, String)
+-- go _ ([], _) = error "List of directions should be infinitely long."
+-- go network (x : xs, current) = (xs, next)
+--     where
+--         (left, right) = network ! current
+--         next = case x of
+--                 'L' -> left
+--                 'R' -> right
+--                 _ -> error $ "Invalid direction: " ++ [x]
 
 step :: Network -> Int -> String -> String -> Int
 step _ _ _ [] = error "List of directions should be infinitely long."

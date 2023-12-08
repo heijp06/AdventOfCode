@@ -8,5 +8,5 @@ main = do
     putStr "Part 1: "
     print $ part1 xs
     putStr "Part 2: "
-    print $ part2 xs
-
+    print $ part2
+
