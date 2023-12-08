@@ -13,7 +13,7 @@ part1 :: [String] -> Int
 part1 = solve "AAA"
 
 part2 :: [String] -> Int
-part2 xs = foldr1 lcm [ solve start xs | start <- Map.keys network, start !! 2 == 'A' ]
+part2 xs = foldr1 lcm [ solve start xs | start <- Map.keys network, last start == 'A' ]
     where
         (_, network) = parse xs
 
@@ -24,7 +24,7 @@ solve start xs = step network 0 start $ cycle directions
 
 step :: Network -> Int -> String -> String -> Int
 step _ _ _ [] = error "List of directions should be infinitely long."
-step network steps current (x:xs) = if next !! 2 == 'Z'
+step network steps current (x:xs) = if last next == 'Z'
                                         then steps + 1
                                         else step network (steps + 1) next xs
     where
