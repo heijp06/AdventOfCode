@@ -1,10 +1,6 @@
 {-# LANGUAGE TupleSections #-}
 
-{-# LANGUAGE TupleSections #-}
-
 module Lib
-    ( border
-    , double
     ( border
     , double
     , loop
@@ -18,7 +14,6 @@ module Lib
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import qualified Data.Set as Set
 
 -- import Debug.Trace (trace)
 -- import Text.Printf (printf)
@@ -28,15 +23,17 @@ type Pipe = (Position, Position)
 type Grid = Map.Map Position Pipe
 
 data Result = Result { inside :: Set.Set Position
-               , outside :: Set.Set Position
-               , edge :: Set.Set Position
-               }
+                     , outside :: Set.Set Position
+                     , edge :: Set.Set Position
+                     , current :: Set.Set Position
+                     , newCurrent :: Set.Set Position
+                     } deriving Show
 
 part1 :: [String] -> Int
 part1 = (`div` 2) . length . loop
 
 part2 :: [String] -> Int
-part2 xs = undefined
+part2 xs = length . filter (\(x, y) -> even x && even y) . Set.toList $ inside filledResult
     where
         doubleLoop = double $ loop xs
         loopAsSet = Set.fromList doubleLoop
@@ -47,10 +44,37 @@ part2 xs = undefined
         result = Result { inside = Set.empty
                         , outside = border (minX, minY) (maxX, maxY)
                         , edge = loopAsSet
+                        , current = Set.empty
+                        , newCurrent = Set.empty
                         }
+        filledResult = fill result (minX, minY) (maxX, maxY)
 
 fill :: Result -> Position -> Position -> Result
-fill = undefined
+fill result (minX, minY) (maxX, maxY) = foldr doFill result [ (x, y) | y <- [minY..maxY], x <- [minX..maxX] ]
+
+doFill :: Position -> Result -> Result
+doFill pos result | pos `Set.member` inside result = result
+doFill pos result | pos `Set.member` outside result = result
+doFill pos result | pos `Set.member` edge result = result
+doFill pos result = newResult { inside = Set.unions [ inside newResult, current newResult, newCurrent newResult ]
+                              , current = Set.empty
+                              , newCurrent = Set.empty
+                              }
+    where
+        newResult = last . takeWhile (not . Set.null . newCurrent) $ iterate doFill' (result { newCurrent = Set.singleton pos })
+
+doFill' :: Result -> Result
+doFill' result = if Set.disjoint new (outside result)
+                    then result { current = Set.union (current result) (newCurrent result)
+                                , newCurrent = new }
+                    else result { outside = Set.unions [ outside result, current result, newCurrent result, new ]
+                                , current = Set.empty
+                                , newCurrent = Set.empty
+                                }
+    where
+        new = Set.fromList [ (x + dx, y + dy) | (x, y) <- Set.toList (newCurrent result)
+                                              , (dx, dy) <- [(0, -1), (1, 0), (0, 1), (-1, 0)]
+                                              , (x + dx, y + dy) `Set.notMember` Set.unions [ edge result, current result, newCurrent result ]]
 
 loop :: [String] -> [Position]
 loop xs = start : (takeWhile (/=start) . map fst . drop 1 $ iterate (next grid) (start, add start dir))
@@ -78,10 +102,10 @@ directionsAfterStart grid start = [ direction | direction <- [(0, -1), (1, 0), (
                                               , reachable grid start direction ]
 
 reachable :: Grid -> Position -> Position -> Bool
-reachable grid current@(x, y) dir@(dx, dy) = result
+reachable grid curr@(x, y) dir@(dx, dy) = result
     where
         target = (x + dx, y + dy)
-        (dirCurrent1, dirCurrent2) = Map.findWithDefault noPipe current grid
+        (dirCurrent1, dirCurrent2) = Map.findWithDefault noPipe curr grid
         (dirTarget1, dirTarget2) = Map.findWithDefault noPipe target grid
         result = dir `elem` [dirCurrent1, dirCurrent2] && (dir == neg dirTarget1 || dir == neg dirTarget2)
 
@@ -89,9 +113,9 @@ noPipe :: Pipe
 noPipe = ((0, 0), (0, 0))
 
 next :: Grid -> (Position, Position) -> (Position, Position)
-next grid (current, previous) = head [ (add current d, current) | d <- [(0, -1), (1, 0), (0, 1), (-1, 0)]
-                                                                , reachable grid current d
-                                                                , add current d /= previous
+next grid (curr, previous) = head [ (add curr d, curr) | d <- [(0, -1), (1, 0), (0, 1), (-1, 0)]
+                                                                , reachable grid curr d
+                                                                , add curr d /= previous
                                                                 ]
 
 add :: Position -> Position -> Position
