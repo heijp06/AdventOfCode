@@ -2,6 +2,7 @@ import Test.Hspec hiding (example)
 import Test.Hspec.Runner (configFailFast, defaultConfig, hspecWith)
 
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 import Lib
 
@@ -34,6 +35,15 @@ main = hspecWith defaultConfig {configFailFast = True} $ do
                                    in next grid (start, (2, 1)) `shouldBe` ((1, 2), start)
         it "next example1 start" $ let (grid, start) = parse example1
                                    in next grid ((1, 2), start) `shouldBe` ((1, 3), (1, 2))
+
+    describe "loop" $ do
+        it "loop example1" $ Set.fromList (loop example1) `shouldBe`
+                                Set.fromList [(1, 1), (2, 1), (3, 1), (3, 2), (3, 3), (2, 3), (1, 3), (1, 2)]
+
+    describe "double" $ do
+        it "double example1" $ Set.fromList (double $ loop example1) `shouldBe`
+                                Set.fromList [ (2, 2), (3, 2), (4, 2), (5, 2), (6, 2), (6, 3), (6, 4), (6, 5)
+                                             , (6, 6), (5, 6), (4, 6), (3, 6), (2, 6), (2, 5), (2, 4), (2, 3)]
 
     describe "Part 1" $ do
         it "part1 example1" $ part1 example1 `shouldBe` result1

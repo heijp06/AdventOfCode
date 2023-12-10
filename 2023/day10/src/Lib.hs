@@ -1,5 +1,7 @@
 module Lib
-    ( next
+    ( double
+    , loop
+    , next
     , parse
     , part1
     , part2
@@ -17,13 +19,24 @@ type Pipe = (Position, Position)
 type Grid = Map.Map Position Pipe
 
 part1 :: [String] -> Int
-part1 xs = ((+1) . length . takeWhile ((/=start) . fst) . drop 1 $ iterate (next grid) (start, add start dir)) `div` 2
+part1 = (`div` 2) . length . loop
+
+part2 :: [String] -> Int
+part2 = undefined
+
+loop :: [String] -> [Position]
+loop xs = start : (takeWhile (/=start) . map fst . drop 1 $ iterate (next grid) (start, add start dir))
     where
         (grid, start) = parse xs
         dir = head $ directionsAfterStart grid start
 
-part2 :: [String] -> Int
-part2 = undefined
+double :: [Position] -> [Position]
+double [] = []
+double xs@((x1, y1):_) = tail $ foldr addDouble [(2 * x1, 2 * y1)] xs
+
+addDouble :: Position -> [Position] -> [Position]
+addDouble (x1, y1) acc@((x2, y2):_) = (2 * x1, 2 * y1) : ((2 * x1 + x2) `div` 2, (2 * y1 + y2) `div` 2) : acc
+addDouble _ [] = error $ "Accumulator can not be empty."
 
 directionsAfterStart :: Grid -> Position -> [Position]
 directionsAfterStart grid start = [ direction | direction <- [(0, -1), (1, 0), (0, 1), (-1, 0)]
