@@ -1,5 +1,8 @@
+{-# LANGUAGE TupleSections #-}
+
 module Lib
-    ( double
+    ( border
+    , double
     , loop
     , next
     , parse
@@ -10,6 +13,7 @@ module Lib
     ) where
 
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 -- import Debug.Trace (trace)
 -- import Text.Printf (printf)
@@ -18,17 +22,43 @@ type Position = (Int, Int)
 type Pipe = (Position, Position)
 type Grid = Map.Map Position Pipe
 
+data Result = Result { inside :: Set.Set Position
+               , outside :: Set.Set Position
+               , edge :: Set.Set Position
+               }
+
 part1 :: [String] -> Int
 part1 = (`div` 2) . length . loop
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 xs = undefined
+    where
+        doubleLoop = double $ loop xs
+        loopAsSet = Set.fromList doubleLoop
+        minX = minimum $ map fst doubleLoop
+        maxX = maximum $ map fst doubleLoop
+        minY = minimum $ map snd doubleLoop
+        maxY = maximum $ map snd doubleLoop
+        result = Result { inside = Set.empty
+                        , outside = border (minX, minY) (maxX, maxY)
+                        , edge = loopAsSet
+                        }
+
+fill :: Result -> Position -> Position -> Result
+fill = undefined
 
 loop :: [String] -> [Position]
 loop xs = start : (takeWhile (/=start) . map fst . drop 1 $ iterate (next grid) (start, add start dir))
     where
         (grid, start) = parse xs
         dir = head $ directionsAfterStart grid start
+
+border :: Position -> Position -> Set.Set Position
+border (minX, minY) (maxX, maxY) = Set.unions [ Set.fromList $ map (minX-1,) [minY-1..maxY+1]
+                                              , Set.fromList $ map (maxX+1,) [minY-1..maxY+1]
+                                              , Set.fromList $ map (,minY-1) [minX-1..maxX+1]
+                                              , Set.fromList $ map (,maxY+1) [minX-1..maxX+1]
+                                              ]
 
 double :: [Position] -> [Position]
 double [] = []
