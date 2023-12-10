@@ -1,6 +1,10 @@
 {-# LANGUAGE TupleSections #-}
 
+{-# LANGUAGE TupleSections #-}
+
 module Lib
+    ( border
+    , double
     ( border
     , double
     , loop
@@ -13,6 +17,7 @@ module Lib
     ) where
 
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 import qualified Data.Set as Set
 
 -- import Debug.Trace (trace)
