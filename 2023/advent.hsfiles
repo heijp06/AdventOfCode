@@ -66,11 +66,12 @@ main = defaultMain
 
 {-# START_FILE test/Spec.hs #-}
 import Test.Hspec hiding (example)
+import Test.Hspec.Runner (configFailFast, defaultConfig, hspecWith)
 
 import Lib
 
 main :: IO ()
-main = hspec $ do
+main = hspecWith defaultConfig {configFailFast = True} $ do
     describe "Part 1" $ do
         it "part1" $ 1 `shouldBe` 1
 
