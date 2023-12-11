@@ -15,9 +15,6 @@ module Lib
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
--- import Debug.Trace (trace)
--- import Text.Printf (printf)
-
 type Position = (Int, Int)
 type Pipe = (Position, Position)
 type Grid = Map.Map Position Pipe
@@ -61,7 +58,7 @@ doFill pos result = newResult { inside = Set.unions [ inside newResult, seen new
                               , current = Set.empty
                               }
     where
-        newResult = last . dropWhile (not . Set.null . current) $ iterate doFill' (result { current = Set.singleton pos })
+        newResult = head . dropWhile (not . Set.null . current) $ iterate doFill' (result { current = Set.singleton pos })
 
 doFill' :: Result -> Result
 doFill' result = if Set.disjoint new (outside result)
