@@ -25,8 +25,8 @@ type Grid = Map.Map Position Pipe
 data Result = Result { inside :: Set.Set Position
                      , outside :: Set.Set Position
                      , edge :: Set.Set Position
+                     , seen :: Set.Set Position
                      , current :: Set.Set Position
-                     , newCurrent :: Set.Set Position
                      } deriving Show
 
 part1 :: [String] -> Int
@@ -44,8 +44,8 @@ part2 xs = length . filter (\(x, y) -> even x && even y) . Set.toList $ inside f
         result = Result { inside = Set.empty
                         , outside = border (minX, minY) (maxX, maxY)
                         , edge = loopAsSet
+                        , seen = Set.empty
                         , current = Set.empty
-                        , newCurrent = Set.empty
                         }
         filledResult = fill result (minX, minY) (maxX, maxY)
 
@@ -56,25 +56,25 @@ doFill :: Position -> Result -> Result
 doFill pos result | pos `Set.member` inside result = result
 doFill pos result | pos `Set.member` outside result = result
 doFill pos result | pos `Set.member` edge result = result
-doFill pos result = newResult { inside = Set.unions [ inside newResult, current newResult, newCurrent newResult ]
+doFill pos result = newResult { inside = Set.unions [ inside newResult, seen newResult, current newResult ]
+                              , seen = Set.empty
                               , current = Set.empty
-                              , newCurrent = Set.empty
                               }
     where
-        newResult = last . takeWhile (not . Set.null . newCurrent) $ iterate doFill' (result { newCurrent = Set.singleton pos })
+        newResult = last . dropWhile (not . Set.null . current) $ iterate doFill' (result { current = Set.singleton pos })
 
 doFill' :: Result -> Result
 doFill' result = if Set.disjoint new (outside result)
-                    then result { current = Set.union (current result) (newCurrent result)
-                                , newCurrent = new }
-                    else result { outside = Set.unions [ outside result, current result, newCurrent result, new ]
+                    then result { seen = Set.union (seen result) (current result)
+                                , current = new }
+                    else result { outside = Set.unions [ outside result, seen result, current result, new ]
+                                , seen = Set.empty
                                 , current = Set.empty
-                                , newCurrent = Set.empty
                                 }
     where
-        new = Set.fromList [ (x + dx, y + dy) | (x, y) <- Set.toList (newCurrent result)
+        new = Set.fromList [ (x + dx, y + dy) | (x, y) <- Set.toList (current result)
                                               , (dx, dy) <- [(0, -1), (1, 0), (0, 1), (-1, 0)]
-                                              , (x + dx, y + dy) `Set.notMember` Set.unions [ edge result, current result, newCurrent result ]]
+                                              , (x + dx, y + dy) `Set.notMember` Set.unions [ edge result, seen result, current result ]]
 
 loop :: [String] -> [Position]
 loop xs = start : (takeWhile (/=start) . map fst . drop 1 $ iterate (next grid) (start, add start dir))
