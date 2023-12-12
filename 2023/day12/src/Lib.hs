@@ -24,7 +24,7 @@ arrangements :: (String, [Int]) -> Int
 arrangements record = foldr (combine record) 0 [inside, outside, left, right]
 
 combine :: (String, [Int]) -> ((String, [Int]) -> Int) -> Int -> Int
-combine = undefined
+combine record f n = f record + n
 
 inside :: (String, [Int]) -> Int
 inside (record, sizes) = sum [ 1 | p <- ps, arrangement p sizes `fits` record ]
