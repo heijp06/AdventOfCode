@@ -70,10 +70,13 @@ import Test.Hspec.Runner (configFailFast, defaultConfig, hspecWith)
 
 import Lib
 
+example :: [String]
+example = []
+
 main :: IO ()
 main = hspecWith defaultConfig {configFailFast = True} $ do
-    describe "Part 1" $ do
-        it "part1" $ 1 `shouldBe` 1
+    describe "part1" $ do
+        it "part1 example" $ part1 example `shouldBe` undefined
 
 {-# START_FILE src/Lib.hs #-}
 module Lib
