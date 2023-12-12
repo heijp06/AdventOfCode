@@ -18,6 +18,14 @@ main = hspecWith defaultConfig {configFailFast = True} $ do
     describe "partitions" $ do
         it "partitions 5 3" $ M.fromList (partitions 5 3) `shouldBe`
             M.fromList [ [1, 1, 3], [1, 2, 2], [1, 3, 1], [2, 1, 2], [2, 2, 1], [3, 1, 1] ]
+    
+    describe "inside, outside, left, right" $ do
+        it "inside" $ inside ("??????", [1, 1, 1]) `shouldBe` 2
+        it "outside" $ outside ("??????", [1, 1]) `shouldBe` 3
+        it "left" $ left ("????#?", [1, 1]) `shouldBe` 0
+        it "left" $ left ("??????", [1, 1]) `shouldBe` 3
+        it "right" $ right ("?#????", [1, 1]) `shouldBe` 0
+        it "right" $ right ("??????", [1, 1]) `shouldBe` 3
 
     describe "part1" $ do
         it "part1 example" $ part1 example `shouldBe` 21
