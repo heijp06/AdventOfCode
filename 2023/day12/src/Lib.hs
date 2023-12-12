@@ -11,4 +11,7 @@ part2 :: [String] -> Int
 part2 = undefined
 
 partitions :: Int -> Int -> [[Int]]
-partitions = undefined
+partitions n _ | n <= 0 = []
+partitions _ len | len <= 0 = []
+partitions n 1 = [[n]]
+partitions n len = [ n - i : p | i <- [ 1 .. n - 1 ], p <- partitions i (len - 1) ]
