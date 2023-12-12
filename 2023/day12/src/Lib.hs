@@ -10,15 +10,16 @@ module Lib
     , right
     ) where
 
+import Data.List (intercalate)
 import Text.Printf (printf)
 
 -- import Debug.Trace (trace)
 
 part1 :: [String] -> Int
-part1 = sum . map (arrangements . parse)
+part1 = sum . map (arrangements . parse 1)
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 = sum . map (arrangements . parse 5)
 
 arrangements :: (String, [Int]) -> Int
 arrangements record = foldr (combine record) 0 [inside, outside, left, right]
@@ -79,7 +80,10 @@ partitions _ len | len <= 0 = []
 partitions n 1 = [[n]]
 partitions n len = [ n - i : p | i <- [ 1 .. n - 1 ], p <- partitions i (len - 1) ]
 
-parse :: String -> (String, [Int])
-parse xs = case words xs of
-                    [condition, sizes] -> (condition, read $ printf "[%s]" sizes)
+parse :: Int -> String -> (String, [Int])
+parse n xs = case words xs of
+                    [condition, sizes] ->
+                        ( intercalate "?" $ replicate n condition
+                        , read $ printf "[%s]" (intercalate "," $ replicate n sizes)
+                        )
                     _ -> error $ "Cannot parse: " ++ xs

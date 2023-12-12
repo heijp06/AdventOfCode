@@ -30,3 +30,6 @@ main = hspecWith defaultConfig {configFailFast = True} $ do
     describe "part1" $ do
         it "part1 example" $ part1 example `shouldBe` 21
 
+    describe "part2" $ do
+        it "part2 example" $ part2 example `shouldBe` 525152
+
