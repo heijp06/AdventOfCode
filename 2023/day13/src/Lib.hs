@@ -1,12 +1,16 @@
 module Lib
-    ( reflectHorizontal
-    , reflectVertical
+    ( Position
     , parse
     , part1
     , part2
+    , reflectHorizontal
+    , reflectVertical
+    , replace
     ) where
 
 import Data.List (inits, tails, transpose)
+
+type Position = (Int, Int)
 
 part1 :: [String] -> Int
 part1 = sum . map reflect . parse
@@ -37,3 +41,11 @@ combineParse :: String -> [[String]] -> [[String]]
 combineParse "" acc = [] : acc
 combineParse x (ys:acc) = (x:ys) : acc
 combineParse x [] = error $ "acc is empty. x = " ++ x
+
+replace :: Position -> [String] -> [String]
+replace (row, column) xs = take row xs ++ [newLine] ++ drop (row + 1) xs
+    where
+        line = xs !! row
+        char = line !! column
+        newChar = if char == '.' then '#' else '.'
+        newLine = take column line ++ [newChar] ++ drop (column + 1) line
