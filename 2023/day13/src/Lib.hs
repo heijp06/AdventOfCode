@@ -39,7 +39,7 @@ parse :: [String] -> [Valley]
 parse = foldr combineParse [[]]
 
 smudge :: Valley -> Int
-smudge valley = (50*) . sum . filter (/=except) $ concatMap (map snd . reflect . replace valley) [ (row, column) | row <- [0..height-1], column <- [0..width-1] ]
+smudge valley = (`div` 2) . sum . filter (/=except) $ concatMap (map snd . reflect . replace valley) [ (row, column) | row <- [0..height-1], column <- [0..width-1] ]
     where
         height = length valley
         width = length (head valley)
