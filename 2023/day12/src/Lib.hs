@@ -16,10 +16,10 @@ import Text.Printf (printf)
 -- import Debug.Trace (trace)
 
 part1 :: [String] -> Int
-part1 = sum . map (arrangements . parse 1)
+part1 = sum . map (arrangements . parse' 1)
 
 part2 :: [String] -> Int
-part2 = sum . map (arrangements . parse 5)
+part2 = sum . map (arrangements . parse' 5)
 
 arrangements :: (String, [Int]) -> Int
 arrangements record = foldr (combine record) 0 [inside, outside, left, right]
@@ -80,8 +80,8 @@ partitions _ len | len <= 0 = []
 partitions n 1 = [[n]]
 partitions n len = [ n - i : p | i <- [ 1 .. n - 1 ], p <- partitions i (len - 1) ]
 
-parse :: Int -> String -> (String, [Int])
-parse n xs = case words xs of
+parse' :: Int -> String -> (String, [Int])
+parse' n xs = case words xs of
                     [condition, sizes] ->
                         ( intercalate "?" $ replicate n condition
                         , read $ printf "[%s]" (intercalate "," $ replicate n sizes)

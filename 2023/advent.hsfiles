@@ -112,7 +112,9 @@ result2 :: Int
 result2 = -1
 
 {-# START_FILE app/Main.hs #-}
-module Main (main) where
+module Main ( input
+            , main
+            ) where
 
 import Lib
 
