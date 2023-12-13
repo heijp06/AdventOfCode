@@ -1,9 +1,12 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Lib
     ( damaged
     , inside
     , left
     , operational
     , outside
+    , parse
     , part1
     , part2
     , partitions
@@ -11,7 +14,14 @@ module Lib
     ) where
 
 import Data.List (intercalate)
+import qualified Data.Map as Map
 import Text.Printf (printf)
+
+type Record = (String, [Int])
+
+data ParseState = ParseState { count :: Int
+                             , current :: Map.Map Record Int
+                             }
 
 -- import Debug.Trace (trace)
 
@@ -20,6 +30,15 @@ part1 = sum . map (arrangements . parse' 1)
 
 part2 :: [String] -> Int
 part2 = sum . map (arrangements . parse' 5)
+
+parse :: Record -> Int
+parse record = count . head . dropWhile (not . Map.null . current) $ iterate doParse (ParseState 0 (Map.singleton record 1))
+
+doParse :: ParseState -> ParseState
+doParse ParseState{..} = foldr combineParseState (ParseState count Map.empty) (Map.toList current)
+
+combineParseState :: (Record, Int) -> ParseState -> ParseState
+combineParseState = undefined
 
 arrangements :: (String, [Int]) -> Int
 arrangements record = foldr (combine record) 0 [inside, outside, left, right]
