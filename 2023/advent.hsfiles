@@ -69,14 +69,15 @@ import Test.Hspec hiding (example)
 import Test.Hspec.Runner (configFailFast, defaultConfig, hspecWith)
 
 import Lib
-
-example :: [String]
-example = []
+import Examples
 
 main :: IO ()
 main = hspecWith defaultConfig {configFailFast = True} $ do
     describe "part1" $ do
-        it "part1 example" $ part1 example `shouldBe` undefined
+        it "part1 example1" $ part1 example1 `shouldBe` result1
+
+    describe "part2" $ do
+        it "part2 example2" $ part2 example2 `shouldBe` result2
 
 {-# START_FILE src/Lib.hs #-}
 module Lib
@@ -90,6 +91,26 @@ part1 = undefined
 part2 :: [String] -> Int
 part2 = undefined
 
+{-# START_FILE src/Examples.hs #-}
+module Examples ( example1
+                , example2
+                , result1
+                , result2
+                ) where
+
+example1 :: [String]
+example1 = [
+           ]
+
+result1 :: Int
+result1 = -1
+
+example2 :: [String]
+example2 = example1
+
+result2 :: Int
+result2 = -1
+
 {-# START_FILE app/Main.hs #-}
 module Main (main) where
 
@@ -97,11 +118,14 @@ import Lib
 
 main :: IO ()
 main = do
-    xs <- lines <$> readFile "..\\..\\data\\2023\\{{name}}.txt"
+    xs <- input
     putStr "Part 1: "
     print $ part1 xs
     putStr "Part 2: "
     print $ part2 xs
+  
+input :: IO [String]
+input = lines <$> readFile "..\\..\\data\\2023\\{{name}}.txt"
 
 {-# START_FILE README.md #-}
 # {{name}}
