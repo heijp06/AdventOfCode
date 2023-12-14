@@ -14,7 +14,9 @@ type Mirrors = [Position]
 type Platform = (Rocks, Mirrors)
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 xs = sum . map ((height-) . fst) . snd . tilt $ parse xs
+    where
+        height = length xs
 
 part2 :: [String] -> Int
 part2 = undefined
