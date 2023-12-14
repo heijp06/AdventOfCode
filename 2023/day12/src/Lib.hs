@@ -43,13 +43,23 @@ combineParseState :: (Record, Int) -> ParseState -> ParseState
 combineParseState ((xs, []), n) ParseState{..} | '#' `notElem` xs = ParseState { count = count + n, .. }
 combineParseState ((_, []), _) parseState = parseState
 combineParseState (([], _), _) parseState = parseState
+combineParseState ((xs, is), _) parseState | length xs < sum is + length is - 1 = parseState
 combineParseState (('.':xs, is), n) ParseState{..} = ParseState { current = Map.insertWith (+) (xs, is) n current, .. }
-combineParseState ((xs@('#':_), is), _) parseState | length xs < sum is + length is - 1 = parseState
 combineParseState ((xs@('#':_), i:_), _) parseState | '.' `elem` take i xs = parseState
 combineParseState ((xs@('#':_), [i]), n) ParseState{..} | length xs == i = ParseState { count = count + n, .. }
 combineParseState ((xs@('#':_), i:_), _) parseState | xs !! i == '#' = parseState
-
-combineParseState _ _ = undefined
+combineParseState ((xs@('#':_), i:is), n) ParseState{..} =
+    ParseState { current = Map.insertWith (+) (drop (i + 1) xs, is) n current, .. }
+combineParseState ((xs@('?':ys), is@(i:_)), n) ParseState{..} | '.' `elem` take i xs =
+    ParseState { current = Map.insertWith (+) (ys, is) n current, .. }
+combineParseState ((xs@('?':_), [i]), n) ParseState{..} | length xs == i = ParseState { count = count + n, .. }
+combineParseState ((xs@('?':ys), is@(i:_)), n) ParseState{..} | xs !! i == '#' =
+    ParseState { current = Map.insertWith (+) (ys, is) n current, .. }
+combineParseState ((xs@('?':ys), is@(i:js)), n) ParseState{..} = ParseState { current = current2, .. }
+    where
+        current1 = Map.insertWith (+) (ys, is) n current
+        current2 = Map.insertWith (+) (drop (i + 1) xs, js) n current1
+combineParseState record parseState = error $ printf "Unhandled case: '%s' %s" (show record) (show parseState)
 
 arrangements :: (String, [Int]) -> Int
 arrangements record = foldr (combine record) 0 [inside, outside, left, right]
