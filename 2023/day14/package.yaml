@@ -35,6 +35,8 @@ ghc-options:
 
 library:
   source-dirs: src
+  dependencies:
+  - containers
 
 executables:
   day14-exe:
@@ -58,4 +60,4 @@ tests:
     dependencies:
     - day14
     - hspec
-
+
