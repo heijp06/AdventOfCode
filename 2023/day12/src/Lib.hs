@@ -38,7 +38,11 @@ doParse :: ParseState -> ParseState
 doParse ParseState{..} = foldr combineParseState (ParseState count Map.empty) (Map.toList current)
 
 combineParseState :: (Record, Int) -> ParseState -> ParseState
-combineParseState = undefined
+combineParseState ((xs, []), n) ParseState{..} | '#' `notElem` xs = ParseState { count = count + n, .. }
+combineParseState ((_, []), _) parseState = parseState
+combineParseState (([], _), _) parseState = parseState
+combineParseState (('.':xs, is), n) ParseState{..} = ParseState { current = Map.insertWith (+) (xs, is) n current, .. }
+combineParseState _ _ = undefined
 
 arrangements :: (String, [Int]) -> Int
 arrangements record = foldr (combine record) 0 [inside, outside, left, right]
