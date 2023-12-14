@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module Lib
     ( parse
     , part1
@@ -5,6 +7,7 @@ module Lib
     , tilt
     ) where
 
+import Data.List (sort)
 type Position = (Int, Int)
 type Rocks = [Position]
 type Mirrors = [Position]
@@ -17,17 +20,21 @@ part2 :: [String] -> Int
 part2 = undefined
 
 tilt :: Platform -> Platform
-tilt (rocks, mirrors) = foldl combineTilt (rocks, []) mirrors
+tilt (rocks, mirrors) = foldl combineTilt (rocks, []) $ sort mirrors
 
 combineTilt :: Platform -> Position -> Platform
-combineTilt = undefined
+combineTilt (rocks, mirrors) (row, col) = (rocks, (newRow, col) : mirrors)
+    where
+        newRow = 1 + maximum [ r | (r, c) <- rocks ++ mirrors, col == c && r < row ]
 
 parse :: [String] -> Platform
-parse xs = foldr combinePlatform ([], []) $
+parse xs = foldr combinePlatform (topRow, []) $
             zip [ (row, column) | row <- [0..height-1], column <- [0..width-1] ] (concat xs)
     where
         height = length xs
         width = length $ head xs
+        topRow = map (-1,) [0..width-1]
+
 
 combinePlatform :: (Position, Char) -> Platform -> Platform
 combinePlatform (_, '.') platform = platform
