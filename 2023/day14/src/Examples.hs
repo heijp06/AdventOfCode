@@ -5,15 +5,24 @@ module Examples ( example1
                 ) where
 
 example1 :: [String]
-example1 = [
+example1 = [ "O....#...."
+           , "O.OO#....#"
+           , ".....##..."
+           , "OO.#O....O"
+           , ".O.....O#."
+           , "O.#..O.#.#"
+           , "..O..#O..O"
+           , ".......O.."
+           , "#....###.."
+           , "#OO..#...."
            ]
 
 result1 :: Int
-result1 = -1
+result1 = 136
 
 example2 :: [String]
 example2 = example1
 
 result2 :: Int
 result2 = -1
-
+
