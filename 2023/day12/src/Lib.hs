@@ -1,7 +1,9 @@
 {-# LANGUAGE RecordWildCards #-}
 
 module Lib
-    ( damaged
+    ( ParseState(..)
+    , combineParseState
+    , damaged
     , inside
     , left
     , operational
@@ -21,7 +23,7 @@ type Record = (String, [Int])
 
 data ParseState = ParseState { count :: Int
                              , current :: Map.Map Record Int
-                             }
+                             } deriving Show
 
 -- import Debug.Trace (trace)
 
@@ -42,6 +44,11 @@ combineParseState ((xs, []), n) ParseState{..} | '#' `notElem` xs = ParseState {
 combineParseState ((_, []), _) parseState = parseState
 combineParseState (([], _), _) parseState = parseState
 combineParseState (('.':xs, is), n) ParseState{..} = ParseState { current = Map.insertWith (+) (xs, is) n current, .. }
+combineParseState ((xs@('#':_), is), _) parseState | length xs < sum is + length is - 1 = parseState
+combineParseState ((xs@('#':_), i:_), _) parseState | '.' `elem` take i xs = parseState
+combineParseState ((xs@('#':_), [i]), n) ParseState{..} | length xs == i = ParseState { count = count + n, .. }
+combineParseState ((xs@('#':_), i:_), _) parseState | xs !! i == '#' = parseState
+
 combineParseState _ _ = undefined
 
 arrangements :: (String, [Int]) -> Int
