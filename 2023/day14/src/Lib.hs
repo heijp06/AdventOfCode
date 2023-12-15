@@ -1,43 +1,66 @@
+{-# LANGUAGE TupleSections #-}
+
 module Lib
-    ( parse
+    ( cubesByColumns
+    , fall
     , part1
     , part2
-    , tiltNorth
+    , rocksByColumns
+    , tilt
     ) where
 
-import Data.List (sort)
+import Data.List (find)
+import Data.Maybe (fromJust)
+import qualified Data.Map as Map
 
 type Position = (Int, Int)
-type Rocks = [Position]
-type Mirrors = [Position]
-type Platform = (Rocks, Mirrors)
 
 part1 :: [String] -> Int
-part1 xs = sum . map ((height-) . fst) . snd . tiltNorth $ parse xs
+part1 xs = sum . map (height-) . concat $ tilt cubes rocks
     where
+        cubes = cubesByColumns xs
+        rocks = rocksByColumns xs
         height = length xs
 
 part2 :: [String] -> Int
 part2 = undefined
 
-tiltNorth :: Platform -> Platform
-tiltNorth (rocks, mirrors) = foldl combineTilt (rocks, []) $ sort mirrors
+-- columnsToRows :: Int -> [[Int]] -> [[Int]]
+-- columnsToRows height iss = undefined
+--     where
+--         rows = Map.fromList $ map (,[-1]) [0..height-1]
+--         x = foldl addColumn rows $ zip [0..] iss
+--         addColumn r (col, rs) = 
 
-combineTilt :: Platform -> Position -> Platform
-combineTilt (rocks, mirrors) (row, col) = (rocks, (newRow, col) : mirrors)
+tilt :: [[Int]] -> [[Int]] -> [[Int]]
+tilt = zipWith fall
+
+fall :: [Int] -> [Int] -> [Int]
+fall cubes rocks = concatMap (\ (r, n) -> [r+1..r+n]) $ Map.toAscList m
     where
-        newRow = 1 + maximum (-1 : [ r | (r, c) <- rocks ++ mirrors, col == c && r < row ])
+        m = foldr f Map.empty rocks
+        f rock = Map.insertWith (+) (fromJust $ find (<rock) cubes) 1
 
-parse :: [String] -> Platform
-parse xs = foldr combinePlatform ([], []) $
+cubesByColumns :: [String] -> [[Int]]
+cubesByColumns xs = map ((width:) . snd) . Map.toAscList . foldl addCube columns $
             zip [ (row, column) | row <- [0..height-1], column <- [0..width-1] ] (concat xs)
     where
         height = length xs
         width = length $ head xs
+        columns = Map.fromList $ map (,[-1]) [0..width-1]
 
+addCube :: Map.Map Int [Int] -> (Position, Char) -> Map.Map Int [Int]
+addCube acc ((row, column), '#') = Map.insertWith (++) column [row] acc
+addCube acc _ = acc
 
-combinePlatform :: (Position, Char) -> Platform -> Platform
-combinePlatform (_, '.') platform = platform
-combinePlatform (pos, '#') (rocks, mirrors) = (pos : rocks, mirrors)
-combinePlatform (pos, 'O') (rocks, mirrors) = (rocks, pos : mirrors)
-combinePlatform something _ = error $ "Failed to parse " ++  show something
+rocksByColumns :: [String] -> [[Int]]
+rocksByColumns xs = map snd . Map.toAscList . foldl addRock columns $
+            zip [ (row, column) | row <- [0..height-1], column <- [0..width-1] ] (concat xs)
+    where
+        height = length xs
+        width = length $ head xs
+        columns = Map.fromList $ map (,[]) [0..width-1]
+
+addRock :: Map.Map Int [Int] -> (Position, Char) -> Map.Map Int [Int]
+addRock acc ((row, column), 'O') = Map.insertWith (++) column [row] acc
+addRock acc _ = acc
