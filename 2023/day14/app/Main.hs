@@ -2,12 +2,10 @@ module Main ( input
             , main
             ) where
 
-import Examples
 import Lib
 
 main :: IO ()
 main = do
-    print $ ps example1
     xs <- input
     putStr "Part 1: "
     print $ part1 xs

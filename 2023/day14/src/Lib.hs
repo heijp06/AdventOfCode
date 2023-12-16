@@ -12,10 +12,8 @@ module Lib
     , tiltWest
     , tiltSouth
     , tiltEast
-    , ps
     ) where
 
-import Data.Bifunctor (bimap)
 import Data.List (find)
 import Data.Maybe (fromJust)
 import Data.Map ((!))
@@ -32,30 +30,24 @@ part1 xs = sum . map ((height-) . fst) $ tiltNorth cubes rocks
         height = length xs
 
 part2 :: [String] -> Int
-part2 xs = sum . map ((height-) . fst) . (!! 109) $ iterate c rocks
+part2 xs = sum . map ((height-) . fst) . (!! times) $ iterate c rocks
     where
         cubeCols = cubesByColumns xs
         cubeRows = cubesByRows xs
         rocks = positionsOfRocks xs
         c = cycle cubeCols cubeRows
         height = length xs
-
-ps :: [String] -> [[Position]]
-ps xs = take 100 $ iterate c rocks
-    where
-        cubeCols = cubesByColumns xs
-        cubeRows = cubesByRows xs
-        rocks = positionsOfRocks xs
-        c = cycle cubeCols cubeRows
+        (start, end) = period xs
+        times = start + (1000000000 - start) `mod` (start - end)
 
 period :: [String] -> (Int, Int)
-period xs = (Map.size m, m ! r)
+period xs = (Map.size m, m ! rs)
     where
         cubeCols = cubesByColumns xs
         cubeRows = cubesByRows xs
         rocks = positionsOfRocks xs
         c = cycle cubeCols cubeRows
-        (m, r) = head . dropWhile (\ (m, ps) -> ps `Map.notMember` m) $ iterate (p c) (Map.empty, rocks)
+        (m, rs) = head . dropWhile (\ (m', rs') -> rs' `Map.notMember` m') $ iterate (p c) (Map.empty, rocks)
 
 p :: ([Position] -> [Position]) -> (Map.Map [Position] Int, [Position]) -> (Map.Map [Position] Int, [Position])
 p c (m, ps) = (Map.insert ps (Map.size m) m, c ps)
