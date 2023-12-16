@@ -9,6 +9,7 @@ module Lib
     , reflectAll
     ) where
 
+import Data.List (nub)
 import Data.Map ((!))
 import qualified Data.Map as Map
 import qualified Data.Set as Set
@@ -22,7 +23,10 @@ data Beams = Beams { seen :: Set.Set Beam
                    } deriving Show
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 xs = length . nub . map fst . Set.toList . seen $ reflectAll grid beam
+    where
+        grid = parse xs
+        beam = ((0, 0), (0, 1))
 
 part2 :: [String] -> Int
 part2 = undefined
