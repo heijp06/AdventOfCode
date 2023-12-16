@@ -24,5 +24,5 @@ example2 :: [String]
 example2 = example1
 
 result2 :: Int
-result2 = -1
+result2 = 51
 

@@ -23,13 +23,24 @@ data Beams = Beams { seen :: Set.Set Beam
                    } deriving Show
 
 part1 :: [String] -> Int
-part1 xs = length . nub . map fst . Set.toList . seen $ reflectAll grid beam
+part1 xs = count grid beam
     where
         grid = parse xs
         beam = ((0, 0), (0, 1))
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 xs = maximum . map (count grid) $ top ++ bottom ++ left ++ right
+    where
+        height = length xs
+        width = length $ head xs
+        grid = parse xs
+        top = [ ((0, c), (1, 0)) | c <- [0..width-1] ]
+        bottom = [ ((height-1, c), (-1, 0)) | c <- [0..width-1] ]
+        left = [ ((r, 0), (0, 1)) | r <- [0..height-1] ]
+        right = [ ((r, width-1), (0, -1)) | r <- [0..height-1] ]
+
+count :: Grid -> Beam -> Int
+count grid beam = length . nub . map fst . Set.toList . seen $ reflectAll grid beam
 
 reflectAll :: Grid -> Beam -> Beams
 reflectAll grid beam = head
