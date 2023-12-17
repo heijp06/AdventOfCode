@@ -28,18 +28,21 @@ data Crucible = Crucible { minHeatLoss :: Int
 data MotionState = MotionState { position :: Position
                                , direction :: Direction
                                , timesStraight :: Int
+                               , timesBeforeTurn :: Int
                                } deriving (Eq, Ord, Show)
 
 data PuzzleState = PuzzleState { globalMinHeatLoss :: Int
                                , seen :: Map.Map MotionState Int
                                , queue :: Queue
+                               , stepsStraight :: Int
+                               , stepsBeforeTurn :: Int
                                } deriving Show
 
 part1 :: [String] -> Int
 part1 xs = globalMinHeatLoss
          . head
          . dropWhile (not . PQueue.null . queue)
-         $ iterate (step grid) (initialPuzzleState grid)
+         $ iterate (step grid) (initialPuzzleState grid 3 0)
     where
         grid = parse xs
 
@@ -47,7 +50,7 @@ part2 :: [String] -> Int
 part2 = undefined
 
 step :: Grid -> PuzzleState -> PuzzleState
-step _ (PuzzleState _ _ queue) | PQueue.null queue = error "Queue is empty."
+step _ PuzzleState{..} | PQueue.null queue = error "Queue is empty."
 step grid PuzzleState{..} = step' grid PuzzleState { queue = newQueue, .. } crucible
     where
         (crucible, newQueue) = PQueue.deleteFindMin queue 
@@ -56,11 +59,11 @@ step' :: Grid -> PuzzleState -> Crucible -> PuzzleState
 -- Stop if globalMinHeatLoss is less or equal than anything that can still come.
 step' _ PuzzleState{..} (Crucible minHeatLoss _ _)
     | globalMinHeatLoss <= minHeatLoss = PuzzleState { queue = PQueue.empty, .. }
--- Do not move more than 3 times in the same direction.
-step' _ puzzleState (Crucible _ _ (MotionState _ _ timesStraight))
-    | timesStraight >= 3 = puzzleState
+-- Do not move more than stepsStraight times in the same direction.
+step' _ puzzleState@PuzzleState{..} (Crucible _ _ (MotionState _ _ _ timesStraight))
+    | timesStraight >= stepsStraight = puzzleState
 -- Do not move off grid.
-step' grid puzzleState (Crucible _ _ (MotionState position direction _))
+step' grid puzzleState (Crucible _ _ (MotionState position direction _ _))
     | not $ inRange (bounds grid) newPosition = puzzleState
     where
         newPosition = move position direction
@@ -90,9 +93,9 @@ step' grid PuzzleState{..} (Crucible _ currentHeatLoss MotionState{..})
                     else seen
         newMinHeatLoss = newLoss + minTotalLoss grid newPosition
         (dRow, dColumn) = direction
-        left = MotionState newPosition (-dColumn, dRow) 0
-        right = MotionState newPosition (dColumn, -dRow) 0
-        straight = MotionState newPosition (dRow, dColumn) (timesStraight + 1)
+        left = MotionState newPosition (-dColumn, dRow) 0 0
+        right = MotionState newPosition (dColumn, -dRow) 0 0
+        straight = MotionState newPosition (dRow, dColumn) (timesStraight + 1) (timesBeforeTurn + 1)
         qLeft = PQueue.insert (Crucible newMinHeatLoss newLoss left) queue
         qRight = PQueue.insert (Crucible newMinHeatLoss newLoss right) qLeft
         qStraight = PQueue.insert (Crucible newMinHeatLoss newLoss straight) qRight
@@ -100,12 +103,12 @@ step' grid PuzzleState{..} (Crucible _ currentHeatLoss MotionState{..})
 move :: Position -> Direction -> Position
 move (row, column) (dRow, dColumn) = (row + dRow, column + dColumn)
 
-initialPuzzleState :: Grid -> PuzzleState
+initialPuzzleState :: Grid -> Int -> Int -> PuzzleState
 initialPuzzleState grid = PuzzleState (maxTotalLoss grid (0, 0)) Map.empty (initialQueue grid)
 
 initialQueue :: Grid -> Queue
-initialQueue grid = PQueue.fromList [ Crucible (minTotalLoss grid (0, 0)) 0 $ MotionState (0, 0) (1, 0) 0
-                                    , Crucible (minTotalLoss grid (0, 0)) 0 $ MotionState (0, 0) (0, 1) 0
+initialQueue grid = PQueue.fromList [ Crucible (minTotalLoss grid (0, 0)) 0 $ MotionState (0, 0) (1, 0) 0 0
+                                    , Crucible (minTotalLoss grid (0, 0)) 0 $ MotionState (0, 0) (0, 1) 0 0
                                     ]
 
 parse :: [String] -> Grid
