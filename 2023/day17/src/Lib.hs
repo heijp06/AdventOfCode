@@ -47,7 +47,12 @@ part1 xs = globalMinHeatLoss
         grid = parse xs
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 xs = globalMinHeatLoss
+         . head
+         . dropWhile (not . PQueue.null . queue)
+         $ iterate (step grid) (initialPuzzleState grid 10 3)
+    where
+        grid = parse xs
 
 step :: Grid -> PuzzleState -> PuzzleState
 step _ PuzzleState{..} | PQueue.null queue = error "Queue is empty."
@@ -74,9 +79,9 @@ step' grid puzzleState@(PuzzleState{..}) (Crucible _ currentHeatLoss MotionState
         newPosition = move position direction
         newLoss = currentHeatLoss + (grid ! newPosition)
         currentLoss = Map.lookup (MotionState { position = newPosition, .. }) seen
--- Do not move further after the bottom right corner is reached.
+-- Do not move further after the bottom right corner is reached in stepsBeforeTurn steps
 step' grid PuzzleState{..} (Crucible _ currentHeatLoss MotionState{..})
-    | newPosition == corner = PuzzleState { globalMinHeatLoss = min globalMinHeatLoss newLoss, .. }
+    | newPosition == corner && timesBeforeTurn >= stepsBeforeTurn = PuzzleState { globalMinHeatLoss = min globalMinHeatLoss newLoss, .. }
     where
         newPosition = move position direction
         (_, corner) = bounds grid
@@ -98,7 +103,9 @@ step' grid PuzzleState{..} (Crucible _ currentHeatLoss MotionState{..})
         straight = MotionState newPosition (dRow, dColumn) (timesStraight + 1) (timesBeforeTurn + 1)
         qLeft = PQueue.insert (Crucible newMinHeatLoss newLoss left) queue
         qRight = PQueue.insert (Crucible newMinHeatLoss newLoss right) qLeft
-        qStraight = PQueue.insert (Crucible newMinHeatLoss newLoss straight) qRight
+        qStraight = if timesBeforeTurn >= stepsBeforeTurn
+                        then PQueue.insert (Crucible newMinHeatLoss newLoss straight) qRight
+                        else PQueue.insert (Crucible newMinHeatLoss newLoss straight) queue
 
 move :: Position -> Direction -> Position
 move (row, column) (dRow, dColumn) = (row + dRow, column + dColumn)
