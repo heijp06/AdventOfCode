@@ -1,7 +1,11 @@
 module Examples ( example1
                 , example2
+                , example2x2
+                , example2x6
                 , result1
                 , result2
+                , result2x2
+                , result2x6
                 ) where
 
 example1 :: [String]
@@ -22,6 +26,22 @@ example1 = [ "2413432311323"
 
 result1 :: Int
 result1 = 102
+
+example2x2 :: [String]
+example2x2 = [ "24"
+             , "32"
+             ]
+
+result2x2 :: Int
+result2x2 = 5
+
+example2x6 :: [String]
+example2x6 = [ "111111"
+             , "999999"
+             ]
+
+result2x6 :: Int
+result2x6 = 30
 
 example2 :: [String]
 example2 = example1

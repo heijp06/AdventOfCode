@@ -38,6 +38,8 @@ library:
   dependencies:
   - array
   - range
+  - pqueue
+  - containers
 
 executables:
   day17-exe:
