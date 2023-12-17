@@ -13,4 +13,5 @@ main = hspecWith defaultConfig {configFailFast = True} $ do
 
     describe "part2" $ do
         it "part2 example2" $ part2 example2 `shouldBe` result2
+        it "part2 example2a" $ part2 example2a `shouldBe` result2a
 

@@ -1,9 +1,11 @@
 module Examples ( example1
                 , example2
+                , example2a
                 , example2x2
                 , example2x6
                 , result1
                 , result2
+                , result2a
                 , result2x2
                 , result2x6
                 ) where
@@ -47,5 +49,15 @@ example2 :: [String]
 example2 = example1
 
 result2 :: Int
-result2 = -1
+result2 = 94
 
+example2a :: [String]
+example2a = [ "111111111111"
+            , "999999999991"
+            , "999999999991"
+            , "999999999991"
+            , "999999999991"
+            ]
+
+result2a :: Int
+result2a = 71
