@@ -4,6 +4,7 @@ module Lib
     , parse
     , part1
     , part2
+    , rows
     ) where
 
 import Data.Ix (range)
@@ -21,6 +22,15 @@ part2 = undefined
 
 parse :: [String] -> [(Direction, Int)]
 parse = map parseLine
+
+rows :: [String] -> [String]
+rows xs = [ [ if (row, column) `Set.member` positions then '#' else ' ' | column <- [minColumn..maxColumn] ] | row <- [minRow..maxRow] ]
+    where
+        positions = outline $ parse xs
+        minRow = minimum (Set.map fst positions) - 1
+        minColumn = minimum (Set.map snd positions) - 1
+        maxRow = maximum (Set.map fst positions) + 1
+        maxColumn = maximum (Set.map snd positions) + 1
 
 fill :: Set.Set Position -> Set.Set Position
 fill positions = snd . foldl combineFill (Out, positions) $ range ((minRow, minColumn), (maxRow, maxColumn))
