@@ -52,6 +52,17 @@ combineFill (Out, positions) position@(row, column) | position `Set.member` posi
                 then (OutBorderDown, positions)
                 else error "On border, but no border up or down."
 combineFill acc@(Out, _) _ = acc
+combineFill (In, positions) position@(row, column) | position `Set.member` positions =
+    if (row - 1, column) `Set.member` positions
+        then
+            if (row + 1, column) `Set.member` positions
+                then (Out, positions)
+                else (InBorderUp, positions)
+        else
+            if (row + 1, column) `Set.member` positions
+                then (InBorderDown, positions)
+                else error "On border, but no border up or down."
+combineFill (In, positions) position = (In, Set.insert position positions)
 combineFill _ _ = undefined
 
 outline :: [(Direction, Int)] -> Set.Set Position
