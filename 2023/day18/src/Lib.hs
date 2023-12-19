@@ -42,37 +42,20 @@ fill positions = snd . foldl combineFill (Out, positions) $ range ((minRow, minC
 
 combineFill :: (ScanState, Set.Set Position) -> Position -> (ScanState, Set.Set Position)
 combineFill (Out, positions) position@(row, column) | position `Set.member` positions =
-    if (row - 1, column) `Set.member` positions
-        then
-            if (row + 1, column) `Set.member` positions
-                then (In, positions)
-                else (OutBorderUp, positions)
-        else
-            if (row + 1, column) `Set.member` positions
-                then (OutBorderDown, positions)
-                else error "On border, but no border up or down."
+    if (row + 1, column) `Set.member` positions
+        then (OutBorderDown, positions)
+        else (OutBorderUp, positions)
 combineFill acc@(Out, _) _ = acc
 combineFill (In, positions) position@(row, column) | position `Set.member` positions =
-    if (row - 1, column) `Set.member` positions
-        then
-            if (row + 1, column) `Set.member` positions
-                then (Out, positions)
-                else (InBorderUp, positions)
-        else
-            if (row + 1, column) `Set.member` positions
-                then (InBorderDown, positions)
-                else error "On border, but no border up or down."
+    if (row + 1, column) `Set.member` positions
+        then (InBorderDown, positions)
+        else (InBorderUp, positions)
 combineFill (In, positions) position = (In, Set.insert position positions)
 combineFill (OutBorderUp, positions) position@(row, column) | position `Set.member` positions =
-    if (row - 1, column) `Set.member` positions
-        then
-            if (row + 1, column) `Set.member` positions
-                then error "On border, border up and down."
-                else (Out, positions)
-        else
-            if (row + 1, column) `Set.member` positions
-                then (In, positions)
-                else (OutBorderUp, positions)
+    if (row + 1, column) `Set.member` positions
+        then (In, positions)
+        else (OutBorderUp, positions)
+combineFill (OutBorderUp, positions) position = (In, positions)
 combineFill _ _ = undefined
 
 outline :: [(Direction, Int)] -> Set.Set Position
