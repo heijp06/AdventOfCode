@@ -27,6 +27,7 @@ library
   exposed-modules:
       Examples
       Lib
+      Parts
   other-modules:
       Paths_day19
   hs-source-dirs:
