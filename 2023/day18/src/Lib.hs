@@ -5,7 +5,6 @@ module Lib
     , parse
     , part1
     , part2
-    , rows
     ) where
 
 import Data.Ix (range)
@@ -13,27 +12,19 @@ import qualified Data.Set as Set
 
 type Position = (Int, Int)
 type Direction = (Int, Int)
-data ScanState = Out | In | OutBorderUp | OutBorderDown | InBorderUp | InBorderDown
 
 part1 :: [String] -> Int
-part1 xs = undefined
+part1 xs = (maxRow - minRow + 1) * (maxColumn - minColumn + 1) + Set.size loop - Set.size around
     where
         loop = outline $ parse xs
+        around = fillAround loop
+        ((minRow, minColumn), (maxRow, maxColumn)) = bounds around
 
 part2 :: [String] -> Int
 part2 = undefined
 
 parse :: [String] -> [(Direction, Int)]
 parse = map parseLine
-
-rows :: [String] -> [String]
-rows xs = [ [ if (row, column) `Set.member` positions then '#' else ' ' | column <- [minColumn..maxColumn] ] | row <- [minRow..maxRow] ]
-    where
-        positions = outline $ parse xs
-        minRow = minimum (Set.map fst positions) - 1
-        minColumn = minimum (Set.map snd positions) - 1
-        maxRow = maximum (Set.map fst positions) + 1
-        maxColumn = maximum (Set.map snd positions) + 1
 
 bounds :: Set.Set Position -> (Position, Position)
 bounds positions = ((minRow, minColumn), (maxRow, maxColumn))
@@ -94,34 +85,3 @@ direction "D" = (1, 0)
 direction "L" = (0, -1)
 direction "R" = (0, 1)
 direction xs = error $ "Unknown direction " ++ xs
-        
-
--- fill :: Set.Set Position -> Set.Set Position
--- fill positions = snd . foldl combineFill (Out, positions) $ range ((minRow, minColumn), (maxRow, maxColumn))
---     where
---         minRow = minimum (Set.map fst positions) - 1
---         minColumn = minimum (Set.map snd positions) - 1
---         maxRow = maximum (Set.map fst positions) + 1
---         maxColumn = maximum (Set.map snd positions) + 1
-
--- combineFill :: (ScanState, Set.Set Position) -> Position -> (ScanState, Set.Set Position)
--- combineFill (Out, positions) position@(row, column) | position `Set.member` positions =
---     if (row + 1, column) `Set.member` positions
---         then (OutBorderDown, positions)
---         else (OutBorderUp, positions)
--- combineFill acc@(Out, _) _ = acc
--- combineFill (In, positions) position@(row, column) | position `Set.member` positions =
---     if (row + 1, column) `Set.member` positions
---         then (InBorderDown, positions)
---         else (InBorderUp, positions)
--- combineFill (In, positions) position = (In, Set.insert position positions)
--- combineFill (OutBorderUp, positions) position@(row, column) | position `Set.member` positions =
---     if (row + 1, column) `Set.member` positions
---         then (In, positions)
---         else (OutBorderUp, positions)
--- combineFill (OutBorderUp, positions) position = (In, positions)
--- combineFill (OutBorderDown, positions) position@(row, column) | position `Set.member` positions =
---     if (row + 1, column) `Set.member` positions
---         then (Out, positions)
---         else (OutBorderDown, positions)
--- combineFill _ _ = undefined
