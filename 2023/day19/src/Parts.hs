@@ -1,6 +1,7 @@
 module Parts ( Part(..)
              , Rule
              , parseWorkflow
+             , parsePart
              ) where
 
 import Data.Char (isDigit, isLower)
@@ -19,6 +20,9 @@ parse parser input =
     case readP_to_S parser input of
         [(result, [])] -> result
         _ -> error "Parse failed"
+
+parsePart :: String -> Part
+parsePart xs = read $ "Part " ++ xs
 
 parseWorkflow :: String -> (String, [Rule])
 parseWorkflow = parse workflow
