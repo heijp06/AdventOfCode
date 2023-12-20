@@ -1,5 +1,6 @@
-module Modules ( Module
-               , State
+module Modules ( Module(..)
+               , Pulse(..)
+               , FlipFlopState(..)
                , parse
                ) where
 
@@ -7,11 +8,14 @@ import Data.Char (isLower)
 import qualified Data.Map as Map
 import Text.ParserCombinators.ReadP
 
-data State = Off | On deriving Show
+data FlipFlopState = Off | On deriving Show
 
 data Module = Broadcaster [String]
-            | FlipFlop State [String]
-            | Conjunction [String] deriving Show
+            | FlipFlop FlipFlopState [String]
+            | Conjunction [Pulse] [String]
+            | Output deriving Show
+
+data Pulse = Low String | High String deriving Show
 
 doParse :: Show a => ReadP a -> String -> a
 doParse parser input =
@@ -20,7 +24,20 @@ doParse parser input =
         xs -> error $ "Parse failed: " ++ show xs
 
 parse :: [String] -> Map.Map String Module
-parse = Map.fromList . map (doParse module')
+parse = Map.fromList . setInputs . map (doParse module')
+
+setInputs :: [(String, Module)] -> [(String, Module)]
+setInputs xs = map (setInput xs) xs
+
+setInput :: [(String, Module)] -> (String, Module) -> (String, Module)
+setInput _ (name, m@(Broadcaster _)) = (name, m)
+setInput _ (name, m@(FlipFlop _ _)) = (name, m)
+setInput xs (name, Conjunction _ ds) = (name, Conjunction [ Low x | (x, m) <- xs, name `elem` outputs m] ds)
+
+outputs :: Module -> [String]
+outputs (Broadcaster os) = os
+outputs (FlipFlop _ os) = os
+outputs (Conjunction _ os) = os
 
 module' :: ReadP (String, Module)
 module' = do
@@ -46,7 +63,7 @@ conjunction = do
     _ <- char '&'
     ns <- name
     xs <- destinations
-    return (ns, Conjunction xs)
+    return (ns, Conjunction [] xs)
 
 destinations :: ReadP [String]
 destinations = do
