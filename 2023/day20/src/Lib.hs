@@ -18,7 +18,10 @@ data State = State { lowPulses :: Int
                    } deriving Show
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 xs = lowPulses state * highPulses state
+    where
+        state = (!! 1000) . iterate pressButton $ State 0 0 [] config
+        config = parse xs
 
 part2 :: [String] -> Int
 part2 = undefined
