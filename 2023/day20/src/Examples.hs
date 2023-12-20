@@ -8,11 +8,11 @@ module Examples ( example1a
 
 example1a :: [String]
 example1a = [ "broadcaster -> a, b, c"
-           , "%a -> b"
-           , "%b -> c"
-           , "%c -> inv"
-           , "&inv -> a"
-           ]
+            , "%a -> b"
+            , "%b -> c"
+            , "%c -> inv"
+            , "&inv -> a"
+            ]
 
 result1a :: Int
 result1a = 32000000
