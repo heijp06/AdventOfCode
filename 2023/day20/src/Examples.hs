@@ -22,7 +22,7 @@ example1b = [ "broadcaster -> a"
             , "%a -> inv, con"
             , "&inv -> b"
             , "%b -> con"
-            , "&con -> output"
+            , "&con -> rx"
             ]
 
 result1b :: Int
