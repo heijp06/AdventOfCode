@@ -14,11 +14,13 @@ import qualified Data.Map as Map
 
 import Parts
 
-data Result = Accepted | Rejected deriving Show
+data Result = Accepted | Rejected deriving (Eq, Show)
 type Workflows = Map.Map String [Rule]
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 xs = sum [ addRatings part | part <- parts, sortPart workflows "in" part == Accepted ]
+    where
+        (parts, workflows) = parse xs
 
 part2 :: [String] -> Int
 part2 = undefined
