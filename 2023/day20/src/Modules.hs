@@ -3,13 +3,13 @@ module Modules ( Module
                , parse
                ) where
 
+import Data.Char (isLower)
 import qualified Data.Map as Map
 import Text.ParserCombinators.ReadP
 
 data State = Off | On deriving Show
 
-data Module = Button [String]
-            | Broadcaster [String]
+data Module = Broadcaster [String]
             | FlipFlop State [String]
             | Conjunction [String] deriving Show
 
@@ -25,13 +25,33 @@ parse = Map.fromList . map (doParse module')
 module' :: ReadP (String, Module)
 module' = do
     (xs, m) <- broadcaster <++ flipFlop <++ conjunction
+    eof
     return (xs, m)
 
 broadcaster :: ReadP (String, Module)
-broadcaster = undefined
+broadcaster = do
+    ns <- string "broadcaster"
+    xs <- destinations
+    return (ns, Broadcaster xs)
 
 flipFlop :: ReadP (String, Module)
-flipFlop = undefined
+flipFlop = do
+    _ <- char '%'
+    ns <- name
+    xs <- destinations
+    return (ns, FlipFlop Off xs)
 
 conjunction :: ReadP (String, Module)
-conjunction = undefined
+conjunction = do
+    _ <- char '&'
+    ns <- name
+    xs <- destinations
+    return (ns, Conjunction xs)
+
+destinations :: ReadP [String]
+destinations = do
+    _ <- string " -> "
+    sepBy1 name $ string ", "
+
+name :: ReadP String
+name = many1 $ satisfy isLower
