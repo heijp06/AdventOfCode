@@ -10,7 +10,7 @@ data Part = Part { x :: Int
                  , m :: Int
                  , a :: Int
                  , s :: Int
-                 }
+                 } deriving (Read, Show)
 
 type Rule = (Part -> Bool, String)
 
