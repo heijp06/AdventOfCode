@@ -37,6 +37,7 @@ library:
   source-dirs: src
   dependencies:
   - containers
+  - range
 
 executables:
   day19-exe:

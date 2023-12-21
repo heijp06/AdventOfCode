@@ -1,7 +1,11 @@
 module Examples ( example1
                 , example2
+                , exampleA
+                , exampleB
                 , result1
                 , result2
+                , resultA
+                , resultB
                 ) where
 
 example1 :: [String]
@@ -31,5 +35,21 @@ example2 :: [String]
 example2 = example1
 
 result2 :: Int
-result2 = -1
+result2 = 167409079868000
 
+exampleA :: [String]
+exampleA = [ "in{x<2001:R,A}"
+           ]
+
+resultA :: Int
+resultA = 2000 * 4000 * 4000 * 4000
+
+exampleB :: [String]
+exampleB = [ "in{x<2001:aa,m>1000:bb,R}"
+           , "aa{x>1000:A,s>3000:bb,R}"
+           , "bb{m<3001:R,A}"]
+
+resultB :: Int
+resultB = 1000 * 4000 * 4000 * 4000 -- 1001 +=+ 2000, 1 +=+ 4000, 1 +=+ 4000, 1 +=+ 4000
+        + 1000 * 1000 * 4000 * 1000 -- 1 +=+ 1000, 3001 +=+ 4000, 1 +=+ 4000, 3001 +=+ 4000
+        + 2000 * 1000 * 4000 * 4000 -- 2001 +=+ 4000, 3001 +=+ 4000, 1 +=+ 4000, 1 +=+ 4000
