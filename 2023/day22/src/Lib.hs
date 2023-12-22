@@ -6,6 +6,7 @@ module Lib
     , part1
     , part2
     , step
+    , supports
     ) where
 
 import Data.List.Split (splitOn)
@@ -15,20 +16,38 @@ type Cube = (Int, Int, Int)
 type Brick = Set.Set Cube
 
 part1 :: [String] -> Int
-part1 = undefined
+part1 xs = number - Set.size supporting
+    where
+        number = length xs
+        bricks = parse xs
+        fallen = fall bricks
+        supporting = supports fallen
 
 part2 :: [String] -> Int
 part2 = undefined
 
+supports :: Set.Set Brick -> Set.Set Brick
+supports bricks = foldr (combineSupports bricks) Set.empty bricks
+
+combineSupports :: Set.Set Brick -> Brick -> Set.Set Brick -> Set.Set Brick
+combineSupports bricks brick acc =
+    if Set.size supporting == 1
+        then Set.union supporting acc
+        else acc
+    where
+        newBricks = Set.delete brick bricks
+        newBrick = Set.map (\ (x, y, z) -> (x, y, z - 1)) brick
+        supporting = Set.filter (not . Set.disjoint newBrick) newBricks
+
 fall :: Set.Set Brick -> Set.Set Brick
-fall bricks = getBricks . head . dropWhile continue $ iterate step (allCubes, bricks, False)
+fall bricks = getBricks . head . dropWhile continue $ iterate step (allCubes, bricks, True)
     where
         allCubes = foldr1 Set.union bricks
         continue (_, _, changed) = changed
         getBricks (_, b, _) = b
 
 step :: (Set.Set Cube, Set.Set Brick, Bool) -> (Set.Set Cube, Set.Set Brick, Bool)
-step (allCubes, allBricks, changed) = foldr combineBricks (allCubes, allBricks, False) allBricks
+step (allCubes, allBricks, _) = foldr combineBricks (allCubes, allBricks, False) allBricks
 
 combineBricks :: Brick -> (Set.Set Cube, Set.Set Brick, Bool) -> (Set.Set Cube, Set.Set Brick, Bool)
 combineBricks brick acc | any (\ (_, _, z) -> z <= 1) brick = acc
