@@ -1,6 +1,7 @@
 module Lib
     ( bounds
     , fillAround
+    , intervals
     , outline
     , parse
     , part1
@@ -60,6 +61,14 @@ doFill (seen, current) = (both, new)
                            , (dr, dc) <- [(1, 0), (-1, 0), (0, 1), (0, -1)]
                            , (r + dr, c + dc) `Set.notMember` both
                            ]
+
+intervals :: [(Direction, Int)] -> [(Position, Position)]
+intervals = snd . foldl combineInterval ((0, 0), [])
+
+combineInterval :: (Position, [(Position, Position)]) -> (Direction, Int) -> (Position, [(Position, Position)])
+combineInterval (position, pairs) (dir, n) = (nextPosition, pairs ++ [(position, nextPosition)])
+    where
+        nextPosition = move position (n `mul` dir)
 
 outline :: [(Direction, Int)] -> Set.Set Position
 outline = snd . foldl combineOutline ((0, 0), Set.singleton (0, 0))
