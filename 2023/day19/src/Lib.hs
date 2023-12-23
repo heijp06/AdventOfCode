@@ -11,9 +11,8 @@ module Lib
     , sortPart
     ) where
 
-import Data.List (genericLength)
 import Data.Map ((!))
-import Data.Range (difference, fromRanges, rangesOverlap, union)
+import Data.Range (difference, fromRanges, intersection, rangesOverlap)
 import qualified Data.Map as Map
 
 import Parts
@@ -62,10 +61,10 @@ filterParts rules part states = snd $ foldl filterRule (part, states) rules
 
 filterRule :: (Part, Map.Map String [Part]) -> Rule -> (Part, Map.Map String [Part])
 filterRule (part@Part{..}, states) Rule{..} = case for of
-    'x' -> ( Part { x = x `difference` [range], .. }, Map.insertWith (++) target [Part { x = [range], ..}] states)
-    'm' -> ( Part { m = m `difference` [range], .. }, Map.insertWith (++) target [Part { m = [range], ..}] states)
-    'a' -> ( Part { a = a `difference` [range], .. }, Map.insertWith (++) target [Part { a = [range], ..}] states)
-    's' -> ( Part { s = s `difference` [range], .. }, Map.insertWith (++) target [Part { s = [range], ..}] states)
+    'x' -> ( Part { x = x `difference` [range], .. }, Map.insertWith (++) target [Part { x = x `intersection` [range], ..}] states)
+    'm' -> ( Part { m = m `difference` [range], .. }, Map.insertWith (++) target [Part { m = m `intersection` [range], ..}] states)
+    'a' -> ( Part { a = a `difference` [range], .. }, Map.insertWith (++) target [Part { a = a `intersection` [range], ..}] states)
+    's' -> ( Part { s = s `difference` [range], .. }, Map.insertWith (++) target [Part { s = s `intersection` [range], ..}] states)
     '?' -> ( part, Map.insertWith (++) target [part] states)
     _ -> error $ "Unexpected for " ++ show for
 

@@ -2,10 +2,12 @@ module Examples ( example1
                 , example2
                 , exampleA
                 , exampleB
+                , exampleC
                 , result1
                 , result2
                 , resultA
                 , resultB
+                , resultC
                 ) where
 
 example1 :: [String]
@@ -53,3 +55,11 @@ resultB :: Int
 resultB = 1000 * 4000 * 4000 * 4000 -- 1001 +=+ 2000, 1 +=+ 4000, 1 +=+ 4000, 1 +=+ 4000
         + 1000 * 1000 * 4000 * 1000 -- 1 +=+ 1000, 3001 +=+ 4000, 1 +=+ 4000, 3001 +=+ 4000
         + 2000 * 1000 * 4000 * 4000 -- 2001 +=+ 4000, 3001 +=+ 4000, 1 +=+ 4000, 1 +=+ 4000
+
+exampleC :: [String]
+exampleC = [ "in{x<2001:aa,R}"
+           , "aa{x>1000:A,R}"
+           ]
+
+resultC :: Int
+resultC = 1000 * 4000 * 4000 * 4000 -- 1001 +=+ 2000, 1 +=+ 4000, 1 +=+ 4000, 1 +=+ 4000
