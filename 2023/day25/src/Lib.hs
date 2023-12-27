@@ -54,7 +54,7 @@ numberOfPaths graph start end = number
                               $ CountState 0 Set.empty True
 
 doCount :: Graph -> String -> String -> CountState -> CountState
-doCount graph start end countState@(CountState{..}) =
+doCount graph start end CountState{..} =
     case path graph start end excluded of
         [] -> CountState { continue = False, .. }
         xs -> CountState { number = number + 1
@@ -63,7 +63,8 @@ doCount graph start end countState@(CountState{..}) =
                          }
 
 pathToExcluded :: [String] -> Set.Set Connection
-pathToExcluded = undefined
+pathToExcluded xs = Set.fromList
+                  $ zipWith (\ a b -> Set.fromList [ a, b ]) xs (tail xs)
 
 path :: Graph -> String -> String -> Set.Set Connection -> [String]
 path graph start end excluded =
