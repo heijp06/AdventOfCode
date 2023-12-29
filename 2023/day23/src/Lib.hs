@@ -1,7 +1,8 @@
 {-# LANGUAGE RecordWildCards #-}
 
 module Lib
-    ( parse
+    ( graph
+    , parse
     , part1
     , part2
     ) where
@@ -10,52 +11,94 @@ import Data.Array ((!))
 import qualified Data.Array as Array
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-    
+
 type Position = (Int, Int)
 type Direction = (Int, Int)
 type Grid = Array.Array Position Char
 type Positions = Map.Map Position PathState
+
+type Edge = (Position, Int)
+type Graph = Map.Map Position (Set.Set Edge)
 
 data PathState = PathState { steps :: Int
                            , position :: Position
                            , direction :: Direction
                            }
 
-data PathState2 = PathState2 { steps2 :: Int
-                             , seen :: Set.Set Position
-                             , current :: Position
+data GraphState = GraphState { weight :: Int 
+                             , from :: Position
+                             , position2 :: Position
+                             , direction2 :: Direction
                              }
 
 part1 :: [String] -> Int
 part1 = solve . parse
 
 part2 :: [String] -> Int
-part2 = solve2 . parse
-
-solve2 :: Grid -> Int
-solve2 grid = fst
-            . head
-            . dropWhile (not . null . snd)
-            $ iterate (step2 grid end) (0, [PathState2 0 (Set.singleton start) start])
+part2 xs = fst
+         . head
+         . dropWhile (not . Map.null . snd)
+         $ iterate (step2 end) (0, Map.singleton (start, graph grid) 0)
     where
-        start = fst . head . filter ((=='.') . snd) $ Array.assocs grid
-        end = fst . last . filter ((=='.') . snd) $ Array.assocs grid
+        grid = parse xs
+        (start, end) = endpoints grid
 
-step2 :: Grid -> Position -> (Int, [PathState2]) -> (Int, [PathState2])
-step2 grid end (highest, states) = foldr (combineStep2 grid end) (highest, []) states
+step2 :: Position -> (Int, Map.Map (Position, Graph) Int) -> (Int, Map.Map (Position, Graph) Int)
+step2 end (cost, graphs) = foldr (combineStep2 end) (cost, Map.empty) $ Map.toList graphs
 
-combineStep2 :: Grid -> Position -> PathState2 -> (Int, [PathState2]) -> (Int, [PathState2])
-combineStep2 grid end state2 (highest, states) = (max newSteps2 highest, statesToAdd ++ states)
+combineStep2 :: Position -> ((Position, Graph), Int) -> (Int, Map.Map (Position, Graph) Int) -> (Int, Map.Map (Position, Graph) Int)
+combineStep2 end ((current, graph'), currentCost) (cost, graphs) =
+    foldr (combineNodes end currentCost (current, graph')) (cost, graphs) $ graph' Map.! current
+
+combineNodes :: Position -> Int -> (Position, Graph) -> (Position, Int) -> (Int, Map.Map (Position, Graph) Int) -> (Int, Map.Map (Position, Graph) Int)
+combineNodes end currentCost (current, graph') (node, weight) (cost, graphs) =
+    if node == end
+        then
+            (max cost $ currentCost + weight, graphs)
+        else
+            (cost, Map.insertWith max (node, removeNode current graph') (currentCost + weight) graphs)
+
+removeNode :: Position -> Graph -> Graph
+removeNode node graph' = foldr (removeEdge node) (Map.delete node graph') $ graph' Map.! node
+
+removeEdge :: Position -> (Position, Int) -> Graph -> Graph
+removeEdge node (to, weight) graph'
+    = Map.insert to (Set.delete (node, weight) (graph' Map.! to)) graph'
+
+graph :: Grid -> Graph
+graph grid = fst
+           . head
+           . dropWhile (not . null . snd)
+           $ iterate (buildGraph grid end) (Map.empty, [GraphState 0 start start (1, 0)])
     where
-        newStates = [ PathState2 (steps2 state2 + 1) (Set.insert newPosition (seen state2)) newPosition
-                    | direction <- [(1, 0), (0, 1), (-1, 0), (0, -1)]
-                    , let newPosition = current state2 `add` direction
-                    , newPosition `Set.notMember` seen state2
-                    , Array.inRange (Array.bounds grid) newPosition 
-                    , grid ! newPosition /= '#'
-                    ]
-        newSteps2 = maximum $ 0 : [ steps2 s | s <- newStates, current s == end ]
-        statesToAdd = filter ((/=end) . current) newStates
+        (start, end) = endpoints grid
+
+buildGraph :: Grid -> Position -> (Graph, [GraphState]) -> (Graph, [GraphState])
+buildGraph grid end (graph', states) = foldr (combineGraph grid end) (graph', []) states
+
+combineGraph :: Grid -> Position -> GraphState -> (Graph, [GraphState]) -> (Graph, [GraphState])
+combineGraph grid end GraphState{..} (graph', states) =
+    case new of
+        [] -> error "No further positions found."
+        [(p, _)] | p == end -> (addEdge graph' from p (weight + 1), states)
+        [(p, d)] -> (graph', GraphState (weight + 1) from p d : states)
+        xs -> ( addEdge graph' from position2 weight
+              , if position2 `Map.member` graph'
+                    then states
+                    else map (uncurry $ GraphState 1 position2) xs ++ states)
+    where
+        new = [ (newPosition, newDirection)
+              | newDirection <- [(1, 0), (0, 1), (-1, 0), (0, -1)]
+              , let newPosition = position2 `add` newDirection
+              , newDirection /= neg direction2
+              , Array.inRange (Array.bounds grid) newPosition 
+              , grid ! newPosition /= '#'
+              ]
+
+addEdge :: Graph -> Position -> Position -> Int -> Graph
+addEdge graph' from to weight
+    = Map.insertWith Set.union to (Set.singleton (from, weight))
+    $ Map.insertWith Set.union from (Set.singleton (to, weight)) graph'
 
 solve :: Grid -> Int
 solve grid = steps
@@ -64,6 +107,11 @@ solve grid = steps
            . head
            . dropWhile (not . Map.null . snd)
            $ iterate (step grid) (Map.empty, Map.singleton start $ PathState 0 (1, 0) start)
+    where
+        (start, end) = endpoints grid
+
+endpoints :: Grid -> (Position, Position)
+endpoints grid = (start, end)
     where
         start = fst . head . filter ((=='.') . snd) $ Array.assocs grid
         end = fst . last . filter ((=='.') . snd) $ Array.assocs grid
