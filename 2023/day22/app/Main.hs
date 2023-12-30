@@ -10,8 +10,8 @@ main = do
     putStr "Part 1: "
     print $ part1 xs
     putStr "Part 2: "
-    print $ part2 xs
+    print $ part2 xs -- 70256, too low.
   
 input :: IO [String]
 input = lines <$> readFile "..\\..\\data\\2023\\day22.txt"
-
+
