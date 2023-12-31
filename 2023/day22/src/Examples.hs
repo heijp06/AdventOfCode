@@ -2,10 +2,12 @@ module Examples ( example1
                 , example2
                 , exampleA
                 , exampleB
+                , exampleC
                 , result1
                 , result2
                 , resultA
                 , resultB
+                , resultC
                 ) where
 
 example1 :: [String]
@@ -59,3 +61,15 @@ exampleB = [ "0,0,1~0,0,1"
 
 resultB :: Int
 resultB = 15
+
+exampleC :: [String]
+exampleC = [ "0,0,1~1,0,1"
+           , "0,0,2~0,0,4"
+           , "1,0,2~1,0,2"
+           , "1,0,3~1,0,3"
+           , "1,0,4~1,0,4"
+           , "0,0,5~1,0,5"
+           ]
+
+resultC :: Int
+resultC = 8
