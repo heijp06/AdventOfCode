@@ -3,11 +3,13 @@ module Examples ( example1
                 , exampleA
                 , exampleB
                 , exampleC
+                , exampleD
                 , result1
                 , result2
                 , resultA
                 , resultB
                 , resultC
+                , resultD
                 ) where
 
 example1 :: [String]
@@ -73,3 +75,13 @@ exampleC = [ "0,0,1~1,0,1"
 
 resultC :: Int
 resultC = 8
+
+exampleD :: [String]
+exampleD = [ "0,0,1~0,0,1"
+           , "1,0,1~1,0,1"
+           , "0,0,2~0,0,2"
+           , "1,0,2~1,0,2"
+           ]
+
+resultD :: Int
+resultD = 2
