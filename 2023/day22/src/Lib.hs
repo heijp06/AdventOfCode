@@ -34,7 +34,7 @@ part2 :: [String] -> Int
 part2 xs = sum $ Set.map (disintegrate stable) supporting
     where
         bricks = parse xs
-        stable = Set.map (\ Brick{..} -> Brick { fallen = False, .. }) $ fall bricks
+        stable = Set.map (\ brick -> brick { fallen = False }) $ fall bricks
         supporting = supports stable
 
 disintegrate :: Set.Set Brick -> Brick -> Int
