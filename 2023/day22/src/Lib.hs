@@ -1,7 +1,8 @@
-{-# LANGUAGE TupleSections, RecordWildCards #-}
+{-# LANGUAGE TupleSections #-}
 
 module Lib
-    ( fall
+    ( Brick(..)
+    , fall
     , parse
     , part1
     , part2
