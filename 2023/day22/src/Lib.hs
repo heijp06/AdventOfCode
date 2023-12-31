@@ -32,11 +32,11 @@ part1 xs = number - Set.size supporting
         supporting = supports $ fall bricks
 
 part2 :: [String] -> Int
-part2 xs = sum $ Set.map (disintegrate stable) supporting
+part2 xs = sum $ map (disintegrate stable) supporting
     where
         bricks = parse xs
         stable = Set.map (\ brick -> brick { fallen = False }) $ fall bricks
-        supporting = supports stable
+        supporting = Set.toList $ supports stable
 
 disintegrate :: Set.Set Brick -> Brick -> Int
 disintegrate bricks brick = Set.size . Set.filter fallen $ fall newBricks
