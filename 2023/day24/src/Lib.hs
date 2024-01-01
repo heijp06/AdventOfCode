@@ -1,11 +1,13 @@
 module Lib
-    ( parse
+    ( matrix
+    , parse
     , part1
     , part2
     , solve
     ) where
 
 import Data.List (tails)
+import Text.Printf (printf)
 
 type Position = (Int, Int, Int)
 type Velocity = (Int, Int, Int)
@@ -14,8 +16,36 @@ type Stone = (Position, Velocity)
 part1 :: [String] -> Int
 part1 = solve (200000000000000, 400000000000000)
 
-part2 :: [String] -> Int
-part2 = undefined
+part2 :: [String] -> [String]
+part2 xs = xyuv ++ [""] ++ zw
+    where
+        xyuv = map equationXyuv $ matrix xs
+        zw = map (equationZw . parse) $ take 2 xs
+
+equationXyuv :: ([Int], Int) -> String
+equationXyuv (coefficients, result) = lhs ++ "=" ++ show result
+    where
+        lhs = concat $ zipWith term "xyuv" coefficients
+
+equationZw :: (Position, Velocity) -> String
+equationZw ((xn, _, zn), (un, _, wn))
+    = printf "(%d-x)w-(%d-u)z=(%d-x)(%d)-(%d-u)(%d)" xn un xn wn un zn
+
+term :: Char -> Int -> String
+term _ 0 = ""
+term name 1 = '+' : [name]
+term name (-1) = '-' : [name]
+term name coefficient | coefficient < 0 = show coefficient ++ [name]
+term name coefficient = '+' : show coefficient ++ [name]
+
+matrix :: [String] -> [([Int], Int)]
+matrix xs = foldr (addRow $ head hailstones) [] $ tail hailstones
+    where
+        hailstones = map parse $ take 5 xs
+
+addRow :: (Position, Velocity) -> (Position, Velocity) -> [([Int], Int)] -> [([Int], Int)]
+addRow ((x1, y1, _), (u1, v1, _)) ((xn, yn, _), (un, vn, _)) rows
+    = ([vn - v1, u1 - un, y1 - yn, xn - x1], xn * vn - yn * un - x1 * v1 + y1 * u1) : rows
 
 solve :: (Double, Double) -> [String] -> Int
 solve bounds xs =
