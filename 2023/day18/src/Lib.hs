@@ -97,6 +97,14 @@ direction "L" = (0, -1)
 direction "R" = (0, 1)
 direction xs = error $ "Unknown direction " ++ xs
 
-bounds' :: Show a => Range a -> (a, a)
+bounds' :: (Enum a, Ord a, Show a) => Range a -> (a, a)
 bounds' (SingletonRange x) = (x, x)
+bounds' spanRange@(SpanRange _ _)
+    = case [spanRange] `union` [] of -- Use union to turn something like 5 *=+ 1 into 1 +=* 5
+         [SpanRange left right] -> (getBound succ left, getBound pred right)
+         _ -> error $ "Unhandled span range: " ++ show spanRange
 bounds' r = error $ "Finding bounds is not supported for " ++ show r
+
+getBound :: (a -> a) -> Bound a -> a
+getBound _ (Bound x Inclusive) = x
+getBound f (Bound x Exclusive) = f x

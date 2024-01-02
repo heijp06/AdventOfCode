@@ -62,4 +62,5 @@ test-suite day18-test
       base >=4.7 && <5
     , day18
     , hspec
+    , range
   default-language: Haskell2010
