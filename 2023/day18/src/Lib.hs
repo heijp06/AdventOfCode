@@ -1,5 +1,6 @@
 module Lib
     ( bounds
+    , bounds'
     , fillAround
     , intervals
     , outline
@@ -9,6 +10,7 @@ module Lib
     ) where
 
 import Data.Ix (range)
+import Data.Range
 import qualified Data.Set as Set
 
 type Position = (Int, Int)
@@ -94,3 +96,7 @@ direction "D" = (1, 0)
 direction "L" = (0, -1)
 direction "R" = (0, 1)
 direction xs = error $ "Unknown direction " ++ xs
+
+bounds' :: Show a => Range a -> (a, a)
+bounds' (SingletonRange x) = (x, x)
+bounds' r = error $ "Finding bounds is not supported for " ++ show r
