@@ -1,109 +1,104 @@
 module Lib
     ( bounds
-    , bounds'
-    , fillAround
-    , intervals
-    , outline
     , parse
     , part1
     , part2
+    , solve
+    , union
     ) where
 
-import Data.Ix (range)
-import Data.Range
-import qualified Data.Set as Set
+import Data.List (delete, find, groupBy, sort)
+import Data.Range ((+=+), Bound(..), BoundType(..), Range(..))
+import qualified Data.Range as Range
 
 type Position = (Int, Int)
-type Direction = (Int, Int)
+type ColumnPair = (Int, Int)
+type Row = (Int, [ColumnPair])
 
 part1 :: [String] -> Int
-part1 xs = (maxRow - minRow + 1) * (maxColumn - minColumn + 1) + Set.size loop - Set.size around
-    where
-        loop = outline $ parse xs
-        around = fillAround loop
-        ((minRow, minColumn), (maxRow, maxColumn)) = bounds around
+part1 = solve
 
 part2 :: [String] -> Int
 part2 = undefined
 
-parse :: [String] -> [(Direction, Int)]
-parse = map parseLine
+solve :: [String] -> Int
+solve = fst . foldl combineSolve (0, (0, [])) . parse
 
-bounds :: Set.Set Position -> (Position, Position)
-bounds positions = ((minRow, minColumn), (maxRow, maxColumn))
+combineSolve :: (Int, Row) -> Row -> (Int, Row)
+combineSolve (accSize, (accRow, accRanges)) (row, ranges)
+    = (accSize + sizeOfPreviousRows + sizeOfCurrentRow, (row, buildNewRanges accRanges ranges))
     where
-        minRow = minimum (Set.map fst positions)
-        minColumn = minimum (Set.map snd positions)
-        maxRow = maximum (Set.map fst positions)
-        maxColumn = maximum (Set.map snd positions)
+        sizeOfPreviousRows = (row - accRow - 1) * rangeLength accRanges
+        sizeOfCurrentRow = rangeLength $ union accRanges ranges
 
-fillAround :: Set.Set Position -> Set.Set Position
-fillAround loop = fst 
-                . head
-                . dropWhile (not . Set.null . snd)
-                $ iterate doFill (seen, Set.singleton (minRow + 1, minColumn + 1))
+buildNewRanges :: [ColumnPair] -> [ColumnPair] -> [ColumnPair]
+buildNewRanges = foldr addRange
+
+addRange :: ColumnPair -> [ColumnPair] -> [ColumnPair]
+addRange pair@(left, right) pairs
+    = let matches = (leftLeft, leftRight, rightLeft, rightRight) in case matches of
+        (Nothing, Nothing, Nothing, Nothing)
+            -> case find (\ (left1, right1) -> left1 < left && right1 > right) pairs of
+                Nothing -> sort $ pair : pairs
+                Just pair1@(left1, right1) -> sort $ (left1, left) : (right, right1) : delete pair1 pairs
+        (Just pair1@(_, right1), Nothing, Nothing, Nothing) -> sort $ (right, right1) : delete pair1 pairs
+        (Nothing, Just pair1@(left1, _), Nothing, Nothing) -> sort $ (left1, right) : delete pair1 pairs
+        (Nothing, Nothing, Just pair1@(_, right1), Nothing) -> sort $ (left, right1) : delete pair1 pairs
+        (Nothing, Nothing, Nothing, Just pair1@(left1, _)) -> sort $ (left1, left) : delete pair1 pairs
+        (Just pair1, Nothing, Nothing, Just pair2) | pair1 == pair && pair2 == pair -> delete pair pairs
+        (Nothing, Just pair1@(left1, _), Just pair2@(_, right2), Nothing)
+            -> sort $ (left1, right2) : delete pair2 (delete pair1 pairs)
+        _ -> error $ "Unhandled matches: " ++ show matches
     where
-        minRow = minimum (Set.map fst loop) - 2
-        minColumn = minimum (Set.map snd loop) - 2
-        maxRow = maximum (Set.map fst loop) + 2
-        maxColumn = maximum (Set.map snd loop) + 2
-        seen = Set.unions [ loop
-                            , Set.fromList $ range ((minRow, minColumn), (minRow, maxColumn))
-                            , Set.fromList $ range ((minRow, minColumn), (maxRow, minColumn))
-                            , Set.fromList $ range ((minRow, maxColumn), (maxRow, maxColumn))
-                            , Set.fromList $ range ((maxRow, minColumn), (maxRow, maxColumn))
-                            ]
+        leftLeft = search left fst
+        leftRight = search left snd
+        rightLeft = search right fst
+        rightRight = search right snd
+        search side element = find ((==side) . element) pairs
 
-doFill :: (Set.Set Position, Set.Set Position) -> (Set.Set Position, Set.Set Position)
-doFill (seen, current) = (both, new)
+rangeLength :: [ColumnPair] -> Int
+rangeLength xs = sum [ right - left + 1 | (left, right) <- xs ]
+
+union :: [ColumnPair] -> [ColumnPair] -> [ColumnPair]
+union ranges1 ranges2 = sort
+                      . asColumnPairs
+                      . Range.joinRanges
+                      $ Range.union (asRanges ranges1) (asRanges ranges2)
     where
-        both = Set.union seen current
-        new = Set.fromList [ (r + dr, c + dc)
-                           | (r, c) <- Set.toList current
-                           , (dr, dc) <- [(1, 0), (-1, 0), (0, 1), (0, -1)]
-                           , (r + dr, c + dc) `Set.notMember` both
-                           ]
+        asRanges = map $ uncurry (+=+)
+        asColumnPairs = map bounds
 
-intervals :: [(Direction, Int)] -> [(Position, Position)]
-intervals = snd . foldl combineInterval ((0, 0), [])
+parse :: [String] -> [Row]
+parse = map combineGroup
+      . groupBy (\ a b -> fst a == fst b)
+      . sort
+      . snd
+      . foldl combineParse ((0, 0), [])
 
-combineInterval :: (Position, [(Position, Position)]) -> (Direction, Int) -> (Position, [(Position, Position)])
-combineInterval (position, pairs) (dir, n) = (nextPosition, pairs ++ [(position, nextPosition)])
-    where
-        nextPosition = move position (n `mul` dir)
+combineGroup :: [(Int, ColumnPair)] -> Row
+combineGroup [] = error $ "Empty group"
+combineGroup xs@((row, _):_) = (row, map snd xs)
 
-outline :: [(Direction, Int)] -> Set.Set Position
-outline = snd . foldl combineOutline ((0, 0), Set.singleton (0, 0))
+combineParse :: (Position, [(Int, ColumnPair)]) -> String -> (Position, [(Int, ColumnPair)])
+combineParse ((row, column), ranges) x
+    = case words x of
+        ["U", steps, _] -> ((row - read steps, column), ranges)
+        ["D", steps, _] -> ((row + read steps, column), ranges)
+        ["L", steps, _] ->
+            let newColumn = column - read steps in
+                ((row, newColumn), ranges ++ [(row, (newColumn, column))])
+        ["R", steps, _] ->
+            let newColumn = column + read steps in
+                ((row, newColumn), ranges ++[(row, (column, newColumn))])
+        _ -> error $ "Cannot parse " ++ x
 
-combineOutline :: (Position, Set.Set Position) -> (Direction, Int) -> (Position, Set.Set Position)
-combineOutline (position, loop) (dir, n) =
-    (move position (n `mul` dir), Set.union loop (Set.fromList [move position (i `mul` dir) | i <- [1..n] ]))
-
-move :: Position -> Direction -> Position
-move (row, column) (dRow, dColumn) = (row + dRow, column + dColumn)
-
-mul :: Int -> Direction -> Direction
-mul n (dRow, dColumn) = (n * dRow, n * dColumn)
-        
-parseLine :: String -> (Direction, Int)
-parseLine xs = case words xs of
-                [d, l, _] -> (direction d, read l)
-                _ -> error $ "Cannot parse " ++ xs
-
-direction :: String -> Direction
-direction "U" = (-1, 0)
-direction "D" = (1, 0)
-direction "L" = (0, -1)
-direction "R" = (0, 1)
-direction xs = error $ "Unknown direction " ++ xs
-
-bounds' :: (Enum a, Ord a, Show a) => Range a -> (a, a)
-bounds' (SingletonRange x) = (x, x)
-bounds' spanRange@(SpanRange _ _)
-    = case [spanRange] `union` [] of -- Use union to turn something like 5 *=+ 1 into 1 +=* 5
+bounds :: (Enum a, Ord a, Show a) => Range a -> (a, a)
+bounds (SingletonRange x) = (x, x)
+bounds spanRange@(SpanRange _ _)
+    = case [spanRange] `Range.union` [] of -- Use union to turn something like 5 *=+ 1 into 1 +=* 5
          [SpanRange left right] -> (getBound succ left, getBound pred right)
          _ -> error $ "Unhandled span range: " ++ show spanRange
-bounds' r = error $ "Finding bounds is not supported for " ++ show r
+bounds r = error $ "Finding bounds is not supported for " ++ show r
 
 getBound :: (a -> a) -> Bound a -> a
 getBound _ (Bound x Inclusive) = x

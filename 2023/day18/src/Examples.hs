@@ -1,7 +1,13 @@
 module Examples ( example1
                 , example2
+                , exampleA
+                , exampleB
+                , exampleC
                 , result1
                 , result2
+                , resultA
+                , resultB
+                , resultC
                 ) where
 
 example1 :: [String]
@@ -30,3 +36,52 @@ example2 = example1
 result2 :: Int
 result2 = -1
 
+exampleA :: [String]
+exampleA = [ "R 2 _"
+           , "D 1 _"
+           , "R 2 _"
+           , "U 1 _"
+           , "R 2 _"
+           , "D 3 _"
+           , "L 6 _"
+           , "U 3 _"
+           ]
+
+resultA :: Int
+resultA = 27
+
+exampleB :: [String]
+exampleB = [ "R 2 _"
+           , "D 1 _"
+           , "R 1 _"
+           , "D 2 _"
+           , "L 1 _"
+           , "D 1 _"
+           , "L 2 _"
+           , "U 1 _"
+           , "L 1 _"
+           , "U 2 _"
+           , "R 1 _"
+           , "U 1 _"
+           ]
+
+resultB :: Int
+resultB = 21
+
+exampleC :: [String]
+exampleC = [ "R 2 _"
+           , "D 2 _"
+           , "R 2 _"
+           , "U 2 _"
+           , "R 6 _"
+           , "D 4 _"
+           , "L 2 _"
+           , "U 2 _"
+           , "L 2 _"
+           , "D 2 _"
+           , "L 6 _"
+           , "U 4 _"
+           ]
+
+resultC :: Int
+resultC = 51
