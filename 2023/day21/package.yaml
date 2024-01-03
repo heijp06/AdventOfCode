@@ -60,4 +60,5 @@ tests:
     dependencies:
     - day21
     - hspec
+    - containers
 

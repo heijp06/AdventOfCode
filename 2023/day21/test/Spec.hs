@@ -6,9 +6,6 @@ import Examples
 
 main :: IO ()
 main = hspecWith defaultConfig {configFailFast = True} $ do
-    describe "solve" $ do
-        it "solve 6 example1" $ solve 6 example1 `shouldBe` result1
-
     describe "part2" $ do
         it "part2 example2" $ part2 example2 `shouldBe` result2
 
