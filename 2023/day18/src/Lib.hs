@@ -10,19 +10,20 @@ module Lib
 import Data.List (delete, find, groupBy, sort)
 import Data.Range ((+=+), Bound(..), BoundType(..), Range(..))
 import qualified Data.Range as Range
+import Numeric (readHex)
 
 type Position = (Int, Int)
 type ColumnPair = (Int, Int)
 type Row = (Int, [ColumnPair])
 
 part1 :: [String] -> Int
-part1 = solve
+part1 = solve combineParse1
 
 part2 :: [String] -> Int
-part2 = undefined
+part2 = solve combineParse2
 
-solve :: [String] -> Int
-solve = fst . foldl combineSolve (0, (0, [])) . parse
+solve :: ((Position, [(Int, ColumnPair)]) -> String -> (Position, [(Int, ColumnPair)])) -> [String] -> Int
+solve combineParse = fst . foldl combineSolve (0, (0, [])) . parse combineParse
 
 combineSolve :: (Int, Row) -> Row -> (Int, Row)
 combineSolve (accSize, (accRow, accRanges)) (row, ranges)
@@ -68,8 +69,8 @@ union ranges1 ranges2 = sort
         asRanges = map $ uncurry (+=+)
         asColumnPairs = map bounds
 
-parse :: [String] -> [Row]
-parse = map combineGroup
+parse :: ((Position, [(Int, ColumnPair)]) -> String -> (Position, [(Int, ColumnPair)])) -> [String] -> [Row]
+parse combineParse = map combineGroup
       . groupBy (\ a b -> fst a == fst b)
       . sort
       . snd
@@ -79,8 +80,8 @@ combineGroup :: [(Int, ColumnPair)] -> Row
 combineGroup [] = error $ "Empty group"
 combineGroup xs@((row, _):_) = (row, map snd xs)
 
-combineParse :: (Position, [(Int, ColumnPair)]) -> String -> (Position, [(Int, ColumnPair)])
-combineParse ((row, column), ranges) x
+combineParse1 :: (Position, [(Int, ColumnPair)]) -> String -> (Position, [(Int, ColumnPair)])
+combineParse1 ((row, column), ranges) x
     = case words x of
         ["U", steps, _] -> ((row - read steps, column), ranges)
         ["D", steps, _] -> ((row + read steps, column), ranges)
@@ -89,8 +90,29 @@ combineParse ((row, column), ranges) x
                 ((row, newColumn), ranges ++ [(row, (newColumn, column))])
         ["R", steps, _] ->
             let newColumn = column + read steps in
-                ((row, newColumn), ranges ++[(row, (column, newColumn))])
+                ((row, newColumn), ranges ++ [(row, (column, newColumn))])
         _ -> error $ "Cannot parse " ++ x
+
+combineParse2 :: (Position, [(Int, ColumnPair)]) -> String -> (Position, [(Int, ColumnPair)])
+combineParse2 ((row, column), ranges) x
+    = let
+        color = tail . tail . init . last $ words x
+        distance = fst . head . readHex $ init color
+      in
+        case last color of
+            -- R
+            '0' ->
+                let newColumn = column + distance in
+                    ((row, newColumn), ranges ++[(row, (column, newColumn))])
+            -- D
+            '1' -> ((row + distance, column), ranges)
+            -- L
+            '2' ->
+                let newColumn = column - distance in
+                    ((row, newColumn), ranges ++ [(row, (newColumn, column))])
+            -- U
+            '3' -> ((row - distance, column), ranges)
+            _ -> error $ "Color has unexpected last character " ++ color
 
 bounds :: (Enum a, Ord a, Show a) => Range a -> (a, a)
 bounds (SingletonRange x) = (x, x)
