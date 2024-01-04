@@ -27,6 +27,7 @@ library
   exposed-modules:
       Examples
       Lib
+      LinearEquations
   other-modules:
       Paths_day24
   hs-source-dirs:

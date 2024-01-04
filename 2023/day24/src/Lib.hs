@@ -7,7 +7,7 @@ module Lib
     ) where
 
 import Data.List (tails)
-import Text.Printf (printf)
+import qualified LinearEquations as LE
 
 type Position = (Int, Int, Int)
 type Velocity = (Int, Int, Int)
@@ -16,27 +16,24 @@ type Stone = (Position, Velocity)
 part1 :: [String] -> Int
 part1 = solve (200000000000000, 400000000000000)
 
-part2 :: [String] -> [String]
-part2 xs = xyuv ++ [""] ++ zw
+part2 :: [String] -> Int
+part2 xs = round (fromRational $ head xyuv + (xyuv !! 1) + (wz !! 1) :: Double)
     where
-        xyuv = map equationXyuv $ matrix xs
-        zw = map (equationZw . parse) $ take 2 xs
+        m = matrix xs
+        xyuv = LE.solve (map (map toRational . fst) m) (map (toRational . snd) m)
+        wz = solveWz xs (head xyuv) (xyuv !! 2)
 
-equationXyuv :: ([Int], Int) -> String
-equationXyuv (coefficients, result) = lhs ++ "=" ++ show result
+solveWz :: [String] -> Rational -> Rational -> [Rational]
+solveWz xs x u = LE.solve [row1, row2] [v1, v2]
     where
-        lhs = concat $ zipWith term "xyuv" coefficients
-
-equationZw :: (Position, Velocity) -> String
-equationZw ((xn, _, zn), (un, _, wn))
-    = printf "(%d-x)w-(%d-u)z=(%d-x)(%d)-(%d-u)(%d)" xn un xn wn un zn
-
-term :: Char -> Int -> String
-term _ 0 = ""
-term name 1 = '+' : [name]
-term name (-1) = '-' : [name]
-term name coefficient | coefficient < 0 = show coefficient ++ [name]
-term name coefficient = '+' : show coefficient ++ [name]
+        (x1, z1, u1, w1, x2, z2, u2, w2)
+            = case take 2 $ map parse xs of
+                [((x1', _, z1'), (u1', _, w1')), ((x2', _, z2'), (u2', _, w2'))] -> (x1', z1', u1', w1', x2', z2', u2', w2')
+                _ -> error "Cannot parse"
+        row1 = [toRational x1 - x, u - toRational u1]
+        row2 = [toRational x2 - x, u - toRational u2]
+        v1 = (toRational x1 - x) * toRational w1 - (toRational u1 - u) * toRational z1
+        v2 = (toRational x2 - x) * toRational w2 - (toRational u2 - u) * toRational z2
 
 matrix :: [String] -> [([Int], Int)]
 matrix xs = foldr (addRow $ head hailstones) [] $ tail hailstones
