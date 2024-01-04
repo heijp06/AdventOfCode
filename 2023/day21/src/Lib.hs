@@ -37,11 +37,12 @@ display n xs
         width = length $ head xs
 
 part2 :: [String] -> Int
-part2 xs = undefined
+part2 xs = (n + 1) * (n + 1) * a + n * n * a' + n * (n + 1) * (b + b')
     where
         steps = 26501365
-        (a, b') = getAB 201 xs
-        (a', b) = getAB 200 xs
+        n = (steps - 65) `div` 131
+        (a, b') = getAB 131 xs
+        (a', b) = getAB 130 xs
 
 getAB :: Int -> [String] -> (Int, Int)
 getAB n xs = (a, b)
