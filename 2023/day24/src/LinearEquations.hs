@@ -2,7 +2,7 @@ module LinearEquations
     ( solve
     ) where
 
--- This code does a halfbaked attempt at solving Ax = v by using Gaussian elimation.
+-- This code does a halfbaked attempt at solving Ax = v by using Gaussian elimination.
 -- The attempt is half baked because it is assumed that values on the diagonal of the
 -- matrix and all intermediate matrices are not zero when they are used as pivot in the
 -- function combineSolve. This is not true in general and could be worked around by
