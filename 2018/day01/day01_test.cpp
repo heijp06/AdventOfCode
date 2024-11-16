@@ -1,9 +1,13 @@
 #include <vector>
 #include <string>
-#include <utility>
 
 #include "../lib/catch.hpp"
 #include "day01.h"
+
+struct example {
+    std::vector<std::string> rows;
+    int twice;
+};
 
 TEST_CASE("changes") {
     std::vector<std::string> rows = {"-1", "0", "+1"};
@@ -15,16 +19,14 @@ TEST_CASE("changes") {
 }
 
 TEST_CASE("part2") {
-	using pair = std::pair<std::vector<std::string>, int>;
-
-    const auto& p = GENERATE(
-        pair{{"+1", "-1"}, 0},
-        pair{{"+3", "+3", "+4", "-2", "-4"}, 10},
-        pair{{"-6", "+3", "+8", "+5", "-6"}, 5},
-        pair{{"+7", "+7", "-2", "-7", "-4"}, 14}
+    const auto& item = GENERATE(
+        example{{"+1", "-1"}, 0},
+        example{{"+3", "+3", "+4", "-2", "-4"}, 10},
+        example{{"-6", "+3", "+8", "+5", "-6"}, 5},
+        example{{"+7", "+7", "-2", "-7", "-4"}, 14}
     );
 
-    auto actual = day01::part2(p.first);
+    auto actual = day01::part2(item.rows);
 
-    REQUIRE(actual == p.second);
+    REQUIRE(actual == item.twice);
 }
