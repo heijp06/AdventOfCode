@@ -25,3 +25,8 @@ cabal.project.local~
 *.swp
 .vs/
 out/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+day??_test
