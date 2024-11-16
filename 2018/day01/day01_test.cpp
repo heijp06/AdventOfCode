@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <utility>
 
 #include "../lib/catch.hpp"
 #include "day01.h"
@@ -13,11 +14,17 @@ TEST_CASE("changes") {
     REQUIRE(actual == expected);
 }
 
-TEST_CASE("part2(+7, +7, -2, -7, -4) == 14") {
-    std::vector<std::string> rows = {"+7", "+7", "-2", "-7", "-4"};
-    auto expected = 14;
+TEST_CASE("part2") {
+	using pair = std::pair<std::vector<std::string>, int>;
 
-    auto actual = day01::part2(rows);
+    const auto& p = GENERATE(
+        pair{{"+1", "-1"}, 0},
+        pair{{"+3", "+3", "+4", "-2", "-4"}, 10},
+        pair{{"-6", "+3", "+8", "+5", "-6"}, 5},
+        pair{{"+7", "+7", "-2", "-7", "-4"}, 14}
+    );
 
-    REQUIRE(actual == expected);
+    auto actual = day01::part2(p.first);
+
+    REQUIRE(actual == p.second);
 }
