@@ -15,7 +15,8 @@ else()
 endif()
 
 # Build executable from sources and headers
-add_executable(${day} ${day}_test.cpp ${day_cpp} ${day}.h ../lib/tests-main.cpp)
+add_executable(${day}_test ${day}_test.cpp ${day_cpp} ${day}.h ../lib/tests-main.cpp)
+add_executable(${day} ${day}_main.cpp ${day_cpp} ${day}.h)
 
 set_target_properties(${day} PROPERTIES
     CXX_STANDARD 17
@@ -39,4 +40,5 @@ if(${MSVC})
 endif()
 
 # Run the tests on every build
-add_custom_target(test_${day} ALL DEPENDS ${day} COMMAND ${day})
+add_custom_target(test_${day} ALL DEPENDS ${day}_test COMMAND ${day}_test)
+add_custom_target(main_${day} ALL DEPENDS ${day} COMMAND ${day})
