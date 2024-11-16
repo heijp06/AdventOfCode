@@ -1,3 +1,4 @@
+#include <set>
 #include <sstream>
 
 #include "day01.h"
@@ -14,7 +15,19 @@ namespace day01 {
     }
 
     int part2(std::vector<std::string> rows) {
-        (void)rows;
+        int sum = 0;
+        auto nums{changes(rows)};
+        std::set<int> seen{0};
+
+        while (true) {
+            for (auto num : nums) {
+                sum += num;
+                if (!seen.insert(sum).second) {
+                    return sum;
+                }
+            }
+        }
+
         return -1;
     }
 
