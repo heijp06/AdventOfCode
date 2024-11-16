@@ -3,7 +3,7 @@
 #include <map>
 
 namespace day02 {
-    int part1(std::vector<std::string> rows) {
+    int part1(const std::vector<std::string>& rows) {
         auto twice{0};
         auto thrice{0};
 
@@ -30,7 +30,7 @@ namespace day02 {
         return twice * thrice;
     }
 
-    std::string part2(std::vector<std::string> rows) {
+    std::string part2(const std::vector<std::string>& rows) {
         for (size_t i = 0; i < rows.size() - 1; i++) {
             auto row1{rows.at(i)};
             for (size_t j = i + 1; j < rows.size(); j++) {
