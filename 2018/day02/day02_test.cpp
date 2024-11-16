@@ -17,3 +17,17 @@ TEST_CASE("part1") {
 
     REQUIRE(day02::part1(ids) == 12);
 }
+
+TEST_CASE("part2") {
+	std::vector<std::string> ids = {
+		"abcde",
+		"fghij",
+		"klmno",
+		"pqrst",
+		"fguij",
+		"axcye",
+		"wvxyz",
+	};
+
+	REQUIRE(day02::part2(ids) == "fgij");
+}

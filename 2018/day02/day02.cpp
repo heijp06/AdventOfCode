@@ -30,8 +30,31 @@ namespace day02 {
         return twice * thrice;
     }
 
-    int part2(std::vector<std::string> rows) {
-        (void)rows;
-        return -1;
+    std::string part2(std::vector<std::string> rows) {
+        for (size_t i = 0; i < rows.size() - 1; i++) {
+            auto row1{rows.at(i)};
+            for (size_t j = i + 1; j < rows.size(); j++) {
+                auto row2{rows.at(j)};
+                auto diff{0};
+
+                for (size_t k = 0; k < row1.size(); k++) {
+                    diff += row1.at(k) != row2.at(k);
+                }
+
+                if (diff != 1) {
+                    continue;
+                }
+
+                std::string result{};
+                for (size_t k = 0; k < row1.size(); k++) {
+                    if (row1.at(k) == row2.at(k)) {
+                        result += row1.at(k);
+                    }
+                }
+                return result;
+            }
+        }
+
+        return "";
     }
 }
