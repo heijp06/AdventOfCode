@@ -18,10 +18,10 @@ namespace day01 {
         return -1;
     }
 
-    std::vector<int> changes(std::vector<std::string> rows) {
+    std::vector<int> changes(const std::vector<std::string>& rows) {
         std::vector<int> result{};
 
-        for (auto row : rows) {
+        for (const auto& row : rows) {
             int value;
             std::istringstream rs{row};
             rs >> value;
