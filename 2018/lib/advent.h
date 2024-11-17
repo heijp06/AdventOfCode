@@ -43,7 +43,7 @@ namespace advent {
 		auto input = current / data_folder / year_folder / day_file;
 
 		if (!std::filesystem::exists(input)) {
-			throw std::domain_error(input.string() + " does not ecist.");
+			throw std::domain_error(input.string() + " does not exist.");
 		}
 
 		return input.string();
