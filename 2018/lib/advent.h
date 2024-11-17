@@ -35,12 +35,16 @@ namespace advent {
 		auto current{std::filesystem::current_path()};
 		while (!std::filesystem::exists(current / data_folder)) {
 			if (!current.has_parent_path()) {
-				throw std::domain_error("Cannot find data.");
+				throw std::domain_error("Cannot find " + data_folder + " folder.");
 			}
 			current = current.parent_path();
 		}
 
 		auto input = current / data_folder / year_folder / day_file;
+
+		if (!std::filesystem::exists(input)) {
+			throw std::domain_error(input.string() + " does not ecist.");
+		}
 
 		return input.string();
 	}
