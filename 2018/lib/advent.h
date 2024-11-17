@@ -26,7 +26,7 @@ namespace advent {
 
 	// Get the path to the input file for @year and @day
 	std::string get_data_path(int year, int day) {
-		const std::string data_folder{"AoC-data"};
+		const std::string data_folder{"data"};
 		auto year_folder{std::to_string(year)};
 		std::ostringstream ss;
 		ss << "day" << std::setw(2) << std::setfill('0') << day << ".txt";
