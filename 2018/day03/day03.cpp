@@ -1,6 +1,6 @@
-#include "day__NN__.h"
+#include "day03.h"
 
-namespace day__NN__ {
+namespace day03 {
     int part1(std::vector<std::string> rows) {
         (void)rows;
         return -1;

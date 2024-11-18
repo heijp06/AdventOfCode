@@ -3,13 +3,13 @@
 #include <vector>
 
 #include "../lib/advent.h"
-#include "dayNN.h"
+#include "day__NN__.h"
 
 int main() {
-	auto rows = advent::get_rows(2018, 0);
+	auto rows = advent::get_rows(2018, __N__);
 
-	std::cout << "Part 1: " << dayNN::part1(rows) << std::endl;
-	std::cout << "Part 2: " << dayNN::part2(rows) << std::endl;
+	std::cout << "Part 1: " << day__NN__::part1(rows) << std::endl;
+	std::cout << "Part 2: " << day__NN__::part2(rows) << std::endl;
 
 	return 0;
 }
