@@ -11,6 +11,8 @@ namespace advent {
 	std::vector<std::string> get_rows(int year, int day);
 	std::string get_data_path(int year, int day);
 
+	std::vector<int> ints(std::string row);
+
 	// Read the input file for @year and @day as a vector of strings
 	std::vector<std::string> get_rows(int year, int day) {
 		auto path{get_data_path(year, day)};
@@ -48,5 +50,11 @@ namespace advent {
 		}
 
 		return input.string();
+	}
+
+	std::vector<int> ints(std::string row) {
+		std::vector<int> result{};
+
+		return result;
 	}
 }
