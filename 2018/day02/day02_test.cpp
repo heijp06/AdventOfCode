@@ -5,7 +5,7 @@
 #include <vector>
 
 TEST_CASE("part1") {
-	std::vector<std::string> ids = {
+	const std::vector<std::string>& ids = {
 		"abcdef",
 		"bababc",
 		"abbcde",
@@ -19,7 +19,7 @@ TEST_CASE("part1") {
 }
 
 TEST_CASE("part2") {
-	std::vector<std::string> ids = {
+	const std::vector<std::string>& ids = {
 		"abcde",
 		"fghij",
 		"klmno",
