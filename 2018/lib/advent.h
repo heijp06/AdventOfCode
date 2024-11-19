@@ -56,10 +56,10 @@ namespace advent {
 	std::vector<int> ints(std::string row) {
 		std::vector<int> result{};
 		std::regex int_regex{R"([+-]?\d+)"};
-		auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
+		const auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
 		const auto& end = std::sregex_iterator();
 
-		for (auto& it = begin; it != end; it++) {
+		for (auto it = begin; it != end; it++) {
 			int value;
 			const auto& match = *it;
             std::istringstream rs{match.str()};
