@@ -4,7 +4,7 @@
 #include "day01.h"
 
 namespace day01 {
-    int part1(std::vector<std::string> rows) {
+    int part1(const std::vector<std::string>& rows) {
         int sum = 0;
 
         for (auto value : changes(rows)) {
@@ -14,7 +14,7 @@ namespace day01 {
         return sum;
     }
 
-    int part2(std::vector<std::string> rows) {
+    int part2(const std::vector<std::string>& rows) {
         int sum = 0;
         auto nums{changes(rows)};
         std::set<int> seen{0};
