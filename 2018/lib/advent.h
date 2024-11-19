@@ -53,6 +53,7 @@ namespace advent {
 		return input.string();
 	}
 
+	// Get all the integers from a string.
 	std::vector<int> ints(std::string row) {
 		std::vector<int> result{};
 		std::regex int_regex{R"([+-]?\d+)"};
