@@ -13,7 +13,7 @@ DAY=day$NN
 
 mkdir "${DAY}"
 
-cp dayNN/CMakeLists.txt "${DAY}/CMakeList.txt"
+cp dayNN/CMakeLists.txt "${DAY}/CMakeLists.txt"
 sed -e "s/__NN__/$NN/g" dayNN/dayNN.cpp > ${DAY}/${DAY}.cpp
 sed -e "s/__NN__/$NN/g" dayNN/dayNN.h > ${DAY}/${DAY}.h
 sed -e "s/__NN__/$NN/g" -e "s/__N__/$N/g" dayNN/dayNN_main.cpp > ${DAY}/${DAY}_main.cpp
