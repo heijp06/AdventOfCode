@@ -15,8 +15,8 @@ else()
 endif()
 
 # Build executable from sources and headers
-add_executable(${day}_test ${day}_test.cpp ${day_cpp} ${day}.h ../lib/tests-main.cpp)
-add_executable(${day} ${day}_main.cpp ${day_cpp} ${day}.h)
+add_executable(${day}_test ${day}_test.cpp ${day_cpp} ${day}.h ../lib/tests-main.cpp ../lib/advent.cpp)
+add_executable(${day} ${day}_main.cpp ${day_cpp} ${day}.h ../lib/advent.cpp)
 
 set_target_properties(${day} PROPERTIES
     CXX_STANDARD 17
