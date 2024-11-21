@@ -24,6 +24,12 @@ set_target_properties(${day} PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+set_target_properties(${day}_test PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
+
 set(CMAKE_BUILD_TYPE Debug)
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "(GNU|Clang)")
