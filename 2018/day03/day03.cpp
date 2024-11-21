@@ -21,4 +21,14 @@ namespace day03 {
         const auto& ints = advent::ints(row);
         return claim{ints[0], ints[1], ints[2], ints[3], ints[4]};
     }
+
+    Leaf::Leaf(int size, int overlap) : size_{size}, overlap_{overlap} {
+    }
+
+    int Leaf::size() {
+        return size_;
+    }
+
+    void Leaf::insert(claim claim) {
+    }
 }
