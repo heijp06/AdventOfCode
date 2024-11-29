@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../lib/advent.h"
+#include "../../lib/advent.h"
 #include "day02.h"
 
 int main() {

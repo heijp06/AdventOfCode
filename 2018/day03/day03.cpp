@@ -1,5 +1,5 @@
 #include "day03.h"
-#include "../lib/advent.h"
+#include "../../lib/advent.h"
 
 namespace day03 {
     int part1(const std::vector<std::string>& rows) {

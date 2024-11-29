@@ -1,7 +1,7 @@
 #include <vector>
 #include <string>
 
-#include "../lib/catch.hpp"
+#include "../../lib/catch.hpp"
 #include "day01.h"
 
 struct example {

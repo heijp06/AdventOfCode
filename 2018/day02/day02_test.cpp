@@ -1,4 +1,4 @@
-#include "../lib/catch.hpp"
+#include "../../lib/catch.hpp"
 #include "day02.h"
 
 #include <string>
