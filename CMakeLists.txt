@@ -5,7 +5,7 @@ function(add_year year)
     file(GLOB days ${CMAKE_CURRENT_SOURCE_DIR}/${year}/day[012]*)
     foreach(day ${days})
         add_subdirectory(${day})
-    endforeach(day ${days})
+    endforeach()
 endfunction()
 
 add_year(2018)
