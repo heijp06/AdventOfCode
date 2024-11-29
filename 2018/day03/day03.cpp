@@ -30,5 +30,6 @@ namespace day03 {
     }
 
     void Leaf::insert(claim claim) {
+        (void)claim;
     }
 }
