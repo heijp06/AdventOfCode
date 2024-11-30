@@ -8,7 +8,9 @@ fi
 
 MYDIR=$(dirname $0)
 
-DAY=day$(printf "%02d" $1)
+N=$1
+NN=$(printf "%02d" $1)
+DAY=day$NN
 
 mkdir "${DAY}"
 

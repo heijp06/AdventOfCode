@@ -9,3 +9,4 @@ function(add_year year)
 endfunction()
 
 add_year(2018)
+add_year(2024)
