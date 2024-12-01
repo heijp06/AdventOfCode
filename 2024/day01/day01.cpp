@@ -8,9 +8,7 @@
 
 namespace day01 {
     int part1(const std::vector<std::string>& rows) {
-        std::vector<std::vector<int>> pairs;
-        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
-
+        const auto& pairs = get_pairs(rows);
         const auto& list0 = get_list(0, pairs);
         const auto& list1 = get_list(1, pairs);
 
@@ -23,8 +21,7 @@ namespace day01 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        std::vector<std::vector<int>> pairs;
-        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
+        const auto& pairs = get_pairs(rows);
 
         std::map<int, int> counts;
         for (const auto& pair : pairs) {
@@ -39,6 +36,13 @@ namespace day01 {
         }
 
         return sum;
+    }
+
+    std::vector<std::vector<int>> get_pairs(const std::vector<std::string>& rows) {
+        std::vector<std::vector<int>> pairs;
+        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
+
+        return pairs;
     }
 
     std::vector<int> get_list(int index, const std::vector<std::vector<int>> ids) {
