@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <map>
 
 #include "day01.h"
 #include "../../lib/advent.h"
@@ -23,9 +24,26 @@ namespace day01 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        auto sum{0};
+        std::vector<std::vector<int>> pairs;
+
+        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
+
+        const auto& list0 = get_list(0, pairs);
+        const auto& list1 = get_list(1, pairs);
+
+        std::map<int, int> counts;
+        for (int id : list1) {
+            counts[id]++;
+        }
+
+        for (int id : list0) {
+            sum += id * counts[id];
+        }
+
+        return sum;
     }
+
     std::vector<int> get_list(int index, const std::vector<std::vector<int>> ids) {
         std::vector<int> list;
 
