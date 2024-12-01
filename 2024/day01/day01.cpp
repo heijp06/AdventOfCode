@@ -8,14 +8,13 @@
 
 namespace day01 {
     int part1(const std::vector<std::string>& rows) {
-        auto sum{0};
         std::vector<std::vector<int>> pairs;
-
         std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
 
         const auto& list0 = get_list(0, pairs);
         const auto& list1 = get_list(1, pairs);
 
+        auto sum{0};
         for (size_t i = 0; i < list1.size(); i++) {
 			sum += std::abs(list0[i] - list1[i]);
         }
@@ -24,20 +23,18 @@ namespace day01 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        auto sum{0};
         std::vector<std::vector<int>> pairs;
-
         std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
 
-        const auto& list0 = get_list(0, pairs);
-        const auto& list1 = get_list(1, pairs);
-
         std::map<int, int> counts;
-        for (int id : list1) {
+        for (const auto& pair : pairs) {
+            int id = pair[1];
             counts[id]++;
         }
 
-        for (int id : list0) {
+        auto sum{0};
+        for (const auto& pair : pairs) {
+            int id = pair[0];
             sum += id * counts[id];
         }
 
