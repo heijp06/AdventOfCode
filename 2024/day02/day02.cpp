@@ -16,8 +16,27 @@ namespace day02 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        auto number_safe{0};
+
+		for (const auto& row : rows) {
+			const auto& report = advent::ints(row);
+			if (is_safe(report)) {
+				number_safe++;
+                continue;
+			}
+
+            for (size_t i = 0; i < report.size(); i++) {
+				auto dampened = report;
+				auto it = dampened.begin() + i;
+				dampened.erase(it);
+				if (is_safe(dampened)) {
+					number_safe++;
+					break;
+				}
+            }
+		}
+
+        return number_safe;
     }
 
     int is_safe(const std::vector<int>& report) {
