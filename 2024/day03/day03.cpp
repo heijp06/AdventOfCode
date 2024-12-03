@@ -17,9 +17,8 @@ namespace day03 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-		auto result{0};
-
 		std::string line;
+
 		for (const auto& row : rows) {
 			line += row;
 			line += " ";
