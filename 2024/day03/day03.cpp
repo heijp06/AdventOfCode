@@ -1,5 +1,4 @@
 #include <regex>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -8,8 +7,13 @@
 
 namespace day03 {
     int part1(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+		auto result{0};
+
+		for (const auto& row : rows) {
+			result += mul(row);
+		}
+
+        return result;
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -19,18 +23,14 @@ namespace day03 {
 
     int mul(const std::string& row) {
         auto result{0};
-		std::regex int_regex{R"(mul(\d+,\d+)"};
+		std::regex int_regex{R"---(mul\(\d{1,3},\d{1,3}\))---"};
 		const auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
 		const auto& end = std::sregex_iterator();
 
 		for (auto it = begin; it != end; ++it) {
-			int value;
 			const auto& match = *it;
             auto ints = advent::ints(match.str());
             result += ints[0] * ints[1];
-   //         std::istringstream rs{match.str()};
-   //         rs >> value;
-			//result.push_back(value);
 		}
 
 		return result;
