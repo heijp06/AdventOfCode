@@ -25,19 +25,33 @@ namespace day03 {
 			line += " ";
 		}
 
-        return -1;
+		return mul(line, false);
     }
 
-    int mul(const std::string& row) {
+    int mul(const std::string& row, bool part1) {
         auto result{0};
-		std::regex int_regex{R"---(mul\(\d{1,3},\d{1,3}\))---"};
+		std::regex int_regex{R"---(do(n't)?|mul\(\d{1,3},\d{1,3}\))---"};
 		const auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
 		const auto& end = std::sregex_iterator();
+		auto add{true};
 
 		for (auto it = begin; it != end; ++it) {
 			const auto& match = *it;
-            auto ints = advent::ints(match.str());
-            result += ints[0] * ints[1];
+
+			if (match.str() == "do") {
+				add = true;
+				continue;
+			}
+
+			if (match.str() == "don't") {
+				add = false;
+				continue;
+			}
+
+			if (part1 || add) {
+				auto ints = advent::ints(match.str());
+				result += ints[0] * ints[1];
+			}
 		}
 
 		return result;
