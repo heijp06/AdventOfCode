@@ -2,12 +2,78 @@
 
 namespace day04 {
     int part1(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        xmas_counter counter;
+        int width = rows.at(0).size();
+        int height = rows.size();
+
+        for (int row = 0; row < height; row++) {
+            const auto& line = rows.at(row);
+            for (int column = 0; column < width; column++) {
+                counter.add_char(line.at(column));
+            }
+            counter.new_line();
+        }
+
+        for (int row = 0; row < height; row++) {
+            const auto& line = rows.at(row);
+            for (int column = width - 1; column >= 0; column--) {
+                counter.add_char(line.at(column));
+            }
+            counter.new_line();
+        }
+
+        for (int column = 0; column < width; column++) {
+            for (int row = 0; row < height; row++) {
+                const auto& line = rows.at(row);
+                counter.add_char(line.at(column));
+            }
+            counter.new_line();
+        }
+
+        for (int column = 0; column < width; column++) {
+            for (int row = height - 1; row >= 0; row--) {
+                const auto& line = rows.at(row);
+                counter.add_char(line.at(column));
+            }
+            counter.new_line();
+        }
+
+        return counter.get_count();
     }
 
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    xmas_counter::xmas_counter() : current_{}, count_{0} {
+    }
+
+    void xmas_counter::add_char(const char c) {
+        switch (c) {
+        case 'X':
+            current_ = "X";
+            break;
+        case 'M':
+            current_ == "X" ? current_ = "XM" : current_ = "";
+            break;
+        case 'A':
+            current_ == "XM" ? current_ = "XMA" : current_ = "";
+            break;
+        case 'S':
+            if (current_ == "XMA") {
+                count_++;
+            }
+            current_ = "";
+            break;
+        }
+    }
+
+    void xmas_counter::new_line() {
+        current_ = "";
+    }
+
+    int xmas_counter::get_count() {
+        return count_;
     }
 }
