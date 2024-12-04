@@ -38,6 +38,50 @@ namespace day04 {
             counter.new_line();
         }
 
+        for (int column_plus_row = 0; column_plus_row < width + height - 1; column_plus_row++) {
+            for (int column = 0; column < width; column++) {
+                int row = column_plus_row - column;
+                if (row >= 0 && row < height) {
+                    const auto& line = rows.at(row);
+                    counter.add_char(line.at(column));
+                }
+            }
+            counter.new_line();
+        }
+
+        for (int column_plus_row = 0; column_plus_row < width + height - 1; column_plus_row++) {
+            for (int column = width - 1; column >= 0; column--) {
+                int row = column_plus_row - column;
+                if (row >= 0 && row < height) {
+                    const auto& line = rows.at(row);
+                    counter.add_char(line.at(column));
+                }
+            }
+            counter.new_line();
+        }
+
+        for (int column_min_row = 1 - height; column_min_row < width; column_min_row++) {
+            for (int column = 0; column < width; column++) {
+                int row = column - column_min_row;
+                if (row >= 0 && row < height) {
+                    const auto& line = rows.at(row);
+                    counter.add_char(line.at(column));
+                }
+            }
+            counter.new_line();
+        }
+
+        for (int column_min_row = 1 - height; column_min_row < width; column_min_row++) {
+            for (int column = width - 1; column >= 0; column--) {
+                int row = column - column_min_row;
+                if (row >= 0 && row < height) {
+                    const auto& line = rows.at(row);
+                    counter.add_char(line.at(column));
+                }
+            }
+            counter.new_line();
+        }
+
         return counter.get_count();
     }
 
