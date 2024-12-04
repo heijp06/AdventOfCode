@@ -7,6 +7,8 @@ namespace day04 {
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
+    bool check_char(const std::vector<std::string>& rows, char c, int row, int column);
+
     class xmas_counter {
     public:
         xmas_counter();
