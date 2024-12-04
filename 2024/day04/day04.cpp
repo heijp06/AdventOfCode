@@ -93,10 +93,10 @@ namespace day04 {
 		for (int row = 1; row < height - 1; row++) {
 			for (int column = 1; column < width - 1; column++) {
 				if (check_char(rows, 'A', row, column)) {
-					if (check_char(rows, 'M', row - 1, column - 1) && check_char(rows, 'S', row + 1, column + 1) ||
-						check_char(rows, 'S', row - 1, column - 1) && check_char(rows, 'M', row + 1, column + 1)) {
-						if (check_char(rows, 'M', row - 1, column + 1) && check_char(rows, 'S', row + 1, column - 1) ||
-							check_char(rows, 'S', row - 1, column + 1) && check_char(rows, 'M', row + 1, column - 1)) {
+					if ((check_char(rows, 'M', row - 1, column - 1) && check_char(rows, 'S', row + 1, column + 1)) ||
+						(check_char(rows, 'S', row - 1, column - 1) && check_char(rows, 'M', row + 1, column + 1))) {
+						if ((check_char(rows, 'M', row - 1, column + 1) && check_char(rows, 'S', row + 1, column - 1)) ||
+							(check_char(rows, 'S', row - 1, column + 1) && check_char(rows, 'M', row + 1, column - 1))) {
 							count++;
 						}
 					}
