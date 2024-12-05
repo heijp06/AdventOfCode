@@ -35,10 +35,12 @@ namespace day05 {
                     break;
                 }
             }
-            // TODO
+            if (correct) {
+                result += update.at(update.size() / 2);
+            }
 		}
 
-        return -1;
+        return result;
     }
 
     int part2(const std::vector<std::string>& rows) {
