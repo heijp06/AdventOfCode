@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "day05.h"
 #include "../../lib/advent.h"
 
@@ -40,9 +42,7 @@ namespace day05 {
                 for (size_t i = 0; i < update.size() - 1; i++) {
                     const auto& pair = std::make_pair(update[i + 1], update[i]);
                     if (rules.count(pair)) {
-                        auto temp = update[i + 1];
-                        update[i + 1] = update[i];
-                        update[i] = temp;
+                        std::swap(update[i], update[i + 1]);
                         stop = false;
                     }
                 }
