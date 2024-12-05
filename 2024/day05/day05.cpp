@@ -27,9 +27,32 @@ namespace day05 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        std::set<std::pair<int, int>> rules;
+        std::vector<std::vector<int>> updates;
+
+        parse(rows, rules, updates);
+
+        auto result{0};
+        for (auto& update : updates) {
+            auto stop{false};
+            while (!stop) {
+                stop = true;
+                for (size_t i = 0; i < update.size() - 1; i++) {
+                    const auto& pair = std::make_pair(update[i + 1], update[i]);
+                    if (rules.count(pair)) {
+                        auto temp = update[i + 1];
+                        update[i + 1] = update[i];
+                        update[i] = temp;
+                        stop = false;
+                    }
+                }
+            }
+            result += update.at(update.size() / 2);
+        }
+
+        return result - part1(rows);
     }
+
     void parse(const std::vector<std::string>& rows, std::set<std::pair<int, int>>& rules, std::vector<std::vector<int>>& updates) {
         auto parse_rules{true};
 
