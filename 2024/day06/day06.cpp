@@ -43,9 +43,9 @@ namespace day06 {
     lab::lab(const coord& size, coord& guard, const std::set<coord>& obstacles) :
         size_{size},
         guard_{guard},
-        direction_{0, -1},
+        direction_{-1, 0},
         obstacles_{obstacles},
-        seen_{{guard}} {
+        seen_{} {
     }
 
     bool lab::guard_left() const {
