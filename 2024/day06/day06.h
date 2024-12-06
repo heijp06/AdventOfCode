@@ -38,6 +38,7 @@ namespace day06 {
         bool guard_is_looping() const;
         int height() const;
         int width() const;
+        void set_part2();
     private:
         const coord size_;
         coord guard_;
@@ -46,6 +47,7 @@ namespace day06 {
         std::set<coord> seen_;
         std::set<std::pair<coord, coord>> seen_and_same_direction_;
         bool loop_;
+        bool part2_;
     };
 
     lab parse(const std::vector<std::string>& rows);

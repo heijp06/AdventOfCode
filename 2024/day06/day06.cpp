@@ -22,6 +22,7 @@ namespace day06 {
                 }
 
                 auto new_lab = lab;
+                new_lab.set_part2();
                 new_lab.add_obstacle({row, column});
 
                 while (!new_lab.guard_is_looping() && !new_lab.guard_left()) {
@@ -66,7 +67,8 @@ namespace day06 {
         obstacles_{obstacles},
         seen_{},
         seen_and_same_direction_{},
-        loop_{false} {
+        loop_{false},
+        part2_{false} {
     }
 
     bool lab::guard_left() const {
@@ -75,12 +77,18 @@ namespace day06 {
     }
 
     void lab::move_guard() {
-        seen_.insert(guard_);
-        loop_ = !seen_and_same_direction_.insert(std::make_pair(guard_, direction_)).second;
+        if (!part2_) {
+            seen_.insert(guard_);
+        }
         auto new_position = guard_ + direction_;
+        auto direction_changed{false};
         while (obstacles_.count(new_position)) {
             direction_ = direction_.turn_right();
             new_position = guard_ + direction_;
+            direction_changed = true;
+        }
+        if (direction_changed) {
+            loop_ = !seen_and_same_direction_.insert(std::make_pair(guard_, direction_)).second;
         }
         guard_ = new_position;
     }
@@ -107,5 +115,9 @@ namespace day06 {
 
     int lab::width() const {
         return size_.column;
+    }
+
+    void lab::set_part2() {
+        part2_ = true;
     }
 }
