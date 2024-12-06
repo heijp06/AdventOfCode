@@ -2,7 +2,7 @@
 
 namespace day06 {
     int part1(const std::vector<std::string>& rows) {
-        auto& lab = parse(rows);
+        auto lab = parse(rows);
 
         while (!lab.guard_left()) {
             lab.move_guard();
