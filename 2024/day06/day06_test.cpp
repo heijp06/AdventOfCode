@@ -4,8 +4,19 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> rows;
+std::vector<std::string> rows{
+    "....#.....",
+    ".........#",
+    "..........",
+    "..#.......",
+    ".......#..",
+    "..........",
+    ".#..^.....",
+    "........#.",
+    "#.........",
+    "......#...",
+};
 
 TEST_CASE("part1") {
-    REQUIRE(day06::part1(rows) == -1);
+    REQUIRE(day06::part1(rows) == 41);
 }
