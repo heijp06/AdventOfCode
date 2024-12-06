@@ -1,8 +1,8 @@
-#include "../../lib/catch.hpp"
-#include "day06.h"
-
 #include <string>
 #include <vector>
+
+#include "../../lib/catch.hpp"
+#include "day06.h"
 
 std::vector<std::string> rows{
     "....#.....",
