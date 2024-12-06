@@ -16,6 +16,9 @@ namespace day06 {
 
         coord turn_right() { return {column, -row}; }
 
+        friend bool operator==(const coord& l, const coord& r) {
+            return l.row == r.row && l.column == r.column;
+        }
         friend bool operator<(const coord& l, const coord& r) {
             return l.row == r.row ? l.column < r.column : l.row < r.row;
         }
@@ -34,6 +37,8 @@ namespace day06 {
         void add_obstacle(const coord& where);
         void remove_obstacle(const coord& where);
         bool guard_is_looping() const;
+        int height() const;
+        int width() const;
     private:
         const coord size_;
         coord guard_;
