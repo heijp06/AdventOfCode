@@ -40,7 +40,7 @@ namespace day06 {
         return lab(coord{height, width}, guard, obstacles);
     }
 
-    lab::lab(const coord& size, coord& guard, const std::set<coord>& obstacles) :
+    lab::lab(const coord& size, coord& guard, std::set<coord>& obstacles) :
         size_{size},
         guard_{guard},
         direction_{-1, 0},
@@ -69,5 +69,13 @@ namespace day06 {
 
     const coord& lab::guard() const {
         return guard_;
+    }
+
+    void lab::add_obstacle(const coord& where) {
+        obstacles_.insert(where);
+    }
+
+    void lab::remove_obstacle(const coord& where) {
+        obstacles_.erase(where);
     }
 }

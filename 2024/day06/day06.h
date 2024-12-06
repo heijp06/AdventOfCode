@@ -25,16 +25,18 @@ namespace day06 {
 
     class lab {
     public:
-        lab(const coord& size, coord& guard, const std::set<coord>& obstacles);
+        lab(const coord& size, coord& guard, std::set<coord>& obstacles);
         bool guard_left() const;
         void move_guard();
         int visited() const;
         const coord& guard() const;
+        void add_obstacle(const coord& where);
+        void remove_obstacle(const coord& where);
     private:
         const coord size_;
         coord guard_;
         coord direction_;
-        const std::set<coord> obstacles_;
+        std::set<coord> obstacles_;
         std::set<coord> seen_;
     };
 
