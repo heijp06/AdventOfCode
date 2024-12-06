@@ -35,7 +35,6 @@ namespace day06 {
         int visited() const;
         const coord& position_of_guard() const;
         void add_obstacle(const coord& where);
-        void remove_obstacle(const coord& where);
         bool guard_is_looping() const;
         int height() const;
         int width() const;

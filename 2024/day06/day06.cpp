@@ -97,10 +97,6 @@ namespace day06 {
         obstacles_.insert(where);
     }
 
-    void lab::remove_obstacle(const coord& where) {
-        obstacles_.erase(where);
-    }
-
     bool lab::guard_is_looping() const {
         return loop_;
     }
