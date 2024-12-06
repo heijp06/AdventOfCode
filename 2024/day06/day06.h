@@ -39,6 +39,7 @@ namespace day06 {
         int height() const;
         int width() const;
         void set_part2();
+        std::set<coord> get_seen() const;
     private:
         const coord size_;
         coord guard_;

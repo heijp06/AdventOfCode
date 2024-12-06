@@ -12,25 +12,31 @@ namespace day06 {
     }
 
     int part2(const std::vector<std::string>& rows) {
+        auto lab0 = parse(rows);
+
+        while (!lab0.guard_left()) {
+            lab0.move_guard();
+        }
+
+        const auto& seen = lab0.get_seen();
+
         const auto& lab = parse(rows);
         auto result{0};
 
-        for (int row = 0; row < lab.height(); row++) {
-            for (int column = 0; column < lab.width(); column++) {
-                if (coord{row, column} == lab.position_of_guard()) {
-                    continue;
-                }
-
-                auto new_lab = lab;
-                new_lab.set_part2();
-                new_lab.add_obstacle({row, column});
-
-                while (!new_lab.guard_is_looping() && !new_lab.guard_left()) {
-                    new_lab.move_guard();
-                }
-
-                result += new_lab.guard_is_looping();
+        for (const auto& c : seen) {
+            if (c == lab.position_of_guard()) {
+                continue;
             }
+
+            auto new_lab = lab;
+            new_lab.set_part2();
+            new_lab.add_obstacle(c);
+
+            while (!new_lab.guard_is_looping() && !new_lab.guard_left()) {
+                new_lab.move_guard();
+            }
+
+            result += new_lab.guard_is_looping();
         }
 
         return result;
@@ -119,5 +125,9 @@ namespace day06 {
 
     void lab::set_part2() {
         part2_ = true;
+    }
+
+    std::set<coord> lab::get_seen() const {
+        return seen_;
     }
 }
