@@ -12,7 +12,7 @@ namespace day06 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        auto& lab = parse(rows);
+        const auto& lab = parse(rows);
         auto result{0};
 
         for (int row = 0; row < lab.height(); row++) {
