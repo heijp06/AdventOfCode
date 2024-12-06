@@ -29,6 +29,7 @@ namespace day06 {
         bool guard_left() const;
         void move_guard();
         int visited() const;
+        const coord& guard() const;
     private:
         const coord size_;
         coord guard_;

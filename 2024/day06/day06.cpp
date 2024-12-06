@@ -66,4 +66,8 @@ namespace day06 {
     int lab::visited() const {
         return seen_.size();
     }
+
+    const coord& lab::guard() const {
+        return guard_;
+    }
 }
