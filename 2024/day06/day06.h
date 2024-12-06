@@ -20,11 +20,13 @@ namespace day06 {
     class lab {
     public:
         lab(const coord& size, coord& guard, const std::set<coord>& obstacles);
+        bool guard_left() const;
     private:
         const coord size_;
         coord guard_;
         coord direction_;
         const std::set<coord> obstacles_;
+        std::set<coord> seen_;
     };
 
     lab parse(const std::vector<std::string>& rows);

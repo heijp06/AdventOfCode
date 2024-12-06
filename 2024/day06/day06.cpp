@@ -4,6 +4,9 @@ namespace day06 {
     int part1(const std::vector<std::string>& rows) {
         auto& lab = parse(rows);
 
+        while (!lab.guard_left()) {
+        }
+
         return -1;
     }
 
@@ -40,6 +43,12 @@ namespace day06 {
         size_{size},
         guard_{guard},
         direction_{0, -1},
-        obstacles_{obstacles} {
+        obstacles_{obstacles},
+        seen_{{guard}} {
+    }
+
+    bool lab::guard_left() const {
+        return guard_.row < 0 || guard_.row >= size_.row
+            || guard_.column < 0 || guard_.column >= size_.column;
     }
 }
