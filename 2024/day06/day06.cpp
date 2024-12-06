@@ -57,6 +57,7 @@ namespace day06 {
 
     void lab::move_guard() {
         seen_.insert(guard_);
+        loop_ = !seen_and_same_direction_.insert(std::make_pair(guard_, direction_)).second;
         auto new_position = guard_ + direction_;
         while (obstacles_.count(new_position)) {
             direction_ = direction_.turn_right();
