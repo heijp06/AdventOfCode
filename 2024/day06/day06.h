@@ -2,6 +2,7 @@
 
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 #include <iostream>
 
@@ -29,15 +30,18 @@ namespace day06 {
         bool guard_left() const;
         void move_guard();
         int visited() const;
-        const coord& guard() const;
+        const coord& position_of_guard() const;
         void add_obstacle(const coord& where);
         void remove_obstacle(const coord& where);
+        bool guard_is_looping() const;
     private:
         const coord size_;
         coord guard_;
         coord direction_;
         std::set<coord> obstacles_;
         std::set<coord> seen_;
+        std::set<std::pair<coord, coord>> seen_and_same_direction_;
+        bool loop_;
     };
 
     lab parse(const std::vector<std::string>& rows);

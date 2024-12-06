@@ -45,7 +45,9 @@ namespace day06 {
         guard_{guard},
         direction_{-1, 0},
         obstacles_{obstacles},
-        seen_{} {
+        seen_{},
+        seen_and_same_direction_{},
+        loop_{false} {
     }
 
     bool lab::guard_left() const {
@@ -67,7 +69,7 @@ namespace day06 {
         return seen_.size();
     }
 
-    const coord& lab::guard() const {
+    const coord& lab::position_of_guard() const {
         return guard_;
     }
 
@@ -77,5 +79,9 @@ namespace day06 {
 
     void lab::remove_obstacle(const coord& where) {
         obstacles_.erase(where);
+    }
+
+    bool lab::guard_is_looping() const {
+        return loop_;
     }
 }
