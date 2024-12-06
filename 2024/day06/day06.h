@@ -12,8 +12,14 @@ namespace day06 {
     struct coord {
         int row;
         int column;
+
+        coord turn_right() { return {column, -row}; }
+
         friend bool operator<(const coord& l, const coord& r) {
             return l.row == r.row ? l.column < r.column : l.row < r.row;
+        }
+        friend coord operator+(const coord& l, const coord& r) {
+            return {l.row + r.row, l.column + r.column};
         }
     };
 
@@ -21,6 +27,8 @@ namespace day06 {
     public:
         lab(const coord& size, coord& guard, const std::set<coord>& obstacles);
         bool guard_left() const;
+        void move_guard();
+        int visited() const;
     private:
         const coord size_;
         coord guard_;

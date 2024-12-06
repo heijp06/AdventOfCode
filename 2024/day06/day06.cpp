@@ -5,9 +5,10 @@ namespace day06 {
         auto& lab = parse(rows);
 
         while (!lab.guard_left()) {
+            lab.move_guard();
         }
 
-        return -1;
+        return lab.visited();
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -50,5 +51,19 @@ namespace day06 {
     bool lab::guard_left() const {
         return guard_.row < 0 || guard_.row >= size_.row
             || guard_.column < 0 || guard_.column >= size_.column;
+    }
+
+    void lab::move_guard() {
+        seen_.insert(guard_);
+        auto new_position = guard_ + direction_;
+        while (obstacles_.count(new_position)) {
+            direction_ = direction_.turn_right();
+            new_position = guard_ + direction_;
+        }
+        guard_ = new_position;
+    }
+
+    int lab::visited() const {
+        return seen_.size();
     }
 }
