@@ -1,8 +1,8 @@
-#include "../../lib/catch.hpp"
-#include "day__NN__.h"
-
 #include <string>
 #include <vector>
+
+#include "../../lib/catch.hpp"
+#include "day__NN__.h"
 
 std::vector<std::string> rows;
 
