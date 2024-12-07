@@ -9,6 +9,11 @@ struct test_data_ints {
     std::vector<int> ints;
 };
 
+struct test_data_longs {
+    std::string row;
+    std::vector<int64_t> ints;
+};
+
 TEST_CASE("changes") {
     const auto& item = GENERATE(
         test_data_ints{"", {}},
@@ -21,6 +26,23 @@ TEST_CASE("changes") {
     );
 
     const std::vector<int>& actual = advent::ints(item.row);
+
+    REQUIRE(actual == item.ints);
+}
+
+TEST_CASE("longs") {
+    const auto& item = GENERATE(
+        test_data_longs{"", {}},
+        test_data_longs{"10000000000", {10000000000}},
+        test_data_longs{"+10000000000", {10000000000}},
+        test_data_longs{"0", {0}},
+        test_data_longs{"-10000000000", {-10000000000}},
+        test_data_longs{"-1", {-1}},
+        test_data_longs{"-1,0,1", {-1, 0, 1}},
+        test_data_longs{"asd12asd+12,,-4,assd--ad-+f+5  0 1 2", {12, 12, -4, 5, 0, 1, 2}}
+    );
+
+    const std::vector<int64_t>& actual = advent::longs(item.row);
 
     REQUIRE(actual == item.ints);
 }
