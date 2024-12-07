@@ -10,7 +10,7 @@ namespace day07 {
         int64_t result{0};
 
         for (const auto& row : rows) {
-            const auto& equation = advent::longs(row);
+            const auto& equation = advent::ints<int64_t>(row);
             if (solve(equation)) {
                 result += equation[0];
             }
@@ -23,7 +23,7 @@ namespace day07 {
         int64_t result{0};
 
         for (const auto& row : rows) {
-            const auto& equation = advent::longs(row);
+            const auto& equation = advent::ints<int64_t>(row);
             if (solve(equation, true)) {
                 result += equation[0];
             }

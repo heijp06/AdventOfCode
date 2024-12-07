@@ -42,7 +42,7 @@ TEST_CASE("longs") {
         test_data_longs{"asd12asd+12,,-4,assd--ad-+f+5  0 1 2", {12, 12, -4, 5, 0, 1, 2}}
     );
 
-    const std::vector<int64_t>& actual = advent::longs(item.row);
+    const std::vector<int64_t>& actual = advent::ints<int64_t>(item.row);
 
     REQUIRE(actual == item.ints);
 }

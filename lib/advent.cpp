@@ -50,36 +50,6 @@ namespace advent {
 
 	// Get all the integers from a string.
 	std::vector<int> ints(const std::string& row) {
-		std::vector<int> result{};
-		std::regex int_regex{R"([+-]?\d+)"};
-		const auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
-		const auto& end = std::sregex_iterator();
-
-		for (auto it = begin; it != end; ++it) {
-			int value;
-			const auto& match = *it;
-            std::istringstream rs{match.str()};
-            rs >> value;
-			result.push_back(value);
-		}
-
-		return result;
-	}
-
-	std::vector<int64_t> longs(const std::string& row) {
-		std::vector<int64_t> result{};
-		std::regex int_regex{R"([+-]?\d+)"};
-		const auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
-		const auto& end = std::sregex_iterator();
-
-		for (auto it = begin; it != end; ++it) {
-			int64_t value;
-			const auto& match = *it;
-            std::istringstream rs{match.str()};
-            rs >> value;
-			result.push_back(value);
-		}
-
-		return result;
+		return ints<int>(row);
 	}
 }
