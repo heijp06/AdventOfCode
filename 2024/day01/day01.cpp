@@ -40,7 +40,7 @@ namespace day01 {
 
     std::vector<std::vector<int>> get_pairs(const std::vector<std::string>& rows) {
         std::vector<std::vector<int>> pairs;
-        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints);
+        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(pairs), advent::ints<int>);
 
         return pairs;
     }
