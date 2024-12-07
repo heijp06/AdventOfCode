@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <cmath>
 #include <set>
 
@@ -55,7 +54,7 @@ namespace day07 {
                     }
                 }
             }
-            std::swap(sums, new_sums);
+            sums = new_sums;
         }
 
         return std::find(sums.cbegin(), sums.cend(), sum) != sums.cend();
