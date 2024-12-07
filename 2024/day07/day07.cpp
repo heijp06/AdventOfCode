@@ -48,7 +48,7 @@ namespace day07 {
                     new_sums.push_back(result);
                 }
                 if (part2) {
-                    result = item == 0 ? value : concatenate(item, value);
+                    result = concatenate(item, value);
                     if (result <= sum) {
                         new_sums.push_back(result);
                     }
