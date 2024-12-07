@@ -35,7 +35,7 @@ namespace day07 {
         int64_t sum = equation[0];
         auto sums = std::set<int64_t>{0};
 
-        for (int i = 1; i < equation.size(); i++) {
+        for (int i = 1; i < static_cast<int>(equation.size()); i++) {
             const int64_t value = equation[i];
             std::set<int64_t> new_sums;
             for (const auto item : sums) {
