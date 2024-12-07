@@ -41,3 +41,8 @@ TEST_CASE("concatenate") {
 
     REQUIRE(day07::concatenate(item.left, item.right) == item.result);
 }
+
+TEST_CASE("do_not_multiply_by_zero") {
+    // Previous code used an initial value of 0 and then used that in multiplication which is wrong.
+    REQUIRE_FALSE(day07::solve({0, 1}));
+}

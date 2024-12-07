@@ -34,9 +34,9 @@ namespace day07 {
 
     bool solve(const std::vector<int64_t>& equation, bool part2) {
         int64_t sum = equation[0];
-        auto sums = std::vector<int64_t>{0};
+        auto sums = std::vector<int64_t>{equation[1]};
 
-        for (int i = 1; i < static_cast<int>(equation.size()); i++) {
+        for (int i = 2; i < static_cast<int>(equation.size()); i++) {
             const int64_t value = equation[i];
             std::vector<int64_t> new_sums;
             for (const auto item : sums) {
