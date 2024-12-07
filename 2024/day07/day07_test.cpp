@@ -4,6 +4,12 @@
 #include "../../lib/catch.hpp"
 #include "day07.h"
 
+struct test_data {
+    int64_t left;
+    int64_t right;
+    int64_t result;
+};
+
 std::vector<std::string> rows{
     "190: 10 19",
     "3267: 81 40 27",
@@ -18,4 +24,20 @@ std::vector<std::string> rows{
 
 TEST_CASE("part1") {
     REQUIRE(day07::part1(rows) == 3749);
+}
+
+TEST_CASE("part2") {
+    REQUIRE(day07::part2(rows) == 11387);
+}
+
+TEST_CASE("concatenate") {
+    const auto& item = GENERATE(
+        test_data{1, 2, 12},
+        test_data{9, 2, 92},
+        test_data{10, 2, 102},
+        test_data{11, 2, 112},
+        test_data{95914368903131, 128, 95914368903131128}
+    );
+
+    REQUIRE(day07::concatenate(item.left, item.right) == item.result);
 }
