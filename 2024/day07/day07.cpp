@@ -61,7 +61,7 @@ namespace day07 {
     }
 
     int64_t concatenate(const int64_t left, const int64_t right) {
-        int exponent = std::log10(right);
-        return static_cast<int>(std::pow(10, exponent + 1)) * left + right;
+        int exponent = std::log10(right) + 1;
+        return static_cast<int>(std::pow(10, exponent)) * left + right;
     }
 }
