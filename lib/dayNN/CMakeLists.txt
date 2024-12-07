@@ -49,4 +49,8 @@ endif()
 
 # Run the tests on every build
 add_custom_target(test_${year}_${day} ALL DEPENDS ${year}_${day}_test COMMAND ${year}_${day}_test)
-add_custom_target(main_${year}_${day} ALL DEPENDS ${year}_${day} COMMAND ${year}_${day})
+
+# Do not run the main executables in GitHub CI because the data directory is not filled.
+if (NOT DEFINED ENV{CI})
+    add_custom_target(main_${year}_${day} ALL DEPENDS ${year}_${day} COMMAND ${year}_${day})
+endif()
