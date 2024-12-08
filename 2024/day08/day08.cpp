@@ -67,7 +67,6 @@ namespace day08 {
             for (int column = 0; column < width; column++) {
                 auto antenna = line[column];
                 if (antenna != '.') {
-                    const auto& locations = antennas[antenna];
                     antennas[antenna].push_back({row, column});
                 }
             }
