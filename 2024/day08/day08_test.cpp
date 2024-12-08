@@ -4,8 +4,21 @@
 #include "../../lib/catch.hpp"
 #include "day08.h"
 
-std::vector<std::string> rows;
+std::vector<std::string> rows{
+    "............",
+    "........0...",
+    ".....0......",
+    ".......0....",
+    "....0.......",
+    "......A.....",
+    "............",
+    "............",
+    "........A...",
+    ".........A..",
+    "............",
+    "............"
+};
 
 TEST_CASE("part1") {
-    REQUIRE(day08::part1(rows) == -1);
+    REQUIRE(day08::part1(rows) == 14);
 }
