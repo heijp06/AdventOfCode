@@ -30,8 +30,31 @@ namespace day08 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        const auto& grid = parse(rows);
+        std::set<coord> antinodes;
+
+        for (auto const& [_, frequencies] : grid.get_antennas()) {
+            for (size_t i = 0; i < frequencies.size() - 1; i++) {
+                const auto& frequency1 = frequencies[i];
+                for (size_t j = i + 1; j < frequencies.size(); j++) {
+                    const auto& frequency2 = frequencies[j];
+                    const auto& delta = frequency2 - frequency1;
+                    auto antinode = frequency1;
+                    while (antinode.row >= 0 && antinode.row < grid.get_height() && antinode.column >= 0 && antinode.column < grid.get_width()) {
+                        antinodes.insert(antinode);
+                        antinode = antinode + delta;
+                    }
+                    antinode = frequency1;
+                    while (antinode.row >= 0 && antinode.row < grid.get_height() && antinode.column >= 0 && antinode.column < grid.get_width()) {
+                        antinodes.insert(antinode);
+                        antinode = antinode - delta;
+                    }
+                }
+
+            }
+        }
+
+        return antinodes.size();
     }
 
     const grid parse(std::vector<std::string> rows) {
