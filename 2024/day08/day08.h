@@ -11,6 +11,13 @@ namespace day08 {
     struct coord {
         int row;
         int column;
+
+        friend bool operator==(const coord& l, const coord& r) {
+            return l.row == r.row && l.column == r.column;
+        }
+        friend bool operator<(const coord& l, const coord& r) {
+            return l.row == r.row ? l.column < r.column : l.row < r.row;
+        }
     };
 
     using antennas_t = std::map<char, std::vector<coord>>;
@@ -20,11 +27,11 @@ namespace day08 {
         grid(const coord& size, const antennas_t& antennas);
         int get_height() const;
         int get_width() const;
-        const antennas_t get_antennas() const;
+        const antennas_t& get_antennas() const;
     private:
-        const coord& size_;
-        const antennas_t& antennas_;
+        const coord size_;
+        const antennas_t antennas_;
     };
 
-    grid parse(std::vector<std::string> rows);
+    const grid parse(std::vector<std::string> rows);
 }
