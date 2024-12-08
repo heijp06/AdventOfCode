@@ -18,6 +18,12 @@ namespace day08 {
         friend bool operator<(const coord& l, const coord& r) {
             return l.row == r.row ? l.column < r.column : l.row < r.row;
         }
+        friend coord operator+(const coord& l, const coord& r) {
+            return {l.row + r.row, l.column + r.column};
+        }
+        friend coord operator-(const coord& l, const coord& r) {
+            return {l.row - r.row, l.column - r.column};
+        }
     };
 
     using antennas_t = std::map<char, std::vector<coord>>;

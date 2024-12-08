@@ -12,10 +12,14 @@ namespace day08 {
                 const auto& frequency1 = frequencies[i];
                 for (size_t j = i + 1; j < frequencies.size(); j++) {
                     const auto& frequency2 = frequencies[j];
-                    const auto& delta = coord{frequency2.row - frequency1.row, frequency2.column - frequency1.column};
-                    const auto& antinode = coord{frequency1.row - delta.row, frequency1.column - delta.column};
-                    if (antinode.row >= 0 && antinode.row < grid.get_height() && antinode.column >= 0 && antinode.column < grid.get_width()) {
-                        antinodes.insert(antinode);
+                    const auto& delta = frequency2 - frequency1;
+                    const auto& antinode1 = frequency1 - delta;
+                    if (antinode1.row >= 0 && antinode1.row < grid.get_height() && antinode1.column >= 0 && antinode1.column < grid.get_width()) {
+                        antinodes.insert(antinode1);
+                    }
+                    const auto& antinode2 = frequency2 + delta;
+                    if (antinode2.row >= 0 && antinode2.row < grid.get_height() && antinode2.column >= 0 && antinode2.column < grid.get_width()) {
+                        antinodes.insert(antinode2);
                     }
                 }
 
