@@ -22,7 +22,9 @@ namespace day09 {
     }
 
     compactor::compactor(const std::string& disk_map) :
-        layout_{parse(disk_map)} {
+        layout_{parse(disk_map)},
+        front_{0, layout_[0]},
+        back_{static_cast<int>(layout_.size()), 0} {
     }
 
     int compactor::get_last_file_number() const {

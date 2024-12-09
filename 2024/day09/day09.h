@@ -16,6 +16,12 @@ namespace day09 {
         int get_file_length() const;
 
     private:
+        struct read_state {
+            int index;
+            int counter;
+        };
         std::vector<int> layout_;
+        read_state front_;
+        read_state back_;
     };
 }
