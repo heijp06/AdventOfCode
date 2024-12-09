@@ -11,7 +11,7 @@ namespace day09 {
         return -1;
     }
 
-    std::vector<int> parse(std::string parse) {
+    std::vector<int> parse(const std::string& parse) {
         std::vector<int> result;
 
         for (const auto c : parse) {
@@ -27,5 +27,16 @@ namespace day09 {
 
     int compactor::get_last_file_number() const {
         return static_cast<int>(layout_.size() / 2);
+    }
+
+    int compactor::get_file_length() const
+    {
+        auto length{0};
+
+        for (size_t i = 0; i < layout_.size(); i += 2) {
+            length += layout_[i];
+        }
+
+        return length;
     }
 }

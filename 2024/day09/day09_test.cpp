@@ -6,7 +6,7 @@
 
 struct test_data {
     std::string disk_map;
-    int last_file_number;
+    int value;
 };
 
 std::vector<std::string> rows = {
@@ -29,5 +29,16 @@ TEST_CASE("last file number") {
 
     const auto& compactor = day09::compactor(item.disk_map);
 
-    REQUIRE(compactor.get_last_file_number() == item.last_file_number);
+    REQUIRE(compactor.get_last_file_number() == item.value);
+}
+
+TEST_CASE("file_length") {
+    const auto& item = GENERATE(
+        test_data{"12345", 9},
+        test_data{rows[0], 28}
+    );
+
+    const auto& compactor = day09::compactor(item.disk_map);
+
+    REQUIRE(compactor.get_file_length() == item.value);
 }
