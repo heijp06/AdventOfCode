@@ -2,7 +2,14 @@
 
 namespace day09 {
     int part1(const std::vector<std::string>& rows) {
-        (void)rows;
+        auto checksum{0};
+        auto c = compactor{rows[0]};
+        auto length = c.get_file_length();
+
+        for (int i = 0; i < length; i++) {
+            checksum += i * c.read();
+        }
+
         return -1;
     }
 
@@ -22,9 +29,11 @@ namespace day09 {
     }
 
     compactor::compactor(const std::string& disk_map) :
-        layout_{parse(disk_map)},
-        front_{0, layout_[0]},
-        back_{static_cast<int>(layout_.size()), 0} {
+	    layout_{parse(disk_map)},
+	    front_{0, layout_[0]},
+	    back_{static_cast<int>(layout_.size()) - 1, layout_.back()},
+	    read_front_(true),
+        index_(0) {
     }
 
     int compactor::get_last_file_number() const {
@@ -40,5 +49,10 @@ namespace day09 {
         }
 
         return length;
+    }
+
+    int compactor::read()
+    {
+        return 9;
     }
 }

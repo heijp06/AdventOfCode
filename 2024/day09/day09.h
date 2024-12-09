@@ -14,6 +14,7 @@ namespace day09 {
         explicit compactor(const std::string& disk_map);
         int get_last_file_number() const;
         int get_file_length() const;
+        int read();
 
     private:
         struct read_state {
@@ -23,5 +24,7 @@ namespace day09 {
         std::vector<int> layout_;
         read_state front_;
         read_state back_;
+        bool read_front_;
+        int index_;
     };
 }
