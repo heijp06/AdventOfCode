@@ -7,7 +7,17 @@ namespace day09 {
     int64_t part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
-    std::vector<int> parse(const std::string& parse);
+    struct block {
+        int id;
+        int length;
+
+        friend bool operator==(const block& left, const block& right) {
+            return left.id == right.id && left.length == right.length;
+        }
+    };
+
+    std::vector<int> parse(const std::string& row);
+    std::vector<block> parse2(const std::string& row);
 
     class compactor {
     public:

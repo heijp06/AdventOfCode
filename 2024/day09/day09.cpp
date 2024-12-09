@@ -14,15 +14,28 @@ namespace day09 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
         return -1;
     }
 
-    std::vector<int> parse(const std::string& parse) {
+    std::vector<int> parse(const std::string& row) {
         std::vector<int> result;
 
-        for (const auto c : parse) {
+        for (const auto c : row) {
             result.push_back(c - '0');
+        }
+
+        return result;
+    }
+
+    std::vector<block> parse2(const std::string& row) {
+        std::vector<block> result;
+
+        for (int i = 0; i < row.size(); i++) {
+            auto length = row[i] - '0';
+            auto id = i % 2 ? -1 : i / 2;
+            if (length > 0) {
+                result.push_back({id, length});
+            }
         }
 
         return result;
