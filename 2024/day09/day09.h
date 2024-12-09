@@ -11,7 +11,7 @@ namespace day09 {
 
     class compactor {
     public:
-        compactor(const std::string& disk_map);
+        explicit compactor(const std::string& disk_map);
         int get_last_file_number() const;
         int get_file_length() const;
 
