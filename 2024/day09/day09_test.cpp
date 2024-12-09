@@ -75,3 +75,14 @@ TEST_CASE("parse2") {
 
     REQUIRE(actual == expected);
 }
+
+TEST_CASE("parse3") {
+    std::vector<int> expected = {
+        0, 0, -1, -1, -1, 1, 1, 1, -1, -1, -1, 2, -1, -1, -1, 3, 3, 3, -1, 4,
+        4, -1, 5, 5, 5, 5, -1, 6, 6, 6, 6, -1, 7, 7, 7, -1, 8, 8, 8, 8, 9, 9
+    };
+
+    const auto& actual = day09::parse3(rows[0]);
+
+    REQUIRE(actual == expected);
+}
