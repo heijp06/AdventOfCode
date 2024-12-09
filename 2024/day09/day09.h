@@ -4,7 +4,7 @@
 #include <vector>
 
 namespace day09 {
-    int part1(const std::vector<std::string>& rows);
+    int64_t part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
     std::vector<int> parse(const std::string& parse);

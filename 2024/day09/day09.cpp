@@ -1,12 +1,12 @@
 #include "day09.h"
 
 namespace day09 {
-    int part1(const std::vector<std::string>& rows) {
-        auto checksum{0};
+    int64_t part1(const std::vector<std::string>& rows) {
+        int64_t checksum{0};
         auto c = compactor{rows[0]};
         auto length = c.get_file_length();
 
-        for (int i = 0; i < length; i++) {
+        for (int64_t i = 0; i < length; i++) {
             checksum += i * c.read();
         }
 
