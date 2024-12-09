@@ -24,7 +24,7 @@ namespace day09 {
         std::vector<int> layout_;
         read_state front_;
         read_state back_;
-        bool read_front_;
         int index_;
+        int free_space_;
     };
 }

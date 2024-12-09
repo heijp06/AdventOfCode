@@ -10,7 +10,7 @@ namespace day09 {
             checksum += i * c.read();
         }
 
-        return -1;
+        return checksum;
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -32,8 +32,8 @@ namespace day09 {
 	    layout_{parse(disk_map)},
 	    front_{0, layout_[0]},
 	    back_{static_cast<int>(layout_.size()) - 1, layout_.back()},
-	    read_front_(true),
-        index_(0) {
+        index_(0),
+        free_space_{0} {
     }
 
     int compactor::get_last_file_number() const {
@@ -53,6 +53,34 @@ namespace day09 {
 
     int compactor::read()
     {
-        return 9;
+        auto result{0};
+
+        if (index_ % 2 == 0) {
+            result = front_.index / 2;
+            front_.counter--;
+            if (front_.counter == 0) {
+                front_.index += 2;
+                front_.counter = layout_[front_.index];
+                index_++;
+                free_space_ = layout_[index_];
+                if (free_space_ == 0) {
+                    index_++;
+                }
+            }
+        }
+        else {
+            result = back_.index / 2;
+            back_.counter--;
+            if (back_.counter == 0) {
+                back_.index -= 2;
+                back_.counter = layout_[back_.index];
+            }
+            free_space_--;
+            if (free_space_ == 0) {
+                index_++;
+            }
+        }
+
+        return result;
     }
 }
