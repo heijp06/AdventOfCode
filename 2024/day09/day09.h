@@ -36,4 +36,19 @@ namespace day09 {
         int index_;
         int free_space_;
     };
+
+    struct block2 {
+        int index;
+        int id;
+        int length;
+    };
+
+    struct free_space {
+        int index;
+        int length;
+
+        friend bool operator<(const free_space& left, const free_space& right) {
+            return left.index == right.index ? left.length < right.length : left.index < right.index;
+        }
+    };
 }
