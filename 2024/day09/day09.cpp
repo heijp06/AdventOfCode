@@ -13,8 +13,9 @@ namespace day09 {
         return checksum;
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
+    int64_t part2(const std::vector<std::string>& rows) {
+        auto data = parse2(rows[0]);
+
         return -1;
     }
 
@@ -79,6 +80,30 @@ namespace day09 {
             if (free_space_ == 0) {
                 index_++;
             }
+        }
+
+        return result;
+    }
+
+    part2_data parse2(const std::string& row) {
+        part2_data result {
+            std::vector<block2>{},
+			std::vector<queue_t>(10)
+        };
+
+        int index{0};
+        for (size_t i = 0; i < row.size(); i++) {
+			int length = row[i] - '0';
+            if (i % 2) {
+                if (length > 0) {
+					result.queues[length].push(index);
+                }
+            }
+            else {
+                auto id = static_cast<int>(i / 2);
+                result.blocks.push_back({index, id, length});
+            }
+            index += length;
         }
 
         return result;

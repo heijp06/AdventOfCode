@@ -22,6 +22,10 @@ TEST_CASE("part1") {
     REQUIRE(day09::part1(rows) == 1928);
 }
 
+TEST_CASE("part2") {
+    REQUIRE(day09::part2(rows) == 2858);
+}
+
 TEST_CASE("parse") {
     REQUIRE(day09::parse("12345") == std::vector<int>{1, 2, 3, 4, 5});
 }

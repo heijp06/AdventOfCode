@@ -1,11 +1,12 @@
 #pragma once
 
+#include <queue>
 #include <string>
 #include <vector>
 
 namespace day09 {
     int64_t part1(const std::vector<std::string>& rows);
-    int part2(const std::vector<std::string>& rows);
+    int64_t part2(const std::vector<std::string>& rows);
 
     struct block {
         int id;
@@ -43,12 +44,12 @@ namespace day09 {
         int length;
     };
 
-    struct free_space {
-        int index;
-        int length;
+    using queue_t = std::priority_queue<int, std::vector<int>, std::greater<>>;
 
-        friend bool operator<(const free_space& left, const free_space& right) {
-            return left.index == right.index ? left.length < right.length : left.index < right.index;
-        }
+    struct part2_data {
+        std::vector<block2> blocks;
+        std::vector<queue_t> queues;
     };
+
+    part2_data parse2(const std::string& row);
 }
