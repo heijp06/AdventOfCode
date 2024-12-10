@@ -28,34 +28,6 @@ namespace day09 {
         return result;
     }
 
-    std::vector<block> parse2(const std::string& row) {
-        std::vector<block> result;
-
-        for (int i = 0; i < row.size(); i++) {
-            auto length = row[i] - '0';
-            auto id = i % 2 ? -1 : i / 2;
-            if (length > 0) {
-                result.push_back({id, length});
-            }
-        }
-
-        return result;
-    }
-
-    std::vector<int> parse3(const std::string& row) {
-        std::vector<int> result;
-
-        for (int i = 0; i < row.size(); i++) {
-            auto length = row[i] - '0';
-            auto id = i % 2 ? -1 : i / 2;
-            for (int i = 0; i < length; i++) {
-                result.push_back(id);
-            }
-        }
-
-        return result;
-    }
-
     compactor::compactor(const std::string& disk_map) :
 	    layout_{parse(disk_map)},
 	    front_{0, layout_[0]},

@@ -17,8 +17,6 @@ namespace day09 {
     };
 
     std::vector<int> parse(const std::string& row);
-    std::vector<block> parse2(const std::string& row);
-    std::vector<int> parse3(const std::string& row);
 
     class compactor {
     public:
