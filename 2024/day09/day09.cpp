@@ -16,7 +16,36 @@ namespace day09 {
     int64_t part2(const std::vector<std::string>& rows) {
         auto data = parse2(rows[0]);
 
-        return -1;
+        for (auto it = data.blocks.rbegin(); it != data.blocks.rend(); ++it) {
+            auto& block = *it;
+            auto index{-1};
+            auto queue_index{-1};
+            for (auto i = block.length; i < 10; i++) {
+                auto& queue = data.queues[i];
+                if (!queue.empty() && (index < 0 || index < queue.top())) {
+                    index = queue.top();
+                    queue_index = i;
+                }
+            }
+            if (index >= 0) {
+                auto& queue = data.queues[queue_index];
+                queue.pop();
+                block.index = index;
+                if (queue_index > block.length) {
+                    data.queues[queue_index - block.length].push(index + block.length);
+                }
+            }
+        }
+
+        int64_t result{0};
+
+        for (const auto& block: data.blocks) {
+            for (int i = 0; i < block.length; i++) {
+                result += block.id * (block.index + i);
+            }
+        }
+
+        return result;
     }
 
     std::vector<int> parse(const std::string& row) {
