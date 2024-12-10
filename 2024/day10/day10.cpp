@@ -22,8 +22,8 @@ namespace day10 {
         return result;
     }
 
-    int64_t part2(const std::vector<std::string>& rows) {
-        int64_t result{};
+    int part2(const std::vector<std::string>& rows) {
+        int result{};
         int height = rows.size();
         int width = rows[0].size();
 
@@ -65,7 +65,7 @@ namespace day10 {
         return positions.size();
     }
 
-    int64_t rating(const std::vector<std::string>& rows, int height, int width, const advent::coord& coord)
+    int rating(const std::vector<std::string>& rows, int height, int width, const advent::coord& coord)
     {
         std::map<advent::coord, int> positions{{coord, 1}};
         std::vector<advent::coord> directions{ {1, 0}, {0, 1}, {-1, 0}, {0, -1} };
@@ -87,7 +87,7 @@ namespace day10 {
             positions = new_positions;
         }
 
-        int64_t result{};
+        int result{};
 
         for (const auto& [_, count]: positions)
         {
