@@ -14,7 +14,7 @@ namespace day09 {
     }
 
     // 10898720530938:  Too high.
-    // 8654184283366:   Too high.
+    // 8654184283366:   Not right.
     int64_t part2(const std::vector<std::string>& rows) {
         auto data = parse2(rows[0]);
 

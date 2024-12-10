@@ -23,7 +23,12 @@ TEST_CASE("part1") {
 }
 
 TEST_CASE("part2") {
-    REQUIRE(day09::part2(rows) == 2858);
+    const auto& item = GENERATE(
+        test_data{ rows[0], 2858 },
+        test_data{ "1910101010101010101", 165 }
+    );
+
+    REQUIRE(day09::part2({item.disk_map}) == item.value);
 }
 
 TEST_CASE("parse") {
