@@ -13,6 +13,7 @@ namespace day09 {
         return checksum;
     }
 
+    // 10898720530938: Too high.
     int64_t part2(const std::vector<std::string>& rows) {
         auto data = parse2(rows[0]);
 
