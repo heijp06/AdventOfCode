@@ -3,41 +3,34 @@
 #include "day10.h"
 
 namespace day10 {
-    int part1(const std::vector<std::string>& rows) {
-        auto result{0};
-        int height = rows.size();
-        int width = rows[0].size();
-
-        for (int row = 0; row < height; row++) {
-            const auto& line = rows[row];
-            for (int column = 0; column < width; column++) {
-				if (line[column] == '0') {
-                    result += solve(rows, height, width, { row, column });
-				}
-            }
-        }
-
-        return result;
+    int part1(const std::vector<std::string>& rows)
+    {
+        return solve(rows);
     }
 
     int part2(const std::vector<std::string>& rows) {
-        int result{};
-        int height = rows.size();
-        int width = rows[0].size();
-
-        for (int row = 0; row < height; row++) {
-            const auto& line = rows[row];
-            for (int column = 0; column < width; column++) {
-				if (line[column] == '0') {
-                    result += solve(rows, height, width, { row, column }, true);
-				}
-            }
-        }
-
-        return result;
+        return solve(rows, true);
     }
 
-    int solve(const std::vector<std::string>& rows, int height, int width, const advent::coord& coord, bool part2) {
+	int solve(const std::vector<std::string>& rows, bool part2)
+	{
+		auto result{0};
+		int height = rows.size();
+		int width = rows[0].size();
+
+		for (int row = 0; row < height; row++) {
+			const auto& line = rows[row];
+			for (int column = 0; column < width; column++) {
+				if (line[column] == '0') {
+					result += count(rows, height, width, { row, column }, part2);
+				}
+			}
+		}
+
+		return result;
+	}
+
+    int count(const std::vector<std::string>& rows, int height, int width, const advent::coord& coord, bool part2) {
         std::map<advent::coord, int> positions{{coord, 1}};
         std::vector<advent::coord> directions{ {1, 0}, {0, 1}, {-1, 0}, {0, -1} };
 
