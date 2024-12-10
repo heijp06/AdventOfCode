@@ -13,7 +13,8 @@ namespace day09 {
         return checksum;
     }
 
-    // 10898720530938: Too high.
+    // 10898720530938:  Too high.
+    // 8654184283366:   Too high.
     int64_t part2(const std::vector<std::string>& rows) {
         auto data = parse2(rows[0]);
 
@@ -23,7 +24,7 @@ namespace day09 {
             auto queue_index{-1};
             for (auto i = block.length; i < 10; i++) {
                 auto& queue = data.queues[i];
-                if (!queue.empty() && (index < 0 || index < queue.top())) {
+                if (!queue.empty() && (index < 0 || index > queue.top())) {
                     index = queue.top();
                     queue_index = i;
                 }
