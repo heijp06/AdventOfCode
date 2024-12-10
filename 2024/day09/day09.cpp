@@ -14,6 +14,7 @@ namespace day09 {
     }
 
     int part2(const std::vector<std::string>& rows) {
+        (void)rows;
         return -1;
     }
 
