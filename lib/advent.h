@@ -28,5 +28,23 @@ namespace advent {
 
 		return result;
 	}
+
+    struct coord {
+        int row;
+        int column;
+
+        friend bool operator==(const coord& l, const coord& r) {
+            return l.row == r.row && l.column == r.column;
+        }
+        friend bool operator<(const coord& l, const coord& r) {
+            return l.row == r.row ? l.column < r.column : l.row < r.row;
+        }
+        friend coord operator+(const coord& l, const coord& r) {
+            return {l.row + r.row, l.column + r.column};
+        }
+        friend coord operator-(const coord& l, const coord& r) {
+            return {l.row - r.row, l.column - r.column};
+        }
+    };
 }
 

@@ -5,7 +5,7 @@
 namespace day08 {
     int part1(const std::vector<std::string>& rows) {
         const auto& grid = parse(rows);
-        std::set<coord> antinodes;
+        std::set<advent::coord> antinodes;
 
         for (auto const& [_, frequencies] : grid.get_antennas()) {
             for (size_t i = 0; i < frequencies.size() - 1; i++) {
@@ -31,7 +31,7 @@ namespace day08 {
 
     int part2(const std::vector<std::string>& rows) {
         const auto& grid = parse(rows);
-        std::set<coord> antinodes;
+        std::set<advent::coord> antinodes;
 
         for (auto const& [_, frequencies] : grid.get_antennas()) {
             for (size_t i = 0; i < frequencies.size() - 1; i++) {
@@ -60,7 +60,7 @@ namespace day08 {
     const grid parse(std::vector<std::string> rows) {
         int height = rows.size();
         int width = rows[0].size();
-        std::map<char, std::vector<coord>> antennas;
+        std::map<char, std::vector<advent::coord>> antennas;
 
         for (int row = 0; row < height; row++) {
             const auto& line = rows[row];
@@ -75,7 +75,7 @@ namespace day08 {
         return grid({height, width}, antennas);
     }
 
-    grid::grid(const coord& size, const antennas_t& antennas) :
+    grid::grid(const advent::coord& size, const antennas_t& antennas) :
         size_{size},
         antennas_{antennas} {
     }
