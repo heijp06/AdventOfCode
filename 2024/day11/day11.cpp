@@ -14,7 +14,7 @@ namespace day11 {
     }
 
     int64_t solve(const std::vector<std::string>& rows, int times) {
-        auto& stones = parse(rows[0]);
+        auto stones = parse(rows[0]);
 
         for (size_t i = 0; i < times; i++) {
             std::map<int64_t, int64_t> new_stones;
