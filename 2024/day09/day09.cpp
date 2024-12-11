@@ -13,23 +13,21 @@ namespace day09 {
         return checksum;
     }
 
-    // 10898720530938:  Too high.
-    // 8654184283366:   Not right.
     int64_t part2(const std::vector<std::string>& rows) {
         auto data = parse2(rows[0]);
 
         for (auto it = data.blocks.rbegin(); it != data.blocks.rend(); ++it) {
             auto& block = *it;
-            auto index{-1};
+            auto index{block.index};
             auto queue_index{-1};
             for (auto i = block.length; i < 10; i++) {
                 auto& queue = data.queues[i];
-                if (!queue.empty() && (index < 0 || index > queue.top())) {
+                if (!queue.empty() && index > queue.top()) {
                     index = queue.top();
                     queue_index = i;
                 }
             }
-            if (index >= 0) {
+            if (index < block.index) {
                 auto& queue = data.queues[queue_index];
                 queue.pop();
                 block.index = index;
