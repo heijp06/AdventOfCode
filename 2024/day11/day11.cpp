@@ -5,17 +5,25 @@
 #include "../../lib/advent.h"
 
 namespace day11 {
-    int part1(const std::vector<std::string>& rows) {
+    int64_t part1(const std::vector<std::string>& rows) {
+        return solve(rows);
+    }
+
+    int64_t part2(const std::vector<std::string>& rows) {
+        return solve(rows, 75);
+    }
+
+    int64_t solve(const std::vector<std::string>& rows, int times) {
         auto& stones = parse(rows[0]);
 
-        for (size_t i = 0; i < 25; i++) {
-            std::map<int64_t, int> new_stones;
+        for (size_t i = 0; i < times; i++) {
+            std::map<int64_t, int64_t> new_stones;
             for (const auto& [stone, count] : stones) {
                 if (stone == 0) {
                     new_stones[1] += count;
                     continue;
                 }
-                
+
                 int digit_count = static_cast<int>(std::floor(std::log10(stone))) + 1;
                 if (digit_count % 2) {
                     if (stone > 4557001994493466) {
@@ -24,7 +32,7 @@ namespace day11 {
                     new_stones[stone * 2024] += count;
                     continue;
                 }
-                
+
                 int64_t divisor = static_cast<int64_t>(std::pow(10, digit_count / 2));
                 new_stones[stone / divisor] += count;
                 new_stones[stone % divisor] += count;
@@ -41,13 +49,8 @@ namespace day11 {
         return result;
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
-    }
-
-    std::map<int64_t, int> parse(const std::string& row) {
-        std::map<int64_t, int> result;
+    std::map<int64_t, int64_t> parse(const std::string& row) {
+        std::map<int64_t, int64_t> result;
 
         for (auto stone : advent::ints<int64_t>(row)) {
             result[stone]++;
