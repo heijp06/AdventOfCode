@@ -84,7 +84,7 @@ namespace day12 {
     }
 
     int sides(const std::set<advent::coord>& region) {
-        auto result{0};
+        auto fences{0};
         std::set<edge> seen;
         std::vector<advent::coord> directions = { {1, 0}, {-1, 0}, {0, 1}, {0,-1} };
 
@@ -101,7 +101,7 @@ namespace day12 {
 
                     if (region.count(current.position + direction)) {
                         if (region.count(current.position + direction + current.outside)) {
-                            result++;
+                            fences++;
                             current = {
                                 current.position + direction + current.outside,
                                 {-current.outside.column, current.outside.row}};
@@ -112,7 +112,7 @@ namespace day12 {
                         }
                     }
                     else {
-                        result++;
+                        fences++;
                         current = {current.position, {current.outside.column, -current.outside.row}};
                         direction = {direction.column, -direction.row};
                     }
@@ -120,6 +120,6 @@ namespace day12 {
 			}
 		}
 
-        return result;
+        return fences;
     }
 }
