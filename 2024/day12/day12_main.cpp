@@ -4,10 +4,10 @@
 #include "day12.h"
 
 int main() {
-	const auto& rows = advent::get_rows(2024, 12);
+    const auto& rows = advent::get_rows(2024, 12);
 
-	std::cout << "Part 1: " << day12::part1(rows) << std::endl;
-	std::cout << "Part 2: " << day12::part2(rows) << std::endl;
+    std::cout << "Part 1: " << day12::part1(rows) << std::endl;
+    std::cout << "Part 2: " << day12::part2(rows) << std::endl;
 
-	return 0;
+    return 0;
 }

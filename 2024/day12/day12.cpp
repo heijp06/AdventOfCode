@@ -52,15 +52,15 @@ namespace day12 {
                     const auto& new_position = active_position + direction;
                     if (new_position.row < 0 || new_position.row >= height
                         || new_position.column < 0 || new_position.column >= width) {
-	                    continue;
+                        continue;
                     }
 
                     if (region.count(new_position) || rows[new_position.row][new_position.column] != plant) {
                         continue;
                     }
 
-					region.insert(new_position);
-					new_active.insert(new_position);
+                    region.insert(new_position);
+                    new_active.insert(new_position);
                 }
             }
             active = new_active;
@@ -74,11 +74,11 @@ namespace day12 {
         auto result{0};
         std::vector<advent::coord> directions = { {1, 0}, {-1, 0}, {0, 1}, {0,-1} };
 
-		for (const auto& position : region) {
-			for (const auto& direction : directions) {
+        for (const auto& position : region) {
+            for (const auto& direction : directions) {
                 result += !region.count(position + direction);
-			}
-		}
+            }
+        }
 
         return result;
     }
@@ -88,8 +88,8 @@ namespace day12 {
         std::set<edge> seen;
         std::vector<advent::coord> directions = { {1, 0}, {-1, 0}, {0, 1}, {0,-1} };
 
-		for (const auto& position : region) {
-			for (const auto& outside : directions) {
+        for (const auto& position : region) {
+            for (const auto& outside : directions) {
                 if (region.count(position + outside)) {
                     continue;
                 }
@@ -117,8 +117,8 @@ namespace day12 {
                         direction = {direction.column, -direction.row};
                     }
                 }
-			}
-		}
+            }
+        }
 
         return fences;
     }
