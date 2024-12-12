@@ -15,7 +15,6 @@ namespace day12 {
                     continue;
                 }
 
-                //TODO: maybe create set based on aray.
                 const auto& region = create_region(rows, position);
                 regions.push_back(region);
                 seen.insert(region.cbegin(), region.cend());
@@ -30,7 +29,35 @@ namespace day12 {
         return -1;
     }
 
-    std::set<advent::coord> create_region(std::vector<std::string> rows, advent::coord position) {
-        return std::set<advent::coord>();
+    std::set<advent::coord> create_region(const std::vector<std::string>& rows, const advent::coord& position) {
+        int height = rows.size();
+        int width = rows[0].size();
+        auto plant = rows[position.row][position.column];
+        std::set region{position};
+        std::set active{position};
+        std::vector<advent::coord> directions = { {1, 0}, {-1, 0}, {0, 1}, {0,-1} };
+
+        while (!active.empty()) {
+            std::set<advent::coord> new_active;
+            for (const auto& active_position:active) {
+                for (const auto& direction : directions) {
+                    const auto& new_position = active_position + direction;
+                    if (new_position.row < 0 || new_position.row >= height
+                        || new_position.column < 0 || new_position.column >= width) {
+	                    continue;
+                    }
+
+                    if (region.count(new_position) || rows[new_position.row][new_position.column] != plant) {
+                        continue;
+                    }
+
+					region.insert(new_position);
+					new_active.insert(new_position);
+                }
+            }
+            active = new_active;
+        }
+
+        return region;
     }
 }

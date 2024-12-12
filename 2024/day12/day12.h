@@ -10,5 +10,5 @@ namespace day12 {
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
-    std::set<advent::coord> create_region(std::vector<std::string> rows, advent::coord position);
+    std::set<advent::coord> create_region(const std::vector<std::string>& rows, const advent::coord& position);
 }
