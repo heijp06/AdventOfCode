@@ -1,6 +1,4 @@
-#include <fstream>
 #include <iostream>
-#include <vector>
 
 #include "../../lib/advent.h"
 #include "day12.h"
