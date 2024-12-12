@@ -2,34 +2,14 @@
 
 namespace day12 {
     int part1(const std::vector<std::string>& rows) {
-        int height = rows.size();
-        int width = rows[0].size();
-        std::set<advent::coord> seen;
-        std::vector<std::set<advent::coord>> regions;
-
-        for (int row = 0; row < height; row++) {
-            const auto& line = rows[row];
-            for (int column = 0; column < width; column++) {
-                auto position = advent::coord{row, column};
-                if (seen.count(position)) {
-                    continue;
-                }
-
-                const auto& region = create_region(rows, position);
-                regions.push_back(region);
-                seen.insert(region.cbegin(), region.cend());
-            }
-        }
-
-        auto result{0};
-        for (const auto& region : regions) {
-            result += perimeter(region) * static_cast<int>(region.size());
-        }
-
-        return result;
+        return solve(rows, &perimeter);
     }
 
     int part2(const std::vector<std::string>& rows) {
+        return solve(rows, &sides);
+    }
+
+    int solve(const std::vector<std::string>& rows, std::function<int(std::set<advent::coord>)> cost) {
         int height = rows.size();
         int width = rows[0].size();
         std::set<advent::coord> seen;
@@ -51,7 +31,7 @@ namespace day12 {
 
         auto result{0};
         for (const auto& region : regions) {
-            result += sides(region) * static_cast<int>(region.size());
+            result += cost(region) * static_cast<int>(region.size());
         }
 
         return result;
