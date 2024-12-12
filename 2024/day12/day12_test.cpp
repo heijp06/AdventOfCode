@@ -24,3 +24,7 @@ TEST_CASE("part1") {
 TEST_CASE("part2") {
     REQUIRE(day12::part2(rows) == 1206);
 }
+
+TEST_CASE("sides") {
+    REQUIRE(day12::sides({{0, 0}}) == 4);
+}

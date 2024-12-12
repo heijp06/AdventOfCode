@@ -30,8 +30,31 @@ namespace day12 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        int height = rows.size();
+        int width = rows[0].size();
+        std::set<advent::coord> seen;
+        std::vector<std::set<advent::coord>> regions;
+
+        for (int row = 0; row < height; row++) {
+            const auto& line = rows[row];
+            for (int column = 0; column < width; column++) {
+                auto position = advent::coord{row, column};
+                if (seen.count(position)) {
+                    continue;
+                }
+
+                const auto& region = create_region(rows, position);
+                regions.push_back(region);
+                seen.insert(region.cbegin(), region.cend());
+            }
+        }
+
+        auto result{0};
+        for (const auto& region : regions) {
+            result += sides(region) * static_cast<int>(region.size());
+        }
+
+        return result;
     }
 
     std::set<advent::coord> create_region(const std::vector<std::string>& rows, const advent::coord& position) {
@@ -74,6 +97,46 @@ namespace day12 {
 		for (const auto& position : region) {
 			for (const auto& direction : directions) {
                 result += !region.count(position + direction);
+			}
+		}
+
+        return result;
+    }
+
+    int sides(const std::set<advent::coord>& region) {
+        auto result{0};
+        std::set<edge> seen;
+        std::vector<advent::coord> directions = { {1, 0}, {-1, 0}, {0, 1}, {0,-1} };
+
+		for (const auto& position : region) {
+			for (const auto& outside : directions) {
+                if (region.count(position + outside)) {
+                    continue;
+                }
+
+                edge current{position, outside};
+                advent::coord direction = {outside.column, -outside.row};
+                while (!seen.count(current)) { 
+                    seen.insert(current);
+
+                    if (region.count(current.position + direction)) {
+                        if (region.count(current.position + direction + current.outside)) {
+                            result++;
+                            current = {
+                                current.position + direction + current.outside,
+                                {-current.outside.column, current.outside.row}};
+                            direction = {-direction.column, direction.row};
+                        }
+                        else {
+                            current = {current.position + direction, current.outside};
+                        }
+                    }
+                    else {
+                        result++;
+                        current = {current.position, {current.outside.column, -current.outside.row}};
+                        direction = {direction.column, -direction.row};
+                    }
+                }
 			}
 		}
 

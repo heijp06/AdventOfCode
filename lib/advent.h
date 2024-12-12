@@ -45,6 +45,9 @@ namespace advent {
         friend coord operator-(const coord& l, const coord& r) {
             return {l.row - r.row, l.column - r.column};
         }
+        friend coord operator-(const coord& c) {
+            return {-c.row, -c.column};
+        }
     };
 }
 
