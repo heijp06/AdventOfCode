@@ -16,7 +16,6 @@ namespace day12 {
         std::vector<std::set<advent::coord>> regions;
 
         for (int row = 0; row < height; row++) {
-            const auto& line = rows[row];
             for (int column = 0; column < width; column++) {
                 auto position = advent::coord{row, column};
                 if (seen.count(position)) {
