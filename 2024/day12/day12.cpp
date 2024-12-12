@@ -21,7 +21,12 @@ namespace day12 {
             }
         }
 
-        return -1;
+        auto result{0};
+        for (const auto& region : regions) {
+            result += perimeter(region) * static_cast<int>(region.size());
+        }
+
+        return result;
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -59,5 +64,19 @@ namespace day12 {
         }
 
         return region;
+    }
+
+    int perimeter(const std::set<advent::coord>& region)
+    {
+        auto result{0};
+        std::vector<advent::coord> directions = { {1, 0}, {-1, 0}, {0, 1}, {0,-1} };
+
+		for (const auto& position : region) {
+			for (const auto& direction : directions) {
+                result += !region.count(position + direction);
+			}
+		}
+
+        return result;
     }
 }

@@ -11,4 +11,6 @@ namespace day12 {
     int part2(const std::vector<std::string>& rows);
 
     std::set<advent::coord> create_region(const std::vector<std::string>& rows, const advent::coord& position);
+	int perimeter(const std::set<advent::coord>& region);
+
 }
