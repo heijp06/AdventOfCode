@@ -1,5 +1,6 @@
+#include <stdexcept>
+
 #include "day13.h"
-#include "../../lib/advent.h"
 
 namespace day13 {
     int part1(const std::vector<std::string>& rows) {
@@ -15,20 +16,7 @@ namespace day13 {
             data = advent::ints(rows[i + 2]);
             advent::coord prize = { data[1], data[0] };
 
-            auto min_cost{ 0 };
-            for (int i = 0; i <= 100; i++) {
-                for (int j = 0; j <= 100; j++) {
-                    if (i * a.row + j * b.row == prize.row &&
-                        i * a.column + j * b.column == prize.column) {
-                        auto cost = 3 * i + j;
-                        if (!min_cost || cost < min_cost) {
-                            min_cost = cost;
-                        }
-                    }
-                }
-            }
-
-            tokens += min_cost;
+            tokens += solve(a, b, prize);
         }
 
         return tokens;
@@ -37,5 +25,34 @@ namespace day13 {
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    int64_t solve(const advent::coord& a, const advent::coord& b, const advent::coord& prize) {
+        int64_t factor = a.row * b.column - a.column * b.row;
+        int64_t sum = a.row * prize.column - a.column * prize.row;
+
+        if (factor == 0) {
+            throw std::domain_error("factor or sum is 0.");
+        }
+
+        if (sum % factor) {
+            return 0;
+        }
+
+        int64_t b_presses = sum / factor;
+
+        if (b_presses < 0) {
+            return 0;
+        }
+
+        int64_t sum2 = prize.column - b_presses * b.column;
+
+        if (sum2 % a.column) {
+            return 0;
+        }
+
+        int64_t a_presses = sum2 / a.column;
+
+        return 3 * a_presses + b_presses;
     }
 }
