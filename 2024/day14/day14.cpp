@@ -1,6 +1,5 @@
-#include <array>
-#include <cmath>
 #include <iostream>
+#include <set>
 
 #include "day14.h"
 
@@ -98,23 +97,17 @@ namespace day14 {
     }
 
     void output(const std::vector<robot>& robots, int width, int height) {
-        static std::array<std::array<bool, 101>, 103> where;
+        std::set<advent::coord> where;
 
         for (const auto& robot : robots) {
-            where[robot.position.row][robot.position.column] = true;
+            where.insert(robot.position);
         }
 
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
-                std::cout << (where[row][column] ? "#" : " ");
+                std::cout << (where.count({row, column}) ? "#" : " ");
             }
             std::cout << std::endl;
-        }
-
-        std::cout << std::endl;
-
-        for (const auto& robot : robots) {
-            where[robot.position.row][robot.position.column] = false;
         }
     }
 
