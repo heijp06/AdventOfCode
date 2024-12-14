@@ -59,9 +59,9 @@ namespace day09 {
     }
 
     compactor::compactor(const std::string& disk_map) :
-	    layout_{parse(disk_map)},
-	    front_{0, layout_[0]},
-	    back_{static_cast<int>(layout_.size()) - 1, layout_.back()},
+        layout_{parse(disk_map)},
+        front_{0, layout_[0]},
+        back_{static_cast<int>(layout_.size()) - 1, layout_.back()},
         index_(0),
         free_space_{0} {
     }
@@ -117,15 +117,15 @@ namespace day09 {
     part2_data parse2(const std::string& row) {
         part2_data result {
             std::vector<block2>{},
-			std::vector<queue_t>(10)
+            std::vector<queue_t>(10)
         };
 
         int index{0};
         for (size_t i = 0; i < row.size(); i++) {
-			int length = row[i] - '0';
+            int length = row[i] - '0';
             if (i % 2) {
                 if (length > 0) {
-					result.queues[length].push(index);
+                    result.queues[length].push(index);
                 }
             }
             else {

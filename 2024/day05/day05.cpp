@@ -11,7 +11,7 @@ namespace day05 {
         parse(rows, rules, updates);
 
         auto result{0};
-		for (const auto& update: updates) {
+        for (const auto& update: updates) {
             auto correct{true};
             for (size_t i = 0; i < update.size() - 1; i++) {
                 const auto& pair = std::make_pair(update[i + 1], update[i]);
@@ -23,7 +23,7 @@ namespace day05 {
             if (correct) {
                 result += update.at(update.size() / 2);
             }
-		}
+        }
 
         return result;
     }
@@ -57,10 +57,10 @@ namespace day05 {
         auto parse_rules{true};
 
         for (const auto& row: rows) {
-	        if (row.empty()) {
+            if (row.empty()) {
                 parse_rules = false;
                 continue;
-	        }
+            }
 
             if (parse_rules) {
                 const auto& numbers = advent::ints(row);

@@ -14,7 +14,7 @@ namespace day01 {
 
         auto sum{0};
         for (size_t i = 0; i < list1.size(); i++) {
-			sum += std::abs(list0[i] - list1[i]);
+            sum += std::abs(list0[i] - list1[i]);
         }
 
         return sum;

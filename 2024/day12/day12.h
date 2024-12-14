@@ -13,7 +13,7 @@ namespace day12 {
     int solve(const std::vector<std::string>& rows, std::function<int(std::set<advent::coord>)> cost);
 
     std::set<advent::coord> create_region(const std::vector<std::string>& rows, const advent::coord& position);
-	int perimeter(const std::set<advent::coord>& region);
+    int perimeter(const std::set<advent::coord>& region);
     int sides(const std::set<advent::coord>& region);
 
     struct edge {
