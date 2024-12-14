@@ -9,47 +9,47 @@
 #include <vector>
 
 namespace advent {
-	// Read the input file for @year and @day as a vector of strings
-	std::vector<std::string> get_rows(int year, int day) {
-		auto path{get_data_path(year, day)};
-		std::vector<std::string> rows{};
-		std::string row;
-		std::ifstream input{path};
+    // Read the input file for @year and @day as a vector of strings
+    std::vector<std::string> get_rows(int year, int day) {
+        auto path{get_data_path(year, day)};
+        std::vector<std::string> rows{};
+        std::string row;
+        std::ifstream input{path};
 
-		for (std::string row; getline(input, row); ) {
-			rows.push_back(row);
-		}
+        for (std::string row; getline(input, row); ) {
+            rows.push_back(row);
+        }
 
-		return rows;
-	}
+        return rows;
+    }
 
-	// Get the path to the input file for @year and @day
-	std::string get_data_path(int year, int day) {
-		const std::string data_folder{"data"};
-		auto year_folder{std::to_string(year)};
-		std::ostringstream ss;
-		ss << "day" << std::setw(2) << std::setfill('0') << day << ".txt";
-		std::string day_file(ss.str());
+    // Get the path to the input file for @year and @day
+    std::string get_data_path(int year, int day) {
+        const std::string data_folder{"data"};
+        auto year_folder{std::to_string(year)};
+        std::ostringstream ss;
+        ss << "day" << std::setw(2) << std::setfill('0') << day << ".txt";
+        std::string day_file(ss.str());
 
-		auto current{std::filesystem::current_path()};
-		while (!std::filesystem::exists(current / data_folder)) {
-			if (!current.has_parent_path()) {
-				throw std::domain_error("Cannot find " + data_folder + " folder.");
-			}
-			current = current.parent_path();
-		}
+        auto current{std::filesystem::current_path()};
+        while (!std::filesystem::exists(current / data_folder)) {
+            if (!current.has_parent_path()) {
+                throw std::domain_error("Cannot find " + data_folder + " folder.");
+            }
+            current = current.parent_path();
+        }
 
-		auto input = current / data_folder / year_folder / day_file;
+        auto input = current / data_folder / year_folder / day_file;
 
-		if (!std::filesystem::exists(input)) {
-			throw std::domain_error(input.string() + " does not exist.");
-		}
+        if (!std::filesystem::exists(input)) {
+            throw std::domain_error(input.string() + " does not exist.");
+        }
 
-		return input.string();
-	}
+        return input.string();
+    }
 
-	// Get all the integers from a string.
-	std::vector<int> ints(const std::string& row) {
-		return ints<int>(row);
-	}
+    // Get all the integers from a string.
+    std::vector<int> ints(const std::string& row) {
+        return ints<int>(row);
+    }
 }

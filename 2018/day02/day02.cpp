@@ -8,7 +8,7 @@ namespace day02 {
         auto thrice{0};
 
         for (const auto& row : rows) {
-			std::map<char, int> counts{};
+            std::map<char, int> counts{};
             for (auto c : row) {
                 counts[c]++;
             }
