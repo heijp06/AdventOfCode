@@ -1,7 +1,8 @@
 #include <array>
+#include <cmath>
+#include <iostream>
 
 #include "day14.h"
-#include <iostream>
 
 namespace day14 {
     int part1(const std::vector<std::string>& rows, int width, int height) {
@@ -53,14 +54,12 @@ namespace day14 {
         }
 
         output(robots, width, height);
+        auto min_variance{variance(robots)};
+        auto t_min{0};
 
-        while (true) {
+        for (int t = 1; t <= width * height; t++) {
             std::vector<robot> new_robots;
 
-            auto q1{0};
-            auto q2{0};
-            auto q3{0};
-            auto q4{0};
             for (const auto& robot : robots) {
                 auto x0 = robot.position.column;
                 auto y0 = robot.position.row;
@@ -76,57 +75,34 @@ namespace day14 {
                     y += height;
                 }
 
-                if (x < (width - 1) / 2) {
-                    q1 += y < (height - 1) / 2;
-                    q3 += y > (height - 1) / 2;
-                }
-                else if (x > (width - 1) / 2) {
-                    q2 += y < (height - 1) / 2;
-                    q4 += y > (height - 1) / 2;
-                }
-                
                 new_robots.push_back({{y, x}, {vy, vx}});
             }
-            //if (q1 * q2 * q3 * q4 == 228410028) {
-            //    std::cout << q1 << " " << q2 << " " << q3 << " " << q4 << std::endl;;
-            //}
 
             robots = new_robots;
 
-            output(robots, width, height);
+            auto var{variance(robots)};
+            if (var < min_variance) {
+                std::cout << std::endl;
+                std::cout << "-----------------------------------------------------------------------------------------------------" << std::endl;
+                std::cout << t << std::endl;
+                std::cout << "-----------------------------------------------------------------------------------------------------" << std::endl;
+                std::cout << std::endl;
+
+                output(robots, width, height);
+                min_variance = var;
+                t_min = t;
+            }
         }
 
-        return 0;
+        return t_min;
     }
 
     void output(const std::vector<robot>& robots, int width, int height) {
         static std::array<std::array<bool, 101>, 103> where;
-        static auto counter{0};
 
         for (const auto& robot : robots) {
             where[robot.position.row][robot.position.column] = true;
         }
-
-        //auto most{0};
-        //for (const auto& robot : robots) {
-        //    most += where[robot.position.row][robot.position.column] && where[robot.position.row][width - 1 - robot.position.column];
-        //}
-        //if (most < robots.size() / 2) {
-        //    for (const auto& robot : robots) {
-        //        where[robot.position.row][robot.position.column] = false;
-        //    }
-        //    counter++;
-        //    if (counter % 1000 == 0) {
-        //        std::cout << counter << " " << most << std::endl;
-        //    }
-        //    return;
-        //}
-
-        std::cout << std::endl;
-        std::cout << "-----------------------------------------------------------------------------------------------------" << std::endl;
-        std::cout << counter++ << std::endl;
-        std::cout << "-----------------------------------------------------------------------------------------------------" << std::endl;
-        std::cout << std::endl;
 
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
@@ -140,8 +116,29 @@ namespace day14 {
         for (const auto& robot : robots) {
             where[robot.position.row][robot.position.column] = false;
         }
+    }
 
-        //std::string s;
-        //std::cin >> s;
+    int variance(const std::vector<robot>& robots) {
+        auto sum{0};
+        auto avg = average(robots);
+
+        for (const auto& robot : robots) {
+            auto delta = robot.position - avg;
+            sum += delta.row * delta.row + delta.column * delta.column;
+        }
+
+        return sum;
+    }
+
+    advent::coord average(const std::vector<robot>& robots) {
+        advent::coord sum{};
+
+        for (const auto& robot : robots) {
+            sum = sum + robot.position;
+        }
+
+        auto n = static_cast<int>(robots.size());
+
+        return {sum.row / n, sum.column / n};
     }
 }

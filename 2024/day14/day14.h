@@ -15,4 +15,6 @@ namespace day14 {
     };
 
     void output(const std::vector<robot>& robots, int width, int height);
+    int variance(const std::vector<robot>& robots);
+    advent::coord average(const std::vector<robot>& robots);
 }

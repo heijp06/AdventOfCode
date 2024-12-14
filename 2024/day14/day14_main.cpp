@@ -10,7 +10,7 @@ int main() {
 
 	std::cout << "Part 1: " << day14::part1(rows) << std::endl;
 	std::cout << "Part 2:" << std::endl << std::endl;
-	day14::part2(rows);
+	std::cout << std::endl << day14::part2(rows);
 
 	return 0;
 }
