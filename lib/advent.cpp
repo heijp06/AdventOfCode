@@ -52,4 +52,8 @@ namespace advent {
     std::vector<int> ints(const std::string& row) {
         return ints<int>(row);
     }
+
+    grid::grid(const std::vector<std::string>& rows) :
+        rows_{rows} {
+    }
 }

@@ -46,3 +46,11 @@ TEST_CASE("longs") {
 
     REQUIRE(actual == item.ints);
 }
+
+TEST_CASE("grid") {
+    const std::vector<std::string> rows = {"ABC", "DEF"};
+
+    const auto& grid = advent::grid(rows);
+
+    //REQUIRE(grid == grid);
+}

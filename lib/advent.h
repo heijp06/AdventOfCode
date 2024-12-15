@@ -30,8 +30,8 @@ namespace advent {
     }
 
     struct coord {
-        int row;
-        int column;
+        const int row;
+        const int column;
 
         friend bool operator==(const coord& l, const coord& r) {
             return l.row == r.row && l.column == r.column;
@@ -48,6 +48,13 @@ namespace advent {
         friend coord operator-(const coord& c) {
             return {-c.row, -c.column};
         }
+    };
+
+    class grid {
+    public:
+        grid(const std::vector<std::string>& rows);
+    private:
+        const std::vector<std::string> rows_;
     };
 }
 
