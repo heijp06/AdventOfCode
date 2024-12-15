@@ -55,3 +55,12 @@ TEST_CASE("grid") {
     REQUIRE(grid.get_height() == 2);
     REQUIRE(grid.get_width() == 3);
 }
+
+TEST_CASE("empty grid") {
+    const std::vector<std::string> rows{};
+
+    const auto& grid = advent::grid(rows);
+
+    REQUIRE(grid.get_height() == 0);
+    REQUIRE(grid.get_width() == 0);
+}
