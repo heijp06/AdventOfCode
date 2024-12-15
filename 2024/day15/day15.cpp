@@ -4,6 +4,8 @@ namespace day15 {
     int part1(const std::vector<std::string>& rows) {
         auto it = empty_row(rows);
 
+        auto& grid = advent::grid(std::vector<std::string>(rows.cbegin(), it));
+
         return -1;
     }
 
