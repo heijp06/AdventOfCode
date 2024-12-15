@@ -15,7 +15,7 @@ struct test_data_longs {
 };
 
 TEST_CASE("changes") {
-    const auto& item = GENERATE(
+    const auto item = GENERATE(
         test_data_ints{"", {}},
         test_data_ints{"1", {1}},
         test_data_ints{"+1", {1}},
@@ -31,7 +31,7 @@ TEST_CASE("changes") {
 }
 
 TEST_CASE("longs") {
-    const auto& item = GENERATE(
+    const auto item = GENERATE(
         test_data_longs{"", {}},
         test_data_longs{"10000000000", {10000000000}},
         test_data_longs{"+10000000000", {10000000000}},
