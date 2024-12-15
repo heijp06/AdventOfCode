@@ -1,4 +1,5 @@
 #include "day06.h"
+#include "../../lib/advent.h"
 
 namespace day06 {
     int part1(const std::vector<std::string>& rows) {
@@ -43,16 +44,13 @@ namespace day06 {
     }
 
     lab parse(const std::vector<std::string>& rows) {
-        int width = static_cast<int>(rows[0].size());
-        int height = static_cast<int>(rows.size());
-
+        const auto grid = advent::grid(rows);
         coord guard;
         std::set<coord> obstacles;
 
-        for (int r = 0; r < height; r++) {
-            const auto& row{rows.at(r)};
-            for (int c = 0; c < width; c++) {
-                switch (row.at(c)) {
+        for (int r = 0; r < grid.get_height(); r++) {
+            for (int c = 0; c < grid.get_width(); c++) {
+                switch (grid[{r, c}]) {
                 case '^':
                     guard = {r, c};
                     break;
@@ -63,7 +61,7 @@ namespace day06 {
             }
         }
 
-        return lab(coord{height, width}, guard, obstacles);
+        return lab(coord{grid.get_height(), grid.get_width()}, guard, obstacles);
     }
 
     lab::lab(const coord& size, coord& guard, std::set<coord>& obstacles) :
@@ -100,7 +98,7 @@ namespace day06 {
     }
 
     int lab::visited() const {
-        return seen_.size();
+        return static_cast<int>(seen_.size());
     }
 
     const coord& lab::position_of_guard() const {
