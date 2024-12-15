@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <iostream>
 
 namespace advent {
     // Read the input file for @year and @day as a vector of strings
@@ -77,6 +78,15 @@ namespace advent {
         }
 
         throw std::domain_error("Cannot find: " + c);
+    }
+
+    void grid::draw() const {
+        for (int row = 0; row < height_; row++) {
+            for (int column = 0; column < width_; column++) {
+                std::cout << rows_[row][column];
+            }
+            std::cout << std::endl;
+        }
     }
 
     const direction direction::up() {
