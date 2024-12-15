@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 
+#include "../../lib/advent.h"
+
 namespace day06 {
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
@@ -29,7 +31,7 @@ namespace day06 {
 
     class lab {
     public:
-        lab(const coord& size, coord& guard, std::set<coord>& obstacles);
+        lab(const advent::grid& grid, coord& guard, std::set<coord>& obstacles);
         bool guard_left() const;
         void move_guard();
         int visited() const;
@@ -41,7 +43,7 @@ namespace day06 {
         void set_part2();
         std::set<coord> get_seen() const;
     private:
-        const coord size_;
+        const advent::grid grid_;
         coord guard_;
         coord direction_;
         std::set<coord> obstacles_;
