@@ -3,7 +3,7 @@
 #include "day08.h"
 
 namespace day08 {
-    int part1(const std::vector<std::string>& rows) {
+    size_t part1(const std::vector<std::string>& rows) {
         const auto& grid = parse(rows);
         std::set<advent::coord> antinodes;
 
@@ -29,7 +29,7 @@ namespace day08 {
         return antinodes.size();
     }
 
-    int part2(const std::vector<std::string>& rows) {
+    size_t part2(const std::vector<std::string>& rows) {
         const auto& grid = parse(rows);
         std::set<advent::coord> antinodes;
 
@@ -58,21 +58,19 @@ namespace day08 {
     }
 
     const grid parse(std::vector<std::string> rows) {
-        int height = rows.size();
-        int width = rows[0].size();
+        const auto g = advent::grid(rows);
         std::map<char, std::vector<advent::coord>> antennas;
 
-        for (int row = 0; row < height; row++) {
-            const auto& line = rows[row];
-            for (int column = 0; column < width; column++) {
-                auto antenna = line[column];
+        for (int row = 0; row < g.get_height(); row++) {
+            for (int column = 0; column < g.get_width(); column++) {
+                auto antenna = g[{row, column}];
                 if (antenna != '.') {
                     antennas[antenna].push_back({row, column});
                 }
             }
         }
 
-        return grid({height, width}, antennas);
+        return grid({g.get_height(), g.get_width()}, antennas);
     }
 
     grid::grid(const advent::coord& size, const antennas_t& antennas) :

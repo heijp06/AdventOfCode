@@ -7,8 +7,8 @@
 #include "../../lib/advent.h"
 
 namespace day08 {
-    int part1(const std::vector<std::string>& rows);
-    int part2(const std::vector<std::string>& rows);
+    size_t part1(const std::vector<std::string>& rows);
+    size_t part2(const std::vector<std::string>& rows);
 
     using antennas_t = std::map<char, std::vector<advent::coord>>;
 
