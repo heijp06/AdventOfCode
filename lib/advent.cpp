@@ -68,12 +68,22 @@ namespace advent {
         return width_;
     }
 
-    advent::coord grid::find(const char c) const {
+    std::vector<coord> grid::get_positions() const {
+        std::vector<coord> result;
+
         for (int row = 0; row < height_; row++) {
             for (int column = 0; column < width_; column++) {
-                if (rows_[row][column] == c) {
-                    return {row, column};
-                }
+                result.push_back({row, column});
+            }
+        }
+
+        return result;
+    }
+
+    advent::coord grid::find(const char c) const {
+        for (const auto& position : get_positions()) {
+            if (rows_[position.row][position.column] == c) {
+                return position;
             }
         }
 
@@ -83,11 +93,9 @@ namespace advent {
     std::vector<advent::coord> grid::find_all(const char c) const {
         std::vector<advent::coord> result;
 
-        for (int row = 0; row < height_; row++) {
-            for (int column = 0; column < width_; column++) {
-                if (rows_[row][column] == c) {
-                    result.push_back({row, column});
-                }
+        for (const auto& position : get_positions()) {
+            if (rows_[position.row][position.column] == c) {
+                result.push_back(position);
             }
         }
 

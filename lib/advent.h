@@ -79,6 +79,7 @@ namespace advent {
         grid(const std::vector<std::string>& rows);
         int get_height() const;
         int get_width() const;
+        std::vector<coord> get_positions() const;
         advent::coord find(const char c) const;
         std::vector<advent::coord> find_all(const char c) const;
         void draw() const;
