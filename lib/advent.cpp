@@ -80,6 +80,20 @@ namespace advent {
         throw std::domain_error("Cannot find: " + c);
     }
 
+    std::vector<advent::coord> grid::find_all(const char c) const {
+        std::vector<advent::coord> result;
+
+        for (int row = 0; row < height_; row++) {
+            for (int column = 0; column < width_; column++) {
+                if (rows_[row][column] == c) {
+                    result.push_back({row, column});
+                }
+            }
+        }
+
+        return result;
+    }
+
     void grid::draw() const {
         for (int row = 0; row < height_; row++) {
             for (int column = 0; column < width_; column++) {

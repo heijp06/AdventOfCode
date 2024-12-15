@@ -65,6 +65,10 @@ TEST_CASE("grid") {
     REQUIRE(grid.find('C') == advent::coord{0, 2});
     REQUIRE(grid.find('I') == advent::coord{1, 1});
     REQUIRE_THROWS(grid.find('X'));
+
+    REQUIRE(grid.find_all('C') == std::vector<advent::coord>({{0, 2}}));
+    REQUIRE(grid.find_all('I') == std::vector<advent::coord>({{1, 1}, {1, 2}}));
+    REQUIRE(grid.find_all('X') == std::vector<advent::coord>());
 }
 
 TEST_CASE("mutable grid") {

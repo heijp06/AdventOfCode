@@ -77,6 +77,7 @@ namespace advent {
         int get_height() const;
         int get_width() const;
         advent::coord find(const char c) const;
+        std::vector<advent::coord> find_all(const char c) const;
         void draw() const;
 
         char& operator[](const advent::coord& index) {
