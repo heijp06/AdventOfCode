@@ -8,5 +8,6 @@ function(add_year year)
     endforeach()
 endfunction()
 
+add_subdirectory("lib")
 add_year(2018)
 add_year(2024)

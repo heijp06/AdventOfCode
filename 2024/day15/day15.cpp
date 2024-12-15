@@ -5,9 +5,9 @@
 namespace day15 {
     int part1(const std::vector<std::string>& rows) {
         auto it = empty_row(rows);
-        auto& grid = advent::grid(std::vector<std::string>(rows.cbegin(), it));
+        auto grid = advent::grid(std::vector<std::string>(rows.cbegin(), it));
         const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
-        auto& robot = grid.find('@');
+        auto robot = grid.find('@');
 
         for (const auto& direction : directions) {
             move(grid, robot, direction);
@@ -18,9 +18,9 @@ namespace day15 {
 
     int part2(const std::vector<std::string>& rows) {
         auto it = empty_row(rows);
-        auto& grid = widen(advent::grid(std::vector<std::string>(rows.cbegin(), it)));
+        auto grid = widen(advent::grid(std::vector<std::string>(rows.cbegin(), it)));
         const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
-        auto& robot = grid.find('@');
+        auto robot = grid.find('@');
 
         for (const auto& direction : directions) {
             if (direction.delta_row == 0) {
@@ -113,8 +113,8 @@ namespace day15 {
         return widened;
     }
 
-    void day15::move(advent::grid& grid, advent::coord& robot, const advent::direction& direction, bool part1) {
-        auto& box = robot + direction;
+    void move(advent::grid& grid, advent::coord& robot, const advent::direction& direction, bool part1) {
+        auto box = robot + direction;
         while (grid[box] == 'O' || grid[box] == '[' || grid[box] == ']') {
             box += direction;
         }
