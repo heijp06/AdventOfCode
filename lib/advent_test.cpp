@@ -104,3 +104,17 @@ TEST_CASE("directions") {
     REQUIRE(advent::direction::left() == advent::direction{0, -1});
     REQUIRE(advent::direction::right() == advent::direction{0, 1});
 }
+
+TEST_CASE("coord + direction") {
+    const auto& position = advent::coord{1, 1};
+
+    REQUIRE(position + advent::direction::up() == advent::coord{0, 1});
+    REQUIRE(position + advent::direction::down() == advent::coord{2, 1});
+    REQUIRE(position + advent::direction::left() == advent::coord{1, 0});
+    REQUIRE(position + advent::direction::right() == advent::coord{1, 2});
+
+    REQUIRE(advent::direction::up() + position == advent::coord{0, 1});
+    REQUIRE(advent::direction::down() + position == advent::coord{2, 1});
+    REQUIRE(advent::direction::left() + position == advent::coord{1, 0});
+    REQUIRE(advent::direction::right() + position == advent::coord{1, 2});
+}

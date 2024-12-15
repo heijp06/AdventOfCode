@@ -29,14 +29,23 @@ namespace advent {
         return result;
     }
 
+    struct direction {
+        const int delta_row;
+        const int delta_column;
+
+        const static direction up();
+        const static direction down();
+        const static direction left();
+        const static direction right();
+
+        friend bool operator==(const direction& l, const direction& r) {
+            return l.delta_row == r.delta_row && l.delta_column == r.delta_column;
+        }
+    };
+
     struct coord {
         const int row;
         const int column;
-
-        const static coord up();
-        const static coord down();
-        const static coord left();
-        const static coord right();
 
         friend bool operator==(const coord& l, const coord& r) {
             return l.row == r.row && l.column == r.column;
@@ -47,6 +56,12 @@ namespace advent {
         friend coord operator+(const coord& l, const coord& r) {
             return {l.row + r.row, l.column + r.column};
         }
+        friend coord operator+(const direction& l, const coord& r) {
+            return {l.delta_row + r.row, l.delta_column + r.column};
+        }
+        friend coord operator+(const coord& l, const direction& r) {
+            return {l.row + r.delta_row, l.column + r.delta_column};
+        }
         friend coord operator-(const coord& l, const coord& r) {
             return {l.row - r.row, l.column - r.column};
         }
@@ -54,8 +69,6 @@ namespace advent {
             return {-c.row, -c.column};
         }
     };
-
-    using direction = coord;
 
     class grid {
     public:

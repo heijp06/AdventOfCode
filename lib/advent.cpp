@@ -67,19 +67,19 @@ namespace advent {
         return width_;
     }
 
-    const direction coord::up() {
+    const direction direction::up() {
         return {-1, 0};
     }
 
-    const direction coord::down() {
+    const direction direction::down() {
         return {1, 0};
     }
 
-    const direction coord::left() {
+    const direction direction::left() {
         return {0, -1};
     }
 
-    const direction coord::right() {
+    const direction direction::right() {
         return {0, 1};
     }
 }
