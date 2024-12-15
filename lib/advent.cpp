@@ -67,6 +67,18 @@ namespace advent {
         return width_;
     }
 
+    advent::coord grid::find(const char c) const {
+        for (int row = 0; row < height_; row++) {
+            for (int column = 0; column < width_; column++) {
+                if (rows_[row][column] == c) {
+                    return {row, column};
+                }
+            }
+        }
+
+        throw std::domain_error("Cannot find: " + c);
+    }
+
     const direction direction::up() {
         return {-1, 0};
     }

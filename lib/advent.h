@@ -75,6 +75,7 @@ namespace advent {
         grid(const std::vector<std::string>& rows);
         int get_height() const;
         int get_width() const;
+        advent::coord find(const char c) const;
 
         char& operator[](const advent::coord& index) {
             return rows_[index.row][index.column];

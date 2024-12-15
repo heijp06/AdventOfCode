@@ -48,7 +48,7 @@ TEST_CASE("longs") {
 }
 
 TEST_CASE("grid") {
-    const std::vector<std::string> rows = {"ABC", "DEF"};
+    const std::vector<std::string> rows = {"ABC", "DII"};
 
     const auto& grid = advent::grid(rows);
 
@@ -59,8 +59,12 @@ TEST_CASE("grid") {
     REQUIRE(grid[{0, 1}] == 'B');
     REQUIRE(grid[{0, 2}] == 'C');
     REQUIRE(grid[{1, 0}] == 'D');
-    REQUIRE(grid[{1, 1}] == 'E');
-    REQUIRE(grid[{1, 2}] == 'F');
+    REQUIRE(grid[{1, 1}] == 'I');
+    REQUIRE(grid[{1, 2}] == 'I');
+
+    REQUIRE(grid.find('C') == advent::coord{0, 2});
+    REQUIRE(grid.find('I') == advent::coord{1, 1});
+    REQUIRE_THROWS(grid.find('X'));
 }
 
 TEST_CASE("mutable grid") {
