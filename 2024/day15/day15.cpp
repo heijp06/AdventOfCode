@@ -5,6 +5,7 @@ namespace day15 {
         auto it = empty_row(rows);
 
         auto& grid = advent::grid(std::vector<std::string>(rows.cbegin(), it));
+        const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
 
         return -1;
     }
@@ -22,5 +23,30 @@ namespace day15 {
         }
 
         return it;
+    }
+
+    std::vector<advent::direction> parse_directions(const std::vector<std::string>& rows) {
+        std::vector<advent::direction> directions;
+
+        for (const auto& row : rows) {
+            for (const auto& c : row) {
+                switch (c) {
+                case '^':
+                    directions.push_back(advent::direction::up());
+                    break;
+                case 'v':
+                    directions.push_back(advent::direction::down());
+                    break;
+                case '<':
+                    directions.push_back(advent::direction::left());
+                    break;
+                case '>':
+                    directions.push_back(advent::direction::right());
+                    break;
+                }
+            }
+        }
+
+        return directions;
     }
 }
