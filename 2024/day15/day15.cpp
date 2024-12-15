@@ -8,19 +8,7 @@ namespace day15 {
         auto& robot = grid.find('@');
 
         for (const auto& direction : directions) {
-            auto& box = robot + direction;
-            while (grid[box] == 'O') {
-                box += direction;
-            }
-
-            if (grid[box] == '#') {
-                continue;
-            }
-
-            grid[box] = 'O';
-            grid[robot] = '.';
-            robot += direction;
-            grid[robot] = '@';
+            move(grid, robot, direction, true);
         }
 
         auto result{0};
@@ -30,6 +18,32 @@ namespace day15 {
         }
 
         return result;
+    }
+
+    void day15::move(advent::grid& grid, advent::coord& robot, const advent::direction& direction, bool part1) {
+        auto& box = robot + direction;
+        while (grid[box] == 'O' || grid[box] == '[' || grid[box] == ']') {
+            box += direction;
+        }
+
+        if (grid[box] != '#') {
+            if (part1) {
+                grid[box] = 'O';
+            }
+            else {
+                char open_char = direction == advent::direction::right() ? '[' : ']';
+                char close_char = direction == advent::direction::right() ? ']' : '[';
+                auto open{true};
+                for (auto position = robot + direction; position != box + direction; position += direction) {
+                    grid[position] = open ? open_char : close_char;
+                    open = !open;
+                }
+            }
+
+            grid[robot] = '.';
+            robot += direction;
+            grid[robot] = '@';
+        }
     }
 
     int part2(const std::vector<std::string>& rows) {

@@ -7,6 +7,7 @@
 
 namespace day15 {
     int part1(const std::vector<std::string>& rows);
+    void move(advent::grid& grid, advent::coord& robot, const advent::direction& direction, bool part1 = true);
     int part2(const std::vector<std::string>& rows);
 
     std::vector<std::string>::const_iterator empty_row(const std::vector<std::string>& rows);
