@@ -53,8 +53,10 @@ namespace advent {
     class grid {
     public:
         grid(const std::vector<std::string>& rows);
+        int get_height() const;
     private:
         const std::vector<std::string> rows_;
+        const int height_;
     };
 }
 

@@ -54,6 +54,11 @@ namespace advent {
     }
 
     grid::grid(const std::vector<std::string>& rows) :
-        rows_{rows} {
+        rows_{rows},
+        height_{static_cast<int>(rows.size())} {
+    }
+
+    int grid::get_height() const {
+        return height_;
     }
 }
