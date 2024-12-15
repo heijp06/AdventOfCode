@@ -1,3 +1,5 @@
+#include <map>
+
 #include "day15.h"
 
 namespace day15 {
@@ -8,7 +10,7 @@ namespace day15 {
         auto& robot = grid.find('@');
 
         for (const auto& direction : directions) {
-            move(grid, robot, direction, true);
+            move(grid, robot, direction);
         }
 
         auto result{0};
@@ -25,6 +27,61 @@ namespace day15 {
         auto& grid = widen(advent::grid(std::vector<std::string>(rows.cbegin(), it)));
         const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
         auto& robot = grid.find('@');
+        grid.draw();
+
+        for (const auto& direction : directions) {
+            if (direction == advent::direction::left() || direction == advent::direction::right()) {
+                move(grid, robot, direction, false);
+                grid.draw();
+                continue;
+            }
+
+            std::set<advent::coord> to_move{};
+            std::set<advent::coord> active{robot};
+            auto hit_wall{false};
+            while (!active.empty() && !hit_wall) {
+                std::set<advent::coord> new_active;
+                for (const auto& position : active) {
+                    auto new_position1 = position + direction;
+                    char c = grid[new_position1];
+
+                    if (c == '#') {
+                        hit_wall = true;
+                        break;
+                    }
+
+                    if (c == '.') {
+                        continue;
+                    }
+
+                    auto new_position2 = advent::coord{new_position1.row, new_position1.column + (c == '[' ? 1 : -1)};
+                    new_active.insert(new_position1);
+                    new_active.insert(new_position2);
+                }
+                to_move.insert(new_active.cbegin(), new_active.cend());
+                active = new_active;
+            }
+
+            if (hit_wall) {
+                continue;
+            }
+
+            std::map<advent::coord, char> items;
+            for (const auto& position : to_move) {
+                items[position] = grid[position];
+                grid[position] = '.';
+            }
+
+            for (const auto& position : to_move) {
+                grid[{position.row + direction.delta_row, position.column}] = items.count(position) ? items[position] : '.';
+            }
+
+            grid[robot] = '.';
+            robot += direction;
+            grid[robot] = '@';
+
+            grid.draw();
+        }
 
         return -1;
     }
