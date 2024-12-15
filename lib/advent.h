@@ -50,6 +50,9 @@ namespace advent {
         friend bool operator==(const coord& l, const coord& r) {
             return l.row == r.row && l.column == r.column;
         }
+        friend bool operator!=(const coord& l, const coord& r) {
+            return !(l == r);
+        }
         friend bool operator<(const coord& l, const coord& r) {
             return l.row == r.row ? l.column < r.column : l.row < r.row;
         }
