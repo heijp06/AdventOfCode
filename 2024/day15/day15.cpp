@@ -6,7 +6,23 @@ namespace day15 {
 
         auto& grid = advent::grid(std::vector<std::string>(rows.cbegin(), it));
         const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
-        const auto& robot = grid.find('@');
+        auto& robot = grid.find('@');
+
+        for (const auto& direction : directions) {
+            advent::coord box = robot + direction;
+            while (grid[box] == 'O') {
+                box += direction;
+            }
+
+            if (grid[box] == '#') {
+                continue;
+            }
+
+            grid[box] = 'O';
+            grid[robot] = '.';
+            robot += direction;
+            grid[robot] = '@';
+        }
 
         return -1;
     }
