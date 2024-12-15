@@ -23,7 +23,7 @@ namespace day15 {
         auto& robot = grid.find('@');
 
         for (const auto& direction : directions) {
-            if (direction == advent::direction::left() || direction == advent::direction::right()) {
+            if (direction.delta_row == 0) {
                 move(grid, robot, direction, false);
                 continue;
             }
