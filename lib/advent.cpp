@@ -66,4 +66,20 @@ namespace advent {
     int grid::get_width() const {
         return width_;
     }
+
+    const direction coord::up() {
+        return {-1, 0};
+    }
+
+    const direction coord::down() {
+        return {1, 0};
+    }
+
+    const direction coord::left() {
+        return {0, -1};
+    }
+
+    const direction coord::right() {
+        return {0, 1};
+    }
 }

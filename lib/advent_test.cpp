@@ -97,3 +97,10 @@ TEST_CASE("empty grid") {
     REQUIRE(grid.get_height() == 0);
     REQUIRE(grid.get_width() == 0);
 }
+
+TEST_CASE("directions") {
+    REQUIRE(advent::direction::up() == advent::direction{-1, 0});
+    REQUIRE(advent::direction::down() == advent::direction{1, 0});
+    REQUIRE(advent::direction::left() == advent::direction{0, -1});
+    REQUIRE(advent::direction::right() == advent::direction{0, 1});
+}

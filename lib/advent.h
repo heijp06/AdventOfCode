@@ -33,6 +33,11 @@ namespace advent {
         const int row;
         const int column;
 
+        const static coord up();
+        const static coord down();
+        const static coord left();
+        const static coord right();
+
         friend bool operator==(const coord& l, const coord& r) {
             return l.row == r.row && l.column == r.column;
         }
@@ -49,6 +54,8 @@ namespace advent {
             return {-c.row, -c.column};
         }
     };
+
+    using direction = coord;
 
     class grid {
     public:
