@@ -1,82 +1,74 @@
 #include "day04.h"
+#include "../../lib/advent.h"
 
 namespace day04 {
     int part1(const std::vector<std::string>& rows) {
         xmas_counter counter;
-        int width = rows.at(0).size();
-        int height = rows.size();
+        const auto grid = advent::grid(rows);
 
-        for (int row = 0; row < height; row++) {
-            const auto& line = rows.at(row);
-            for (int column = 0; column < width; column++) {
-                counter.add_char(line.at(column));
+        for (int row = 0; row < grid.get_height(); row++) {
+            for (int column = 0; column < grid.get_width(); column++) {
+                counter.add_char(grid[{row, column}]);
             }
             counter.new_line();
         }
 
-        for (int row = 0; row < height; row++) {
-            const auto& line = rows.at(row);
-            for (int column = width - 1; column >= 0; column--) {
-                counter.add_char(line.at(column));
+        for (int row = 0; row < grid.get_height(); row++) {
+            for (int column = grid.get_width() - 1; column >= 0; column--) {
+                counter.add_char(grid[{row, column}]);
             }
             counter.new_line();
         }
 
-        for (int column = 0; column < width; column++) {
-            for (int row = 0; row < height; row++) {
-                const auto& line = rows.at(row);
-                counter.add_char(line.at(column));
+        for (int column = 0; column < grid.get_width(); column++) {
+            for (int row = 0; row < grid.get_height(); row++) {
+                counter.add_char(grid[{row, column}]);
             }
             counter.new_line();
         }
 
-        for (int column = 0; column < width; column++) {
-            for (int row = height - 1; row >= 0; row--) {
-                const auto& line = rows.at(row);
-                counter.add_char(line.at(column));
+        for (int column = 0; column < grid.get_width(); column++) {
+            for (int row = grid.get_height() - 1; row >= 0; row--) {
+                counter.add_char(grid[{row, column}]);
             }
             counter.new_line();
         }
 
-        for (int column_plus_row = 0; column_plus_row < width + height - 1; column_plus_row++) {
-            for (int column = 0; column < width; column++) {
+        for (int column_plus_row = 0; column_plus_row < grid.get_width() + grid.get_height() - 1; column_plus_row++) {
+            for (int column = 0; column < grid.get_width(); column++) {
                 int row = column_plus_row - column;
-                if (row >= 0 && row < height) {
-                    const auto& line = rows.at(row);
-                    counter.add_char(line.at(column));
+                if (row >= 0 && row < grid.get_height()) {
+                    counter.add_char(grid[{row, column}]);
                 }
             }
             counter.new_line();
         }
 
-        for (int column_plus_row = 0; column_plus_row < width + height - 1; column_plus_row++) {
-            for (int column = width - 1; column >= 0; column--) {
+        for (int column_plus_row = 0; column_plus_row < grid.get_width() + grid.get_height() - 1; column_plus_row++) {
+            for (int column = grid.get_width() - 1; column >= 0; column--) {
                 int row = column_plus_row - column;
-                if (row >= 0 && row < height) {
-                    const auto& line = rows.at(row);
-                    counter.add_char(line.at(column));
+                if (row >= 0 && row < grid.get_height()) {
+                    counter.add_char(grid[{row, column}]);
                 }
             }
             counter.new_line();
         }
 
-        for (int column_min_row = 1 - height; column_min_row < width; column_min_row++) {
-            for (int column = 0; column < width; column++) {
+        for (int column_min_row = 1 - grid.get_height(); column_min_row < grid.get_width(); column_min_row++) {
+            for (int column = 0; column < grid.get_width(); column++) {
                 int row = column - column_min_row;
-                if (row >= 0 && row < height) {
-                    const auto& line = rows.at(row);
-                    counter.add_char(line.at(column));
+                if (row >= 0 && row < grid.get_height()) {
+                    counter.add_char(grid[{row, column}]);
                 }
             }
             counter.new_line();
         }
 
-        for (int column_min_row = 1 - height; column_min_row < width; column_min_row++) {
-            for (int column = width - 1; column >= 0; column--) {
+        for (int column_min_row = 1 - grid.get_height(); column_min_row < grid.get_width(); column_min_row++) {
+            for (int column = grid.get_width() - 1; column >= 0; column--) {
                 int row = column - column_min_row;
-                if (row >= 0 && row < height) {
-                    const auto& line = rows.at(row);
-                    counter.add_char(line.at(column));
+                if (row >= 0 && row < grid.get_height()) {
+                    counter.add_char(grid[{row, column}]);
                 }
             }
             counter.new_line();
@@ -86,17 +78,16 @@ namespace day04 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        auto count{ 0 };
-        int width = rows.at(0).size();
-        int height = rows.size();
+        auto count{0};
+        const auto grid = advent::grid(rows);
 
-        for (int row = 1; row < height - 1; row++) {
-            for (int column = 1; column < width - 1; column++) {
-                if (check_char(rows, 'A', row, column)) {
-                    if ((check_char(rows, 'M', row - 1, column - 1) && check_char(rows, 'S', row + 1, column + 1)) ||
-                        (check_char(rows, 'S', row - 1, column - 1) && check_char(rows, 'M', row + 1, column + 1))) {
-                        if ((check_char(rows, 'M', row - 1, column + 1) && check_char(rows, 'S', row + 1, column - 1)) ||
-                            (check_char(rows, 'S', row - 1, column + 1) && check_char(rows, 'M', row + 1, column - 1))) {
+        for (int row = 1; row < grid.get_height() - 1; row++) {
+            for (int column = 1; column < grid.get_width() - 1; column++) {
+                if (grid[{row, column}] == 'A') {
+                    if ((grid[{row - 1, column - 1}] == 'M' && grid[{row + 1, column + 1}] == 'S') ||
+                        (grid[{row - 1, column - 1}] == 'S' && grid[{row + 1, column + 1}] == 'M')) {
+                        if ((grid[{row - 1, column + 1}] == 'M' && grid[{row + 1, column - 1}] == 'S') ||
+                            (grid[{row - 1, column + 1}] == 'S' && grid[{row + 1, column - 1}] == 'M')) {
                             count++;
                         }
                     }
@@ -107,11 +98,7 @@ namespace day04 {
         return count;
     }
 
-    bool check_char(const std::vector<std::string>& rows, char c, int row, int column) {
-        return rows.at(row).at(column) == c;
-    }
-
-    xmas_counter::xmas_counter() : current_{}, count_{ 0 } {}
+    xmas_counter::xmas_counter() : current_{}, count_{0} {}
 
     void xmas_counter::add_char(const char c) {
         switch (c) {
