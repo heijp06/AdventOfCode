@@ -13,13 +13,7 @@ namespace day15 {
             move(grid, robot, direction);
         }
 
-        auto result{0};
-
-        for (const auto& position : grid.find_all('O')) {
-            result += 100 * position.row + position.column;
-        }
-
-        return result;
+        return sum_of_gps_coordinates(grid, 'O');
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -27,12 +21,10 @@ namespace day15 {
         auto& grid = widen(advent::grid(std::vector<std::string>(rows.cbegin(), it)));
         const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
         auto& robot = grid.find('@');
-        grid.draw();
 
         for (const auto& direction : directions) {
             if (direction == advent::direction::left() || direction == advent::direction::right()) {
                 move(grid, robot, direction, false);
-                grid.draw();
                 continue;
             }
 
@@ -79,11 +71,19 @@ namespace day15 {
             grid[robot] = '.';
             robot += direction;
             grid[robot] = '@';
-
-            grid.draw();
         }
 
-        return -1;
+        return sum_of_gps_coordinates(grid, '[');
+    }
+
+    int sum_of_gps_coordinates(advent::grid& grid, char c) {
+        auto result{0};
+
+        for (const auto& position : grid.find_all(c)) {
+            result += 100 * position.row + position.column;
+        }
+
+        return result;
     }
 
     advent::grid widen(const advent::grid& grid) {
