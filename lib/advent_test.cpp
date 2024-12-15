@@ -74,7 +74,7 @@ TEST_CASE("grid") {
 TEST_CASE("mutable grid") {
     const std::vector<std::string> rows = {"ABC", "DEF"};
 
-    auto& grid = advent::grid(rows);
+    auto grid = advent::grid(rows);
 
     REQUIRE(grid.get_height() == 2);
     REQUIRE(grid.get_width() == 3);
@@ -114,7 +114,7 @@ TEST_CASE("directions") {
 }
 
 TEST_CASE("coord + direction") {
-    auto& position = advent::coord{1, 1};
+    auto position = advent::coord{1, 1};
 
     REQUIRE(position + advent::direction::up() == advent::coord{0, 1});
     REQUIRE(position + advent::direction::down() == advent::coord{2, 1});
