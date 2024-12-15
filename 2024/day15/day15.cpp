@@ -8,7 +8,7 @@ namespace day15 {
         auto& robot = grid.find('@');
 
         for (const auto& direction : directions) {
-            advent::coord box = robot + direction;
+            auto& box = robot + direction;
             while (grid[box] == 'O') {
                 box += direction;
             }
