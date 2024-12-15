@@ -70,7 +70,7 @@ namespace day15 {
                 char open_char = direction == advent::direction::right() ? '[' : ']';
                 char close_char = direction == advent::direction::right() ? ']' : '[';
                 auto open{true};
-                for (auto position = robot + direction; position != box + direction; position += direction) {
+                for (auto position = robot + direction + direction; position != box + direction; position += direction) {
                     grid[position] = open ? open_char : close_char;
                     open = !open;
                 }
