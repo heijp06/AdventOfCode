@@ -53,4 +53,5 @@ TEST_CASE("grid") {
     const auto& grid = advent::grid(rows);
 
     REQUIRE(grid.get_height() == 2);
+    REQUIRE(grid.get_width() == 3);
 }
