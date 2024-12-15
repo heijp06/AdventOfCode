@@ -20,6 +20,42 @@ namespace day15 {
         return result;
     }
 
+    int part2(const std::vector<std::string>& rows) {
+        auto it = empty_row(rows);
+        auto& grid = widen(advent::grid(std::vector<std::string>(rows.cbegin(), it)));
+        const auto& directions = parse_directions(std::vector<std::string>(it + 1, rows.cend()));
+        auto& robot = grid.find('@');
+
+        return -1;
+    }
+
+    advent::grid widen(const advent::grid& grid) {
+        std::vector<std::string> widened;
+
+        for (int row = 0; row < grid.get_height(); row++) {
+            std::string line;
+            for (int column = 0; column < grid.get_width(); column++) {
+                switch (grid[{row, column}]) {
+                case '#':
+                    line += "##";
+                    break;
+                case '.':
+                    line += "..";
+                    break;
+                case '@':
+                    line += "@.";
+                    break;
+                case 'O':
+                    line += "[]";
+                    break;
+                }
+            }
+            widened.push_back(line);
+        }
+
+        return widened;
+    }
+
     void day15::move(advent::grid& grid, advent::coord& robot, const advent::direction& direction, bool part1) {
         auto& box = robot + direction;
         while (grid[box] == 'O' || grid[box] == '[' || grid[box] == ']') {
@@ -44,11 +80,6 @@ namespace day15 {
             robot += direction;
             grid[robot] = '@';
         }
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 
     std::vector<std::string>::const_iterator empty_row(const std::vector<std::string>& rows) {
