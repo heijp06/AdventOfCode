@@ -44,8 +44,8 @@ namespace advent {
     };
 
     struct coord {
-        const int row;
-        const int column;
+        int row;
+        int column;
 
         friend bool operator==(const coord& l, const coord& r) {
             return l.row == r.row && l.column == r.column;
@@ -56,11 +56,12 @@ namespace advent {
         friend coord operator+(const coord& l, const coord& r) {
             return {l.row + r.row, l.column + r.column};
         }
-        friend coord operator+(const direction& l, const coord& r) {
-            return {l.delta_row + r.row, l.delta_column + r.column};
-        }
         friend coord operator+(const coord& l, const direction& r) {
             return {l.row + r.delta_row, l.column + r.delta_column};
+        }
+        friend coord& operator+=(coord& position, const direction& rhs) {
+            position = position + rhs;
+            return position;
         }
         friend coord operator-(const coord& l, const coord& r) {
             return {l.row - r.row, l.column - r.column};
