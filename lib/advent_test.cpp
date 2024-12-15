@@ -54,6 +54,39 @@ TEST_CASE("grid") {
 
     REQUIRE(grid.get_height() == 2);
     REQUIRE(grid.get_width() == 3);
+
+    REQUIRE(grid[{0, 0}] == 'A');
+    REQUIRE(grid[{0, 1}] == 'B');
+    REQUIRE(grid[{0, 2}] == 'C');
+    REQUIRE(grid[{1, 0}] == 'D');
+    REQUIRE(grid[{1, 1}] == 'E');
+    REQUIRE(grid[{1, 2}] == 'F');
+}
+
+TEST_CASE("mutable grid") {
+    const std::vector<std::string> rows = {"ABC", "DEF"};
+
+    auto& grid = advent::grid(rows);
+
+    REQUIRE(grid.get_height() == 2);
+    REQUIRE(grid.get_width() == 3);
+
+    REQUIRE(grid[{0, 0}] == 'A');
+    REQUIRE(grid[{0, 1}] == 'B');
+    REQUIRE(grid[{0, 2}] == 'C');
+    REQUIRE(grid[{1, 0}] == 'D');
+    REQUIRE(grid[{1, 1}] == 'E');
+    REQUIRE(grid[{1, 2}] == 'F');
+
+    grid[{0, 1}] = 'X';
+    grid[{1, 2}] = 'Y';
+
+    REQUIRE(grid[{0, 0}] == 'A');
+    REQUIRE(grid[{0, 1}] == 'X');
+    REQUIRE(grid[{0, 2}] == 'C');
+    REQUIRE(grid[{1, 0}] == 'D');
+    REQUIRE(grid[{1, 1}] == 'E');
+    REQUIRE(grid[{1, 2}] == 'Y');
 }
 
 TEST_CASE("empty grid") {
