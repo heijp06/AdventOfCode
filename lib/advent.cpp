@@ -111,6 +111,14 @@ namespace advent {
         }
     }
 
+    direction direction::turn_left() const {
+        return { -delta_column, delta_row };
+    }
+
+    direction direction::turn_right() const {
+        return { delta_column, -delta_row };
+    }
+
     const direction direction::up() {
         return {-1, 0};
     }

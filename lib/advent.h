@@ -30,8 +30,11 @@ namespace advent {
     }
 
     struct direction {
-        const int delta_row;
-        const int delta_column;
+        int delta_row;
+        int delta_column;
+
+        direction turn_left() const;
+        direction turn_right() const;
 
         const static direction up();
         const static direction down();
