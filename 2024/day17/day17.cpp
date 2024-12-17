@@ -10,4 +10,12 @@ namespace day17 {
         (void)rows;
         return "?";
     }
+
+    computer::computer(int a, const std::vector<int>& program) :
+        a_{a},
+        b_{0},
+        c_{0},
+        instruction_pointer_{0},
+        program_{program} { 
+    }
 }
