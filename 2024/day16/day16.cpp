@@ -15,42 +15,41 @@ namespace day16 {
         const auto& end = grid.find('E');
 
         auto min_cost{0};
-        reindeer first = {0, start, advent::direction::right()};
-        std::map<std::pair<advent::coord, advent::direction>, int> min_costs{ {std::make_pair(first.position, first.direction), 0}};
+        reindeer first = {start, advent::direction::right()};
+        std::map<reindeer, int> costs { {first, 0}};
         queue_t queue;
         queue.push(first);
 
-        while (!queue.empty() && queue.top().cost < min_cost) {
-            auto next = queue.top();
+        while (!queue.empty() && costs[queue.top()] < min_cost) {
+            auto current = queue.top();
             queue.pop();
 
-            auto forwards = next.position + next.direction;
-            if (grid[forwards] != '#') {
-                reindeer step = { next.cost + 1, forwards, next.direction };
-                auto p = std::make_pair(step.position, step.direction);
-                if (!min_costs.count(p) || min_costs[p] > step.cost) {
-                    min_costs[p] = step.cost;
-                    queue.push(step);
+            auto next_position = current.position + current.direction;
+            if (grid[next_position] != '#') {
+                reindeer next = { next_position, current.direction };
+                if (!costs.count(next) || costs[next] > costs[current] + 1) {
+                    costs[next] = costs[current] + 1;
+                    queue.push(next);
                 }
             }
 
-            if (grid[next.position + next.direction.turn_left()] != '#') {
-                reindeer step = { next.cost + 1000, next.position, next.direction.turn_left() };
-                auto p = std::make_pair(step.position, step.direction);
-                if (!min_costs.count(p) || min_costs[p] > step.cost) {
-                    min_costs[p] = step.cost;
-                    queue.push(step);
-                }
-            }
+            //if (grid[current.position + current.direction.turn_left()] != '#') {
+            //    reindeer step = { current.cost + 1000, current.position, current.direction.turn_left() };
+            //    auto p = std::make_pair(step.position, step.direction);
+            //    if (!costs.count(p) || costs[p] > step.cost) {
+            //        costs[p] = step.cost;
+            //        queue.push(step);
+            //    }
+            //}
 
-            if (grid[next.position + next.direction.turn_right()] != '#') {
-                reindeer step = { next.cost + 1000, next.position, next.direction.turn_right() };
-                auto p = std::make_pair(step.position, step.direction);
-                if (!min_costs.count(p) || min_costs[p] > step.cost) {
-                    min_costs[p] = step.cost;
-                    queue.push(step);
-                }
-            }
+            //if (grid[current.position + current.direction.turn_right()] != '#') {
+            //    reindeer step = { current.cost + 1000, current.position, current.direction.turn_right() };
+            //    auto p = std::make_pair(step.position, step.direction);
+            //    if (!costs.count(p) || costs[p] > step.cost) {
+            //        costs[p] = step.cost;
+            //        queue.push(step);
+            //    }
+            //}
         }
         
         return min_cost;
