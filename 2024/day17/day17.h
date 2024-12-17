@@ -7,14 +7,11 @@ namespace day17 {
     std::string part1(const std::vector<std::string>& rows);
     std::string part2(const std::vector<std::string>& rows);
 
-    class computer {
-    public:
-        computer(int a, const std::vector<int>& program);
-    private:
-        int a_;
-        int b_;
-        int c_;
-        int instruction_pointer_;
-        const std::vector<int> program_;
+    struct computer {
+        int a;
+        int b;
+        int c;
     };
+
+    int combo(const computer& comp, int op);
 }

@@ -1,27 +1,46 @@
 #include "day17.h"
-
-#include <iostream>
+#include "../../lib/advent.h"
 
 namespace day17 {
+    constexpr int adv = 0;
+    constexpr int bxl = 1;
+    constexpr int bst = 2;
+    constexpr int jnz = 3;
+    constexpr int bxc = 4;
+    constexpr int out = 5;
+    constexpr int bdv = 6;
+    constexpr int cdv = 7;
+
     std::string part1(const std::vector<std::string>& rows) {
-        std::string result{};
+        computer = { advent::ints(rows[0])[0], advent::ints(rows[1])[0],advent::ints(rows[2])[0] };
+        const auto& program = advent::ints(rows[4]);
+        int index = 0;
 
-        int a = 46187030;
-        int b = 0;
-        int c = 0;
+        while (index < static_cast<int>(program.size())) {
+            switch (index) {
+            case adv:
 
-        while (a) {
-            b = a % 8;
-            b = b ^ 1;
-            c = a / (1 << b);
-            a = a / 8;
-            b = b ^ c;
-            b = b ^ 6;
-            int x = b % 8;
-            std::cout << x << ",";
+                break;
+            case bxl:
+                break;
+            case bst:
+                break;
+            case jnz:
+                break;
+            case bxc:
+                break;
+            case out:
+                break;
+            case bdv:
+                break;
+            case cdv:
+                break;
+            }
         }
 
-        return "?";
+        std::string result{};
+
+        return result;
     }
 
     std::string part2(const std::vector<std::string>& rows) {
@@ -29,11 +48,24 @@ namespace day17 {
         return "?";
     }
 
-    computer::computer(int a, const std::vector<int>& program) :
-        a_{a},
-        b_{0},
-        c_{0},
-        instruction_pointer_{0},
-        program_{program} { 
+    int combo(const computer& comp, int op) {
+        if (op < 4) {
+            return op;
+        }
+
+        if (op == 4) {
+            return comp.a;
+        }
+
+        if (op == 5) {
+            return comp.b;
+        }
+
+        if (op == 6) {
+            return comp.c;
+        }
+
+        throw std::domain_error("Illegal combo operand");
     }
 }
+
