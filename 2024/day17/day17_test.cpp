@@ -32,7 +32,7 @@ TEST_CASE("example 2") {
     auto comp = day17::computer(10, 0, 0, {5, 0, 5, 1, 5, 4});
     auto output = comp.run();
 
-    REQUIRE(output == "0,1,2");
+    REQUIRE(output == std::vector<std::int64_t>({0, 1, 2}));
 }
 
 TEST_CASE("example 3") {
@@ -40,7 +40,7 @@ TEST_CASE("example 3") {
     auto output = comp.run();
 
     REQUIRE(comp.a() == 0);
-    REQUIRE(output == "4,2,5,6,7,7,7,7,3,1,0");
+    REQUIRE(output == std::vector<std::int64_t>({4, 2, 5, 6, 7, 7, 7, 7, 3, 1, 0}));
 }
 
 TEST_CASE("example 4") {

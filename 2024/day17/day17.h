@@ -11,14 +11,14 @@ namespace day17 {
         std::int64_t a() const;
         std::int64_t b() const;
         std::int64_t c() const;
-        std::string run();
+        std::vector<std::int64_t> run();
     private:
         std::int64_t a_;
         std::int64_t b_;
         std::int64_t c_;
         const std::vector<std::int64_t> program_;
         std::int64_t instruction_pointer_;
-        std::string output_;
+        std::vector<std::int64_t> output_;
         std::int64_t combo();
     };
 

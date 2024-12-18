@@ -13,8 +13,17 @@ namespace day17 {
 
     std::string part1(const std::vector<std::string>& rows) {
         auto comp = parse(rows);
+        auto output = comp.run();
+        std::string result{};
 
-        return comp.run();
+        for (const auto& value : output) {
+            if (!result.empty()) {
+                result += ",";
+            }
+            result += std::to_string(value);
+        }
+
+        return result;
     }
 
     std::int64_t part2(const std::vector<std::string>& rows) {
@@ -52,7 +61,7 @@ namespace day17 {
         return c_;
     }
 
-    std::string computer::run() {
+    std::vector<std::int64_t> computer::run() {
         while (instruction_pointer_ < static_cast<std::int64_t>(program_.size())) {
             switch (program_[instruction_pointer_++]) {
             case adv:
@@ -77,10 +86,7 @@ namespace day17 {
                 b_ ^= c_;
                 break;
             case out:
-                if (output_.size()) {
-                    output_ += ",";
-                }
-                output_ += std::to_string(combo() & 7);
+                output_.push_back(combo() & 7);
                 break;
             case bdv:
                 b_ = a_ >> combo();
