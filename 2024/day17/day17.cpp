@@ -53,7 +53,7 @@ namespace day17 {
                 b_ ^= program_[instruction_pointer_++];
                 break;
             case bst:
-                b_ = program_[instruction_pointer_++] % 8;
+                b_ = combo() % 8;
                 break;
             case jnz:
                 if (a_) {
