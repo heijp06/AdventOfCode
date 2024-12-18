@@ -47,7 +47,7 @@ namespace day17 {
         while (instruction_pointer_ < static_cast<std::int64_t>(program_.size())) {
             switch (program_[instruction_pointer_++]) {
             case adv:
-                a_ /= static_cast<std::int64_t>(1) << combo();
+                a_ /= INT64_C(1) << combo();
                 break;
             case bxl:
                 b_ ^= program_[instruction_pointer_++];
@@ -74,10 +74,10 @@ namespace day17 {
                 output_ += std::to_string(combo() % 8);
                 break;
             case bdv:
-                b_ = a_ / (static_cast<std::int64_t>(1) << combo());
+                b_ = a_ / (INT64_C(1) << combo());
                 break;
             case cdv:
-                c_ = a_ / (static_cast<std::int64_t>(1) << combo());
+                c_ = a_ / (INT64_C(1) << combo());
                 break;
             }
         }
