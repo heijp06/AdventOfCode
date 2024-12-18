@@ -12,7 +12,7 @@ namespace day17 {
     constexpr std::int64_t cdv = 7;
 
     std::string part1(const std::vector<std::string>& rows) {
-        computer comp = {advent::ints<std::int64_t>(rows[0])[0], advent::ints<std::int64_t>(rows[1])[0],advent::ints<std::int64_t>(rows[2])[0], advent::ints<std::int64_t>(rows[4])};
+        auto comp = parse(rows);
 
         return comp.run();
     }
@@ -20,6 +20,15 @@ namespace day17 {
     std::int64_t part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    computer parse(const std::vector<std::string>& rows) {
+        return computer {
+            advent::ints<std::int64_t>(rows[0])[0],
+            advent::ints<std::int64_t>(rows[1])[0],
+            advent::ints<std::int64_t>(rows[2])[0],
+            advent::ints<std::int64_t>(rows[4])
+        };
     }
 
     computer::computer(std::int64_t a, std::int64_t b, std::int64_t c, const std::vector<std::int64_t>& program) :
