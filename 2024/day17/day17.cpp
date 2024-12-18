@@ -1,5 +1,3 @@
-#include <algorithm>
-
 #include "day17.h"
 #include "../../lib/advent.h"
 
@@ -46,7 +44,7 @@ namespace day17 {
             quines = new_quines;
         }
 
-        return *std::min_element(quines.cbegin(), quines.cend());
+        return quines[0];
     }
 
     computer parse(const std::vector<std::string>& rows) {
