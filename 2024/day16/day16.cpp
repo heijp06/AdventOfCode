@@ -10,11 +10,10 @@ namespace day16 {
 
     int part1(const std::vector<std::string>& rows) {
         const auto& grid = advent::grid(rows);
-
         const auto& start = grid.find('S');
         const auto& end = grid.find('E');
 
-        auto min_cost{0};
+        auto min_cost{2001 * grid.get_height() * grid.get_width()};
         reindeer first = {start, advent::direction::right()};
         std::map<reindeer, int> costs { {first, 0}};
         queue_t queue;
