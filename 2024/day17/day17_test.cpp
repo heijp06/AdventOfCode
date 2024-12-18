@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -14,6 +15,10 @@ std::vector<std::string> rows {
 
 TEST_CASE("part1") {
     REQUIRE(day17::part1(rows) == "4,6,3,5,6,3,5,2,1,0");
+}
+
+TEST_CASE("part2") {
+    REQUIRE(day17::part2(rows) == static_cast<std::int64_t>(117440));
 }
 
 TEST_CASE("example 1") {

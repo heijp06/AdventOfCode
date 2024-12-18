@@ -2,27 +2,27 @@
 #include "../../lib/advent.h"
 
 namespace day17 {
-    constexpr int adv = 0;
-    constexpr int bxl = 1;
-    constexpr int bst = 2;
-    constexpr int jnz = 3;
-    constexpr int bxc = 4;
-    constexpr int out = 5;
-    constexpr int bdv = 6;
-    constexpr int cdv = 7;
+    constexpr std::int64_t adv = 0;
+    constexpr std::int64_t bxl = 1;
+    constexpr std::int64_t bst = 2;
+    constexpr std::int64_t jnz = 3;
+    constexpr std::int64_t bxc = 4;
+    constexpr std::int64_t out = 5;
+    constexpr std::int64_t bdv = 6;
+    constexpr std::int64_t cdv = 7;
 
     std::string part1(const std::vector<std::string>& rows) {
-        computer comp = {advent::ints(rows[0])[0], advent::ints(rows[1])[0],advent::ints(rows[2])[0], advent::ints(rows[4])};
+        computer comp = {advent::ints<std::int64_t>(rows[0])[0], advent::ints<std::int64_t>(rows[1])[0],advent::ints<std::int64_t>(rows[2])[0], advent::ints<std::int64_t>(rows[4])};
 
         return comp.run();
     }
 
-    std::string part2(const std::vector<std::string>& rows) {
+    std::int64_t part2(const std::vector<std::string>& rows) {
         (void)rows;
-        return "?";
+        return -1;
     }
 
-    computer::computer(int a, int b, int c, const std::vector<int>& program) :
+    computer::computer(std::int64_t a, std::int64_t b, std::int64_t c, const std::vector<std::int64_t>& program) :
         a_{a},
         b_{b},
         c_{c},
@@ -31,23 +31,23 @@ namespace day17 {
         output_{} {
     }
 
-    int computer::a() const {
+    std::int64_t computer::a() const {
         return a_;
     }
 
-    int computer::b() const {
+    std::int64_t computer::b() const {
         return b_;
     }
 
-    int computer::c() const {
+    std::int64_t computer::c() const {
         return c_;
     }
 
     std::string computer::run() {
-        while (instruction_pointer_ < static_cast<int>(program_.size())) {
+        while (instruction_pointer_ < static_cast<std::int64_t>(program_.size())) {
             switch (program_[instruction_pointer_++]) {
             case adv:
-                a_ /= 1 << combo();
+                a_ /= static_cast<std::int64_t>(1) << combo();
                 break;
             case bxl:
                 b_ ^= program_[instruction_pointer_++];
@@ -74,10 +74,10 @@ namespace day17 {
                 output_ += std::to_string(combo() % 8);
                 break;
             case bdv:
-                b_ = a_ / (1 << combo());
+                b_ = a_ / (static_cast<std::int64_t>(1) << combo());
                 break;
             case cdv:
-                c_ = a_ / (1 << combo());
+                c_ = a_ / (static_cast<std::int64_t>(1) << combo());
                 break;
             }
         }
@@ -85,7 +85,7 @@ namespace day17 {
         return output_;
     }
 
-    int computer::combo() {
+    std::int64_t computer::combo() {
         auto op = program_[instruction_pointer_++];
         switch (op) {
         case 4:
