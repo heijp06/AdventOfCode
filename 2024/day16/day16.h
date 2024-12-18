@@ -6,9 +6,6 @@
 #include "../../lib/advent.h"
 
 namespace day16 {
-    int part1(const std::vector<std::string>& rows);
-    int part2(const std::vector<std::string>& rows);
-
     struct reindeer {
         advent::coord position;
         advent::direction direction;
@@ -33,4 +30,11 @@ namespace day16 {
             return left.direction > right.direction;
         }
     };
+
+    int part1(const std::vector<std::string>& rows);
+    int part2(const std::vector<std::string>& rows);
+
+    int calculate_heuristic(const reindeer& state, const advent::coord& end);
+    int turn_heuristic(const reindeer& state, const advent::coord& end);
+    int move_heuristic(const reindeer& state, const advent::coord& end);
 }
