@@ -12,50 +12,9 @@ namespace day17 {
     constexpr int cdv = 7;
 
     std::string part1(const std::vector<std::string>& rows) {
-        computer comp = { advent::ints(rows[0])[0], advent::ints(rows[1])[0],advent::ints(rows[2])[0] };
-        const auto& program = advent::ints(rows[4]);
-        int index = 0;
-        std::string result{};
+        computer comp = {advent::ints(rows[0])[0], advent::ints(rows[1])[0],advent::ints(rows[2])[0], advent::ints(rows[4])};
 
-        while (index < static_cast<int>(program.size())) {
-            switch (program[index++]) {
-            case adv:
-                comp.a /= 1 << combo(comp, program[index++]);
-                break;
-            case bxl:
-                comp.b ^= program[index++];
-                break;
-            case bst:
-                comp.b = program[index++] % 8;
-                break;
-            case jnz:
-                if (comp.a) {
-                    index = program[index];
-                }
-                else {
-                    index++;
-                }
-                break;
-            case bxc:
-                index++;
-                comp.b ^= comp.c;
-                break;
-            case out:
-                if (result.size()) {
-                    result += ",";
-                }
-                result += std::to_string(combo(comp, program[index++]) % 8);
-                break;
-            case bdv:
-                comp.b = comp.a / 1 << combo(comp, program[index++]);
-                break;
-            case cdv:
-                comp.c = comp.a / 1 << combo(comp, program[index++]);
-                break;
-            }
-        }
-
-        return result;
+        return comp.run();
     }
 
     std::string part2(const std::vector<std::string>& rows) {
@@ -63,14 +22,78 @@ namespace day17 {
         return "?";
     }
 
-    int combo(const computer& comp, int op) {
+    computer::computer(int a, int b, int c, const std::vector<int>& program) :
+        a_{a},
+        b_{b},
+        c_{c},
+        program_{program},
+        instruction_pointer_{0},
+        output_{} {
+    }
+
+    int computer::a() const {
+        return a_;
+    }
+
+    int computer::b() const {
+        return b_;
+    }
+
+    int computer::c() const {
+        return c_;
+    }
+
+    std::string computer::run() {
+        while (instruction_pointer_ < static_cast<int>(program_.size())) {
+            switch (program_[instruction_pointer_++]) {
+            case adv:
+                a_ /= 1 << combo();
+                break;
+            case bxl:
+                b_ ^= program_[instruction_pointer_++];
+                break;
+            case bst:
+                b_ = program_[instruction_pointer_++] % 8;
+                break;
+            case jnz:
+                if (a_) {
+                    instruction_pointer_ = program_[instruction_pointer_];
+                }
+                else {
+                    instruction_pointer_++;
+                }
+                break;
+            case bxc:
+                instruction_pointer_++;
+                b_ ^= c_;
+                break;
+            case out:
+                if (output_.size()) {
+                    output_ += ",";
+                }
+                output_ += std::to_string(combo() % 8);
+                break;
+            case bdv:
+                b_ = a_ / 1 << combo();
+                break;
+            case cdv:
+                c_ = a_ / 1 << combo();
+                break;
+            }
+        }
+
+        return output_;
+    }
+
+    int computer::combo() {
+        auto op = program_[instruction_pointer_++];
         switch (op) {
         case 4:
-            return comp.a;
+            return a_;
         case 5:
-            return comp.b;
+            return b_;
         case 6:
-            return comp.c;
+            return c_;
         default:
             return op;
         }
