@@ -62,7 +62,7 @@ namespace day17 {
                 b_ ^= program_[instruction_pointer_++];
                 break;
             case bst:
-                b_ = combo() % 8;
+                b_ = combo() & 7;
                 break;
             case jnz:
                 if (a_) {
@@ -80,7 +80,7 @@ namespace day17 {
                 if (output_.size()) {
                     output_ += ",";
                 }
-                output_ += std::to_string(combo() % 8);
+                output_ += std::to_string(combo() & 7);
                 break;
             case bdv:
                 b_ = a_ >> combo();
