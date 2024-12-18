@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "day17.h"
 #include "../../lib/advent.h"
 
@@ -27,8 +29,24 @@ namespace day17 {
     }
 
     std::int64_t part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        const auto program = parse(rows).program();
+
+        data_t quines{{0}};
+        for (int i = program.size() - 1; i >= 0; i--) {
+            data_t new_quines;
+            for (const auto& quine : quines) {
+                for (std::int64_t j = 0; j < 8; j++) {
+                    auto new_quine = 8 * quine + j;
+                    auto comp = computer(new_quine, 0, 0, program);
+                    if (comp.run()[0] == program[i]) {
+                        new_quines.push_back(new_quine);
+                    }
+                }
+            }
+            quines = new_quines;
+        }
+
+        return *std::min_element(quines.cbegin(), quines.cend());
     }
 
     computer parse(const std::vector<std::string>& rows) {
@@ -40,7 +58,7 @@ namespace day17 {
         };
     }
 
-    computer::computer(std::int64_t a, std::int64_t b, std::int64_t c, const std::vector<std::int64_t>& program) :
+    computer::computer(std::int64_t a, std::int64_t b, std::int64_t c, const data_t& program) :
         a_{a},
         b_{b},
         c_{c},
@@ -61,7 +79,7 @@ namespace day17 {
         return c_;
     }
 
-    std::vector<std::int64_t> computer::run() {
+    data_t computer::run() {
         while (instruction_pointer_ < static_cast<std::int64_t>(program_.size())) {
             switch (program_[instruction_pointer_++]) {
             case adv:
@@ -98,6 +116,10 @@ namespace day17 {
         }
 
         return output_;
+    }
+
+    const data_t computer::program() const {
+        return program_;
     }
 
     std::int64_t computer::combo() {
