@@ -12,33 +12,48 @@ namespace day17 {
     constexpr int cdv = 7;
 
     std::string part1(const std::vector<std::string>& rows) {
-        computer = { advent::ints(rows[0])[0], advent::ints(rows[1])[0],advent::ints(rows[2])[0] };
+        computer comp = { advent::ints(rows[0])[0], advent::ints(rows[1])[0],advent::ints(rows[2])[0] };
         const auto& program = advent::ints(rows[4]);
         int index = 0;
+        std::string result{};
 
         while (index < static_cast<int>(program.size())) {
-            switch (index) {
+            switch (program[index++]) {
             case adv:
-
+                comp.a /= 1 << combo(comp, program[index++]);
                 break;
             case bxl:
+                comp.b ^= program[index++];
                 break;
             case bst:
+                comp.b = program[index++] % 8;
                 break;
             case jnz:
+                if (comp.a) {
+                    index = program[index];
+                }
+                else {
+                    index++;
+                }
                 break;
             case bxc:
+                index++;
+                comp.b ^= comp.c;
                 break;
             case out:
+                if (result.size()) {
+                    result += ",";
+                }
+                result += std::to_string(combo(comp, program[index++]) % 8);
                 break;
             case bdv:
+                comp.b = comp.a / 1 << combo(comp, program[index++]);
                 break;
             case cdv:
+                comp.c = comp.a / 1 << combo(comp, program[index++]);
                 break;
             }
         }
-
-        std::string result{};
 
         return result;
     }
@@ -49,23 +64,16 @@ namespace day17 {
     }
 
     int combo(const computer& comp, int op) {
-        if (op < 4) {
+        switch (op) {
+        case 4:
+            return comp.a;
+        case 5:
+            return comp.b;
+        case 6:
+            return comp.c;
+        default:
             return op;
         }
-
-        if (op == 4) {
-            return comp.a;
-        }
-
-        if (op == 5) {
-            return comp.b;
-        }
-
-        if (op == 6) {
-            return comp.c;
-        }
-
-        throw std::domain_error("Illegal combo operand");
     }
 }
 
