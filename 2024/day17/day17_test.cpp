@@ -51,3 +51,17 @@ TEST_CASE("example 5") {
 
     REQUIRE(comp.b() == 44354);
 }
+
+TEST_CASE("bdv") {
+    auto comp = day17::computer(10, 0, 0, {6, 2});
+    comp.run();
+
+    REQUIRE(comp.b() == 2);
+}
+
+TEST_CASE("cdv") {
+    auto comp = day17::computer(8, 1, 0, {7, 5});
+    comp.run();
+
+    REQUIRE(comp.c() == 4);
+}

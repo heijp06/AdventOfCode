@@ -74,10 +74,10 @@ namespace day17 {
                 output_ += std::to_string(combo() % 8);
                 break;
             case bdv:
-                b_ = a_ / 1 << combo();
+                b_ = a_ / (1 << combo());
                 break;
             case cdv:
-                c_ = a_ / 1 << combo();
+                c_ = a_ / (1 << combo());
                 break;
             }
         }
