@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <map>
 
 #include "day19.h"
@@ -20,12 +21,12 @@ namespace day19 {
         return result;
     }
 
-    int part2(const std::vector<std::string>& rows) {
+    std::int64_t part2(const std::vector<std::string>& rows) {
         const auto& towels = advent::split(rows[0], ", ");
         const auto& towel_codes = get_towel_codes(towels);
         const auto& designs = std::vector<std::string>(rows.cbegin() + 2, rows.cend());
 
-        int result = 0;
+        std::int64_t result = 0;
 
         for (const auto& design : designs) {
             result += create_design(design, towel_codes);
@@ -34,12 +35,12 @@ namespace day19 {
         return result;
     }
 
-    int day19::create_design(const std::string& design, const std::vector<bool>& towel_codes) {
+    std::int64_t day19::create_design(const std::string& design, const std::vector<bool>& towel_codes) {
         auto size = static_cast<int>(design.size());
-        std::map<int, int> indices{{-1, 1}};
-        auto found{0};
+        std::map<int, std::int64_t> indices{{-1, 1}};
+        int64_t found{0};
         while (!indices.empty()) {
-            std::map<int, int> new_indices;
+            std::map<int, std::int64_t> new_indices;
             for (const auto& [index, count] : indices) {
                 int towel_code = 0;
                 for (int offset = 1; offset <= 8; offset++) {
