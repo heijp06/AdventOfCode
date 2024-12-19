@@ -50,7 +50,15 @@ TEST_CASE("part1 maze 2") {
     REQUIRE(day16::part1(maze2) == 11048);
 }
 
-TEST_CASE("small") {
+TEST_CASE("part2 maze 1") {
+    REQUIRE(day16::part2(maze1) == 45);
+}
+
+TEST_CASE("part2 maze 2") {
+    REQUIRE(day16::part2(maze2) == 64);
+}
+
+TEST_CASE("small part 1") {
     std::vector<std::string> maze{
         "#####",
         "#..E#",
@@ -59,4 +67,15 @@ TEST_CASE("small") {
     };
 
     REQUIRE(day16::part1(maze) == 2003);
+}
+
+TEST_CASE("small part 2") {
+    std::vector<std::string> maze{
+        "#####",
+        "#..E#",
+        "#S.##",
+        "#####",
+    };
+
+    REQUIRE(day16::part2(maze) == 5);
 }
