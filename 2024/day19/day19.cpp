@@ -1,3 +1,5 @@
+#include <map>
+
 #include "day19.h"
 #include "../../lib/advent.h"
 
@@ -25,11 +27,11 @@ namespace day19 {
 
     int day19::create_design(const std::string& design, const std::vector<bool>& towel_codes) {
         auto size = static_cast<int>(design.size());
-        auto indices = std::vector<int>({-1});
+        std::map<int, int> indices{{-1, 1}};
         auto found{0};
         while (!indices.empty()) {
-            std::vector<int> new_indices;
-            for (const int index : indices) {
+            std::map<int, int> new_indices;
+            for (const auto& [index, count] : indices) {
                 int towel_code = 0;
                 for (int offset = 1; offset <= 8; offset++) {
                     auto new_index = index + offset;
@@ -39,10 +41,10 @@ namespace day19 {
                     towel_code = 6 * towel_code + get_color_code(design[new_index]);
                     if (towel_codes[towel_code]) {
                         if (new_index == size - 1) {
-                            found++;
+                            found += count;
                         }
                         else {
-                            new_indices.push_back(new_index);
+                            new_indices[new_index] += count;
                         }
                     }
                 }
