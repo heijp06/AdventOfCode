@@ -18,6 +18,7 @@ namespace day16 {
         auto min_cost{2001 * grid.get_height() * grid.get_width()};
         reindeer first = {start, advent::direction::right(), {start}};
         std::map<reindeer, int> costs { {first, 0}};
+        std::map<int, std::vector<reindeer>> reindeer_per_cost;
         queue_t queue;
         queue.push(std::make_pair(costs[first] + calculate_heuristic(first, end), first));
 
@@ -30,7 +31,10 @@ namespace day16 {
 
             auto next_position = current.position + current.direction;
             if (next_position == end) {
-                min_cost = std::min(min_cost, costs[current] + 1);
+                auto cost = costs[current] + 1;
+                current.trail.push_back(end);
+                reindeer_per_cost[cost].push_back(current);
+                min_cost = std::min(min_cost, cost);
                 continue;
             }
 
