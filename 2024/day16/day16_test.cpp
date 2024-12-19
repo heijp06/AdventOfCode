@@ -4,7 +4,7 @@
 #include "../../lib/catch.hpp"
 #include "day16.h"
 
-std::vector<std::string> maze1{
+std::vector<std::string> maze1 {
     "###############",
     "#.......#....E#",
     "#.#.###.#.###.#",
@@ -22,7 +22,7 @@ std::vector<std::string> maze1{
     "###############"
 };
 
-std::vector<std::string> maze2{
+std::vector<std::string> maze2 {
     "#################",
     "#...#...#...#..E#",
     "#.#.#.#.#.#.#.#.#",
@@ -48,4 +48,15 @@ TEST_CASE("part1 maze 1") {
 
 TEST_CASE("part1 maze 2") {
     REQUIRE(day16::part1(maze2) == 11048);
+}
+
+TEST_CASE("small") {
+    std::vector<std::string> maze{
+        "####",
+        "#.E#",
+        "#S.#",
+        "####",
+    };
+
+    REQUIRE(day16::part1(maze) == 1002);
 }
