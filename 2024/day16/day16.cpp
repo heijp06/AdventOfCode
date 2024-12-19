@@ -16,7 +16,7 @@ namespace day16 {
         const auto& end = grid.find('E');
 
         auto min_cost{2001 * grid.get_height() * grid.get_width()};
-        reindeer first = {start, advent::direction::right()};
+        reindeer first = {start, advent::direction::right(), {start}};
         std::map<reindeer, int> costs { {first, 0}};
         queue_t queue;
         queue.push(std::make_pair(costs[first] + calculate_heuristic(first, end), first));
@@ -24,7 +24,7 @@ namespace day16 {
         auto counter{0};
         size_t queue_size{0};
 
-        while (!queue.empty() && queue.top().first < min_cost) {
+        while (!queue.empty() && queue.top().first <= min_cost) {
             auto current = queue.top().second;
             queue.pop();
 
@@ -37,6 +37,8 @@ namespace day16 {
             if (grid[next_position] != '#') {
                 reindeer next = { next_position, current.direction };
                 if (!costs.count(next) || costs[next] > costs[current] + 1) {
+                    next.trail = std::vector<advent::coord>(current.trail);
+                    next.trail.push_back(next.position);
                     costs[next] = costs[current] + 1;
                     queue.push(std::make_pair(costs[next] + calculate_heuristic(next, end), next));
                 }
@@ -45,6 +47,7 @@ namespace day16 {
             if (grid[current.position + current.direction.turn_left()] != '#') {
                 reindeer next = { current.position, current.direction.turn_left() };
                 if (!costs.count(next) || costs[next] > costs[current] + 1000) {
+                    next.trail = std::vector<advent::coord>(current.trail);
                     costs[next] = costs[current] + 1000;
                     queue.push(std::make_pair(costs[next] + calculate_heuristic(next, end), next));
                 }
@@ -53,6 +56,7 @@ namespace day16 {
             if (grid[current.position + current.direction.turn_right()] != '#') {
                 reindeer next = { current.position, current.direction.turn_right() };
                 if (!costs.count(next) || costs[next] > costs[current] + 1000) {
+                    next.trail = std::vector<advent::coord>(current.trail);
                     costs[next] = costs[current] + 1000;
                     queue.push(std::make_pair(costs[next] + calculate_heuristic(next, end), next));
                 }

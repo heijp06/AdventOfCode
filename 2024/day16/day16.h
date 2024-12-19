@@ -9,6 +9,7 @@ namespace day16 {
     struct reindeer {
         advent::coord position;
         advent::direction direction;
+        std::vector<advent::coord> trail;
 
         friend bool operator<(const reindeer& left, const reindeer& right) {
             if (left.position != right.position) {
