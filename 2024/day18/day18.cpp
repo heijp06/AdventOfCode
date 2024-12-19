@@ -1,7 +1,7 @@
 #include "day18.h"
 
 namespace day18 {
-    int part1(const std::vector<std::string>& rows) {
+    int part1(const std::vector<std::string>& rows, int size, int nanoseconds) {
         (void)rows;
         return -1;
     }
