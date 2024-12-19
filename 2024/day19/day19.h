@@ -6,4 +6,7 @@
 namespace day19 {
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
+
+    std::vector<bool> get_towel_codes(const std::vector<std::string>& towels);
+    int get_color_code(const char c);
 }

@@ -6,18 +6,8 @@ namespace day19 {
 
     int part1(const std::vector<std::string>& rows) {
         const auto& towels = advent::split(rows[0], ", ");
+        const auto& towel_codes = get_towel_codes(towels);
         const auto& designs = std::vector<std::string>(rows.cbegin() + 2, rows.cend());
-        const std::string& color_codes = "wubrg";
-
-        auto table = std::vector<bool>(six_pow_eight);
-        for (const auto& towel : towels) {
-            int towel_code = 0;
-            for (char c : towel) {
-                int color_code = static_cast<int>(color_codes.find(c)) + 1;
-                towel_code = towel_code * 6 + color_code;
-            }
-            table[towel_code] = true;
-        }
 
         return -1;
     }
@@ -25,5 +15,23 @@ namespace day19 {
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    std::vector<bool> get_towel_codes(const std::vector<std::string>& towels) {
+        auto towel_codes = std::vector<bool>(six_pow_eight);
+        for (const auto& towel : towels) {
+            int towel_code = 0;
+            for (char c : towel) {
+                int color_code = get_color_code(c);
+                towel_code = towel_code * 6 + color_code;
+            }
+            towel_codes[towel_code] = true;
+        }
+        return towel_codes;
+    }
+
+    int get_color_code(const char c) {
+        const std::string& color_codes = "wubrg";
+        return static_cast<int>(color_codes.find(c)) + 1;
     }
 }
