@@ -9,6 +9,7 @@ namespace advent {
     std::vector<std::string> get_rows(int year, int day);
     std::string get_data_path(int year, int day);
     std::vector<int> ints(const std::string& row);
+    std::vector<std::string> split(const std::string& text, const std::string& delimiter);
 
     // Get all the integers of type T from a string.
     template<typename T>

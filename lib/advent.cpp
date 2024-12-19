@@ -54,6 +54,22 @@ namespace advent {
         return ints<int>(row);
     }
 
+    std::vector<std::string> split(const std::string& text, const std::string& delimiter) {
+        std::vector<std::string> result;
+        size_t pos{0};
+
+        while (pos < text.size()) {
+            auto new_pos = delimiter.empty() ? pos + 1 : text.find(delimiter, pos);
+            if (new_pos == std::string::npos) {
+                new_pos = text.size();
+            }
+            result.push_back(text.substr(pos, new_pos - pos));
+            pos = new_pos + delimiter.size();
+        }
+
+        return result;
+    }
+
     grid::grid(const std::vector<std::string>& rows) :
         rows_{rows},
         height_{static_cast<int>(rows.size())},

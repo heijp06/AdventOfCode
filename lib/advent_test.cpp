@@ -1,5 +1,6 @@
-#include <vector>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "catch.hpp"
 #include "advent.h"
@@ -12,6 +13,12 @@ struct test_data_ints {
 struct test_data_longs {
     std::string row;
     std::vector<int64_t> ints;
+};
+
+struct test_data_split {
+    std::string text;
+    std::string delimiter;
+    std::vector<std::string> expected;
 };
 
 TEST_CASE("changes") {
@@ -124,6 +131,20 @@ TEST_CASE("coord + direction") {
     position += advent::direction::up();
 
     REQUIRE(position == advent::coord{0, 1});
+}
+
+TEST_CASE("split") {
+    const auto item = GENERATE(
+        test_data_split{"", "", {}},
+        test_data_split{"", ",", {}},
+        test_data_split{"a", "", {"a"}},
+        test_data_split{"abc", "", {"a", "b", "c"}},
+        test_data_split{"a,b,c", ",", {"a", "b", "c"}},
+        test_data_split{"axxxbxxxc", "xx", {"a", "xb", "xc"}},
+        test_data_split{"axxxxbxxxxxc", "xx", {"a", "", "b", "", "xc"}}
+    );
+
+    REQUIRE(advent::split(item.text, item.delimiter) == item.expected);
 }
 
 //TEST_CASE("direction.turn") {
