@@ -44,26 +44,27 @@ namespace day16 {
             }
 
             if (grid[next_position] != '#') {
-                reindeer next = {next_position, current.direction};
+                auto trail = std::vector<advent::coord>(current.trail);
+                trail.push_back(next_position);
+                reindeer next = {next_position, current.direction, trail};
                 if (!costs.count(next) || costs[next] >= costs[current] + 1) {
-                    next.trail = std::vector<advent::coord>(current.trail);
-                    next.trail.push_back(next.position);
                     costs[next] = costs[current] + 1;
                     queue.push(std::make_pair(costs[next] + calculate_heuristic(next, end), next));
                 }
             }
 
             if (grid[current.position + current.direction.turn_left()] != '#') {
-                reindeer next = {current.position, current.direction.turn_left()};
+                auto trail = std::vector<advent::coord>(current.trail);
+                reindeer next = {current.position, current.direction.turn_left(), trail};
                 if (!costs.count(next) || costs[next] >= costs[current] + 1000) {
-                    next.trail = std::vector<advent::coord>(current.trail);
                     costs[next] = costs[current] + 1000;
                     queue.push(std::make_pair(costs[next] + calculate_heuristic(next, end), next));
                 }
             }
 
             if (grid[current.position + current.direction.turn_right()] != '#') {
-                reindeer next = {current.position, current.direction.turn_right()};
+                auto trail = std::vector<advent::coord>(current.trail);
+                reindeer next = {current.position, current.direction.turn_right(), trail};
                 if (!costs.count(next) || costs[next] >= costs[current] + 1000) {
                     next.trail = std::vector<advent::coord>(current.trail);
                     costs[next] = costs[current] + 1000;
