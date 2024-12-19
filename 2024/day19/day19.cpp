@@ -21,8 +21,17 @@ namespace day19 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        const auto& towels = advent::split(rows[0], ", ");
+        const auto& towel_codes = get_towel_codes(towels);
+        const auto& designs = std::vector<std::string>(rows.cbegin() + 2, rows.cend());
+
+        int result = 0;
+
+        for (const auto& design : designs) {
+            result += create_design(design, towel_codes);
+        }
+
+        return result;
     }
 
     int day19::create_design(const std::string& design, const std::vector<bool>& towel_codes) {
