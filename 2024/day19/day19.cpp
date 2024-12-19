@@ -35,7 +35,7 @@ namespace day19 {
         return result;
     }
 
-    std::int64_t day19::create_design(const std::string& design, const std::vector<bool>& towel_codes) {
+    std::int64_t create_design(const std::string& design, const std::vector<bool>& towel_codes) {
         auto size = static_cast<int>(design.size());
         std::map<int, std::int64_t> indices{{-1, 1}};
         int64_t found{0};
