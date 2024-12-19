@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "day16.h"
+#include <iostream>
 
 namespace day16 {
     using queue_t = std::priority_queue<std::pair<int, reindeer>, std::vector<std::pair<int, reindeer>>, std::greater<>>; 
@@ -19,6 +20,9 @@ namespace day16 {
         std::map<reindeer, int> costs { {first, 0}};
         queue_t queue;
         queue.push(std::make_pair(costs[first] + calculate_heuristic(first, end), first));
+
+        auto counter{0};
+        size_t queue_size{0};
 
         while (!queue.empty() && queue.top().first < min_cost) {
             auto current = queue.top().second;
@@ -53,7 +57,12 @@ namespace day16 {
                     queue.push(std::make_pair(costs[next] + calculate_heuristic(next, end), next));
                 }
             }
+
+            counter++;
+            queue_size = std::max(queue_size, queue.size());
         }
+
+        std::cout << counter << ", " << queue_size << std::endl;
         
         return min_cost;
     }
