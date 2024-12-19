@@ -1,5 +1,3 @@
-#include <set>
-
 #include "day19.h"
 #include "../../lib/advent.h"
 
