@@ -60,9 +60,22 @@ namespace day18 {
         return min_cost;
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+    std::string part2(const std::vector<std::string>& rows, int size) {
+        auto min{0};
+        auto max{static_cast<int>(rows.size()) - 1};
+        auto not_found{(size + 1) * (size + 1)};
+
+        while (min < max - 1) {
+            auto mid{(min + max) / 2};
+            if (part1(rows, size, mid) == not_found) {
+                max = mid;
+            }
+            else {
+                min = mid;
+            }
+        }
+
+        return rows[min];
     }
 
     int heuristic(const state& s, int size) {
