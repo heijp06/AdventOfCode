@@ -1,7 +1,13 @@
+#include <cmath>
+#include <queue>
+#include <set>
+#include <utility>
+
 #include "day18.h"
-#include "../../lib/advent.h"
 
 namespace day18 {
+    using queue_t = std::priority_queue<std::pair<int, state>, std::vector<std::pair<int, state>>, std::greater<>>; 
+
     int part1(const std::vector<std::string>& rows, int size, int nanoseconds) {
         std::vector<std::vector<int>> grid;
         for (int row = 0; row <= size; row++) {
@@ -13,11 +19,54 @@ namespace day18 {
             grid[coords[1]][coords[0]] = i + 1;
         }
 
-        return -1;
+        advent::coord start = {0,0};
+        advent::coord end = {size, size};
+        queue_t queue;
+        state start_state = {0, start};
+        queue.push(std::make_pair(heuristic(start_state, size), start_state));
+        std::set<advent::coord> seen{start};
+        auto min_cost = (size + 1) * (size + 1);
+
+        while (!queue.empty() && queue.top().first < min_cost) {
+            const auto current_state = queue.top().second;
+            queue.pop();
+            for (const auto& direction : advent::direction::nsew()) {
+                const auto& new_position = current_state.position + direction;
+                if (new_position.row < 0 || new_position.row > size ||
+                    new_position.column < 0 || new_position.column > size) {
+                    continue;
+                }
+
+                if (grid[new_position.row][new_position.column]) {
+                    continue;
+                }
+
+                if (seen.count(new_position)) {
+                    continue;
+                }
+
+                seen.insert(new_position);
+                state new_state = {current_state.cost + 1, new_position};
+
+                if (new_state.position == end) {
+                    min_cost = std::min(min_cost, new_state.cost);
+                    continue;
+                }
+
+                queue.push(std::make_pair(heuristic(new_state, size), new_state));
+            }
+        }
+
+        return min_cost;
     }
 
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    int heuristic(const state& s, int size) {
+        int manhattan = 2 * size - s.position.row - s.position.column;
+        return s.cost + manhattan;
     }
 }
