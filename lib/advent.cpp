@@ -14,10 +14,13 @@ namespace advent {
     std::vector<std::string> get_rows(int year, int day) {
         auto path{get_data_path(year, day)};
         std::vector<std::string> rows{};
-        std::string row;
         std::ifstream input{path};
 
         for (std::string row; getline(input, row); ) {
+            // Read files with Windows line endings correctly on Linux.
+            if (!row.empty() && row.back() == '\r') {
+                row.erase(row.length() - 1);
+            }
             rows.push_back(row);
         }
 
