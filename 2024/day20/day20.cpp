@@ -4,7 +4,6 @@
 #include "../../lib/advent.h"
 
 namespace day20 {
-    // 1374 too high.
     int part1(const std::vector<std::string>& rows, int min_cheat) {
         const auto& grid = advent::grid(rows);
         const auto& start = grid.find('S');
@@ -32,7 +31,7 @@ namespace day20 {
         for (const auto& [pos, timing] : timings) {
             for (const auto& direction : all_directions) {
                 auto shortcut = pos + 2 * direction;
-                if (timings.count(shortcut) && timings[shortcut] - timing >= min_cheat) {
+                if (timings.count(shortcut) && timings[shortcut] - timing - 2 >= min_cheat) {
                     result++;
                 }
             }
