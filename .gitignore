@@ -33,3 +33,5 @@ cmake_install.cmake
 ????_day??
 advent_test
 build/
+.vscode
+out.txt
