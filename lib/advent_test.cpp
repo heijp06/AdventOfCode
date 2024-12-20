@@ -133,6 +133,13 @@ TEST_CASE("coord + direction") {
     REQUIRE(position == advent::coord{0, 1});
 }
 
+//TEST_CASE("direction.turn") {
+//    REQUIRE(advent::direction.up().turn_left() == advent::direction::left());
+//    REQUIRE(advent::direction.up().turn_right() == advent::direction::right());
+//    REQUIRE(advent::direction.left().turn_left() == advent::direction::down());
+//    REQUIRE(advent::direction.left().turn_right() == advent::direction::up());
+//}
+
 TEST_CASE("split") {
     const auto item = GENERATE(
         test_data_split{"", "", {}},
@@ -146,10 +153,3 @@ TEST_CASE("split") {
 
     REQUIRE(advent::split(item.text, item.delimiter) == item.expected);
 }
-
-//TEST_CASE("direction.turn") {
-//    REQUIRE(advent::direction.up().turn_left() == advent::direction::left());
-//    REQUIRE(advent::direction.up().turn_right() == advent::direction::right());
-//    REQUIRE(advent::direction.left().turn_left() == advent::direction::down());
-//    REQUIRE(advent::direction.left().turn_right() == advent::direction::up());
-//}

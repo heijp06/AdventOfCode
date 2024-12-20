@@ -150,4 +150,24 @@ namespace advent {
     const direction direction::right() {
         return {0, 1};
     }
+
+    const direction direction::north() {
+        return up();
+    }
+
+    const direction direction::south() {
+        return down();
+    }
+
+    const direction direction::east() {
+        return right();
+    }
+
+    const direction direction::west() {
+        return left();
+    }
+
+    const std::vector<direction> direction::nsew() {
+        return std::vector<direction>{north(), south(), east(), west()};
+    }
 }
