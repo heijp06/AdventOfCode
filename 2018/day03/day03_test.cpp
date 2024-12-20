@@ -8,9 +8,5 @@ TEST_CASE("part1") {
         "#3 @ 5,5: 2x2"
     };
 
-    const auto expected = 4;
-    auto actual = day03::part1(rows);
-
-    // REQUIRE(actual == expected);
-    REQUIRE(actual == -1);
+    REQUIRE(day03::part1(rows) == 4);
 }
