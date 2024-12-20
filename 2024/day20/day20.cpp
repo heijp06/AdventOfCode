@@ -41,11 +41,9 @@ namespace day20 {
         std::set<std::pair<advent::coord, advent::coord>> cheats;
         for (const auto& [pos, timing] : timings) {
             for (int delta_row = -cheat_length; delta_row <= cheat_length; delta_row++) {
-                for (int delta_column = -cheat_length; delta_column <= cheat_length; delta_column++) {
+                auto remaining = cheat_length - std::abs(delta_row);
+                for (int delta_column = -remaining; delta_column <= remaining; delta_column++) {
                     auto manhattan = std::abs(delta_row) + std::abs(delta_column);
-                    if (manhattan > cheat_length) {
-                        continue;
-                    }
                     auto shortcut = pos + delta_row * advent::direction::down() + delta_column * advent::direction::right();
                     if (timings.count(shortcut) && timings[shortcut] - timing - manhattan >= min_cheat) {
                         cheats.insert(std::make_pair(pos, shortcut));
