@@ -44,6 +44,10 @@ namespace day20 {
     }
 
     size_t part2(const std::vector<std::string>& rows, int min_cheat) {
+        return solve(rows, min_cheat, 20);
+    }
+
+    size_t solve(const std::vector<std::string>& rows, int min_cheat, int cheat_length) {
         const auto& grid = advent::grid(rows);
         const auto& start = grid.find('S');
         const auto& end = grid.find('E');
