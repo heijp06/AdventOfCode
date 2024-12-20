@@ -51,6 +51,9 @@ namespace advent {
         friend bool operator>(const direction& l, const direction& r) {
             return l.delta_row == r.delta_row ? l.delta_column > r.delta_column : l.delta_row > r.delta_row;
         }
+        friend direction operator*(const int times, const direction& dir) {
+            return {dir.delta_row * times, dir.delta_column * times};
+        }
     };
 
     struct coord {
