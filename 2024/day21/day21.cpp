@@ -1,16 +1,17 @@
 #include <map>
 
 #include "day21.h"
+#include "../../lib/advent.h"
 
 namespace day21 {
     int part1(const std::vector<std::string>& rows) {
         auto result{0};
 
         for (const auto& row : rows) {
-            result += cost(row);
+            result += cost(row) * advent::ints(row)[0];
         }
 
-        return -1;
+        return result;
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -19,11 +20,22 @@ namespace day21 {
     }
 
     int cost(const std::string& code) {
-        for (const auto key : code) {
+        numeric_keypad numpad;
+        directional_keypad dirpad1;
+        directional_keypad dirpad2;
+        std::string result;
 
+        for (const char numkey : code) {
+            for (const char dirkey1 : numpad.next(numkey)) {
+                for (const char dirkey2 : dirpad1.next(dirkey1)) {
+                    for (const char dirkey3 : dirpad2.next(dirkey2)) {
+                        result += dirkey3;
+                    }
+                }
+            }
         }
 
-        return -1;
+        return static_cast<int>(result.size());
     }
 
     numeric_keypad::numeric_keypad() :
