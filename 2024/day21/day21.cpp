@@ -69,4 +69,49 @@ namespace day21 {
             return (key - '0' - 1) % 3;
         }
     }
+
+    directional_keypad::directional_keypad() :
+        current_{'A'} {
+    }
+
+    std::string directional_keypad::next(const char key) {
+        std::string result;
+
+        for (int r = row(current_); r > row(key); r--) {
+            result += 'v';
+        }
+
+        for (int c = column(current_); c < column(key); c++) {
+            result += '>';
+        }
+
+        for (int r = row(current_); r < row(key); r++) {
+            result += '^';
+        }
+
+        for (int c = column(current_); c > column(key); c--) {
+            result += '<';
+        }
+
+        result += 'A';
+        current_ = key;
+
+        return result;
+    }
+
+    int directional_keypad::row(const char key) const {
+        return key == '^' || key == 'A';
+    }
+
+    int directional_keypad::column(const char key) const {
+        switch (key) {
+        case '<':
+            return 0;
+        case '^':
+        case 'v':
+            return 1;
+        default:
+            return 2;
+        }
+    }
 }
