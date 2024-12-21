@@ -10,6 +10,11 @@ struct test_data_keypad {
     std::string expected;
 };
 
+struct test_data_cost {
+    std::string code;
+    int expected;
+};
+
 std::vector<std::string> rows{
     "029A",
     "980A",
@@ -76,4 +81,16 @@ TEST_CASE("directional_keypad") {
     pad.next(item.current);
 
     REQUIRE(pad.next(item.next) == item.expected);
+}
+
+TEST_CASE("cost") {
+    auto item = GENERATE(
+        test_data_cost{"029A", 68},
+        test_data_cost{"980A", 60},
+        test_data_cost{"179A", 68},
+        test_data_cost{"456A", 64},
+        test_data_cost{"379A", 64}
+    );
+
+    REQUIRE(day21::cost(item.code) == item.expected);
 }
