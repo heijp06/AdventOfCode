@@ -4,15 +4,26 @@
 #include "../../lib/catch.hpp"
 #include "day22.h"
 
-std::vector<std::string> rows{
-    "1",
-    "10",
-    "100",
-    "2024"
-};
-
 TEST_CASE("part1") {
+    std::vector<std::string> rows{
+        "1",
+        "10",
+        "100",
+        "2024"
+    };
+
     REQUIRE(day22::part1(rows) == 37327623);
+}
+
+TEST_CASE("part2") {
+    std::vector<std::string> rows{
+        "1",
+        "2",
+        "3",
+        "2024"
+    };
+
+    REQUIRE(day22::part2(rows) == 23);
 }
 
 TEST_CASE("next") {
