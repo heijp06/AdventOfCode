@@ -27,8 +27,8 @@ namespace std {
     template<>
     struct hash<day22::Key> {
         std::size_t operator()(const day22::Key& k) const {
-            return 18 * 18 * 18 * (k.number1 + 9) + 18 * 18 * (k.number2 + 9)
-                + 18 * (k.number3 + 9) + (k.number4 + 9);
+            return 19 * 19 * 19 * (k.number1 + 9) + 19 * 19 * (k.number2 + 9)
+                + 19 * (k.number3 + 9) + (k.number4 + 9);
         }
     };
 }
