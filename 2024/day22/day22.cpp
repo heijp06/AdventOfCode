@@ -1,5 +1,4 @@
 #include <cmath>
-#include <cstdint>
 #include <unordered_map>
 
 #include "day22.h"
