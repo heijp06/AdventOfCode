@@ -1,28 +1,94 @@
-029A: <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
-<<	A	1
-<A	>>^A	2
-<^	>^A	1
-<v	>A	1
->>	A	1
->A	^A	2
->^	<^A	2
-A<	<v<A	3
-A>	vA	4
-AA	A	3
-Av	<vA	2
-^A	>A	3
-v<	<A	1
-vA	>^A	2
+029A: <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A8
+<<	A
+<A	>>^A
+<^	>^A
+<v	>A
+>>	A
+>A	^A
+>^	<^A
+A<	<v<A
+A>	vA
+AA	A
+Av	<vA
+^A	>A
+v<	<A
+vA	>^A
 
-980A: <v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A
-<v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A
+980A: <v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A	0
+A^	<A
+v<	<A
+>^	<^A
+A<	<v<A
+Av	<vA
+<A	>>^A
+<v	>A
+^A	>A
+vA	>^A
+<<	A
+>>	A
+AA	A
+>A	^A
+A>	vA
 
-179A: <v<A>>^A<vA<A>>^AAvAA<^A>A<v<A>>^AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
-<v<A>>^A<vA<A>>^AAvAA<^A>A<v<A>>^AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
+179A: <v<A>>^A<vA<A>>^AAvAA<^A>A<v<A>>^AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A8
+<A	>>^A
+<v	>A
+>>	A
+>A	^A
+>^	<^A
+A<	<v<A
+A>	vA
+AA	A
+A^	<A
+Av	<vA
+^A	>A
+v<	<A
+vA	>^A
 
-456A: <v<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^A<A>A<vA>^A<A>A<v<A>A>^AAvA<^A>A
-<v<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^A<A>A<vA>^A<A>A<v<A>A>^AAvA<^A>A
+456A: <v<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^A<A>A<vA>^A<A>A<v<A>A>^AAvA<^A>A	4
+<A	>>^A
+<v	>A
+>>	A
+>^	<^A
+A<	<v<A
+A>	vA
+AA	A
+A^	<A
+Av	<vA
+^A	>A
+v<	<A
+vA	>^A
 
-379A: <v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
-<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
+379A: <v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A	4
+<<	A
+<A	>>^A
+<v	>A
+>A	^A
+>^	<^A
+A<	<v<A
+A>	vA
+AA	A
+A^	<A
+Av	<vA
+^A	>A
+v<	<A
+vA	>^A
+
+================================================================================
+
+<<	A
+<A	>>^A
+<^	>^A
+<v	>A
+>>	A
+>A	^A
+>^	<^A
+A<	<v<A
+A>	vA
+AA	A
+A^	<A
+Av	<vA
+^A	>A
+v<	<A
+vA	>^A
 
