@@ -1,27 +1,28 @@
-#include <cstdint>
 #include <utility>
 
 #include "day21.h"
 
 namespace day21 {
-    int part1(const std::vector<std::string>& rows) {
+    std::int64_t part1(const std::vector<std::string>& rows) {
+        std::int64_t result{0};
         const auto& directional_moves = get_directional_moves();
 
         for (const auto& row : rows) {
-            for (size_t i = 0; i < row.size() - 1; i++) {
+            const std::string& numerical_move = "A" + row;
+            for (size_t i = 0; i < numerical_move.size() - 1; i++) {
                 std::int64_t min_moves{-1};
-                for (const auto& move : get_numerical_moves(row[i], row[i + 1])) {
+                for (const auto& move : get_numerical_moves(numerical_move[i], numerical_move[i + 1])) {
                     for (const auto& mapping : directional_moves) {
-                        // call func set new min.
+                        const auto moves = get_moves(move, mapping, 2);
                     }
                 }
             }
         }
 
-        return -1;
+        return result;
     }
 
-    int part2(const std::vector<std::string>& rows) {
+    std::int64_t part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
     }
@@ -106,5 +107,35 @@ namespace day21 {
         }
 
         return {3 - (c - '0' + 2) / 3, (c - '0' + 2) % 3};
+    }
+
+    std::int64_t get_moves(const std::string& move, const std::map<std::string, std::string>& mapping, int count) {
+        std::map<std::string, std::int64_t> key_strokes;
+        //std::string first_move = "A" + move.substr(0, 1);
+        //key_strokes[first_move] = 1;
+        std::string actual_move = "A" + move.substr(0, 1);
+        for (size_t i = 0; i < actual_move.size() - 1; i++) {
+            key_strokes[actual_move.substr(i, 2)]++;
+        }
+
+        for (size_t i = 0; i < count; i++) {
+            std::map<std::string, std::int64_t> new_key_strokes;
+            //first_move = ("A" + mapping.at(first_move)).substr(0, 2);
+            //new_key_strokes[first_move] = 1;
+            for (const auto& [key_stroke, count] : key_strokes) {
+                const auto& directional_move = mapping.at(key_stroke);
+                for (size_t j = 0; j < directional_move.size() - 1; j++) {
+                    new_key_strokes[directional_move.substr(j, 2)] += count;
+                }
+            }
+            key_strokes = new_key_strokes;
+        }
+
+        std::int64_t result{0};
+        for (const auto& [_, count] : key_strokes) {
+            result += count;
+        }
+
+        return result;
     }
 }
