@@ -116,5 +116,18 @@ namespace advent {
         const int height_;
         const int width_;
     };
-}
 
+    template<typename Iterator>
+    std::string join(Iterator begin, Iterator end, std::string delimiter) {
+        std::string result;
+
+        for (auto& it = begin; it != end; ++it) {
+            if (result.size()) {
+                result += delimiter;
+            }
+            result += *it;
+        }
+
+        return result;
+    }
+}
