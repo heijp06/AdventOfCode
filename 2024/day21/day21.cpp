@@ -131,7 +131,7 @@ namespace day21 {
             key_strokes[std::string("AA")]++;
         }
 
-        for (size_t i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             std::map<std::string, std::int64_t> new_key_strokes;
             for (const auto& [key_stroke, count] : key_strokes) {
                 const auto& directional_move = mapping.at(key_stroke);
