@@ -1,12 +1,12 @@
 #include <algorithm>
-#include <unordered_map>
 
 #include "day23.h"
 #include "../../lib/advent.h"
 
 namespace day23 {
     int part1(const std::vector<std::string>& rows) {
-        const auto& triples = get_triples(rows);
+        const auto& pairs = get_pairs(rows);
+        const auto& triples = get_triples(pairs);
 
         auto counter{0};
         for (const auto& triple : triples) {
@@ -21,19 +21,12 @@ namespace day23 {
         return counter;
     }
 
-     std::vector<std::vector<std::string>> get_triples(const std::vector<std::string>& rows) {
-        std::unordered_map<std::string, std::vector<std::string>> pairs;
+    int part2(const std::vector<std::string>& rows) {
+        (void)rows;
+        return -1;
+    }
 
-        for (const auto& row : rows) {
-            const auto& pair = advent::split(row, "-");
-            if (pair[0] < pair[1]) {
-                pairs[pair[0]].push_back(pair[1]);
-            }
-            else {
-                pairs[pair[1]].push_back(pair[0]);
-            }
-        }
-
+    std::vector<std::vector<std::string>> get_triples(std::unordered_map<std::string, std::vector<std::string>> pairs) {
         std::vector<std::vector<std::string>> triples;
 
         for (const auto& [value1, values1] : pairs) {
@@ -53,8 +46,19 @@ namespace day23 {
         return triples;
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+    std::unordered_map<std::string, std::vector<std::string>> get_pairs(const std::vector<std::string>& rows) {
+        std::unordered_map<std::string, std::vector<std::string>> pairs;
+
+        for (const auto& row : rows) {
+            const auto& pair = advent::split(row, "-");
+            if (pair[0] < pair[1]) {
+                pairs[pair[0]].push_back(pair[1]);
+            }
+            else {
+                pairs[pair[1]].push_back(pair[0]);
+            }
+        }
+
+        return pairs;
     }
 }
