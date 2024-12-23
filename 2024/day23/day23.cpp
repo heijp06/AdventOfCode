@@ -29,7 +29,7 @@ namespace day23 {
         while (true) {
             std::vector<std::vector<std::string>> new_lan_parties;
             for (const auto& lan_party : lan_parties) {
-                const auto& first_member = *(lan_party.cbegin());
+                const auto& first_member = lan_party[0];
                 for (const auto& new_member : pairs.at(first_member)) {
                     // Check if new member is really new
                     if (std::find(lan_party.cbegin(), lan_party.cend(), new_member) != lan_party.cend()) {
@@ -37,7 +37,7 @@ namespace day23 {
                     }
 
                     // Only add at the end to prevent duplicates.
-                    if (*(lan_party.crbegin()) > new_member) {
+                    if (lan_party.back() > new_member) {
                         continue;
                     }
 
@@ -86,20 +86,12 @@ namespace day23 {
                     throw std::domain_error("Not found!");
                 }
 
-                std::string result;
-                const auto& lan_party = *(lan_parties.cbegin());
-                for (const auto& member : lan_party) {
-                    if (result.size()) {
-                        result += ",";
-                    }
-                    result += member;
-                }
-                return result;
+                return advent::join(lan_parties[0].cbegin(), lan_parties[0].cend(), ",");
             }
             lan_parties = new_lan_parties;
         }
 
-        throw std::domain_error("Not found!");
+        throw std::domain_error("You should not be here...");
     }
 
     std::vector<std::vector<std::string>> get_triples(std::unordered_map<std::string, std::vector<std::string>> pairs) {
