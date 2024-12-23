@@ -24,23 +24,20 @@ namespace day23 {
 
     std::string part2(const std::vector<std::string>& rows) {
         const auto& pairs = get_pairs(rows);
-        const auto& triples = get_triples(pairs);
-        auto lan_parties = std::set<std::set<std::string>>(triples.cbegin(), triples.cend());
+        auto lan_parties = get_triples(pairs);
 
         while (true) {
-            std::set<std::set<std::string>> new_lan_parties;
+            std::vector<std::vector<std::string>> new_lan_parties;
             for (const auto& lan_party : lan_parties) {
                 const auto& first_member = *(lan_party.cbegin());
                 for (const auto& new_member : pairs.at(first_member)) {
                     // Check if new member is really new
-                    if (lan_party.count(new_member)) {
+                    if (std::find(lan_party.cbegin(), lan_party.cend(), new_member) != lan_party.cend()) {
                         continue;
                     }
 
-                    // Check if new lan party is already found
-                    auto party = std::set<std::string>{new_member};
-                    party.insert(lan_party.cbegin(), lan_party.cend());
-                    if (new_lan_parties.count(party)) {
+                    // Only add at the end to prevent duplicates.
+                    if (*(lan_party.crbegin()) > new_member) {
                         continue;
                     }
 
@@ -78,9 +75,9 @@ namespace day23 {
 
                     if (found) {
                         // A true friend! Add it to the party.
-                        auto new_lan_party = std::set<std::string>({new_member});
-                        new_lan_party.insert(lan_party.cbegin(), lan_party.cend());
-                        new_lan_parties.insert(new_lan_party);
+                        auto new_lan_party = std::vector<std::string>(lan_party);
+                        new_lan_party.push_back(new_member);
+                        new_lan_parties.push_back(new_lan_party);
                     }
                 }
             }
@@ -105,8 +102,8 @@ namespace day23 {
         throw std::domain_error("Not found!");
     }
 
-    std::vector<std::set<std::string>> get_triples(std::unordered_map<std::string, std::vector<std::string>> pairs) {
-        std::vector<std::set<std::string>> triples;
+    std::vector<std::vector<std::string>> get_triples(std::unordered_map<std::string, std::vector<std::string>> pairs) {
+        std::vector<std::vector<std::string>> triples;
 
         for (const auto& [value1, values1] : pairs) {
             for (const auto& value2 : values1) {
