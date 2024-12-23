@@ -14,3 +14,7 @@ std::vector<std::string> rows{
 TEST_CASE("part1") {
     REQUIRE(day23::part1(rows) == 7);
 }
+
+TEST_CASE("part2") {
+    REQUIRE(day23::part2(rows) == "co,de,ka,ta");
+}

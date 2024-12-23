@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <algorithm>
 
 #include "day23.h"
@@ -21,12 +22,13 @@ namespace day23 {
         return counter;
     }
 
-    int part2(const std::vector<std::string>& rows) {
+    std::string part2(const std::vector<std::string>& rows) {
         const auto& pairs = get_pairs(rows);
-        const auto& lan_parties = get_triples(pairs);
+        const auto& triples = get_triples(pairs);
+        auto lan_parties = std::set<std::set<std::string>>(triples.cbegin(), triples.cend());
 
         while (true) {
-            std::vector<std::set<std::string>> new_lan_parties;
+            std::set<std::set<std::string>> new_lan_parties;
             for (const auto& lan_party : lan_parties) {
                 const auto& first_member = *(lan_party.cbegin());
                 for (const auto& new_member : pairs.at(first_member)) {
@@ -35,36 +37,72 @@ namespace day23 {
                         continue;
                     }
 
-                    for (auto& it = ++lan_party.cbegin(); it != lan_party.cend(); it++) {
+                    // Check if new lan party is already found
+                    auto party = std::set<std::string>{new_member};
+                    party.insert(lan_party.cbegin(), lan_party.cend());
+                    if (new_lan_parties.count(party)) {
+                        continue;
+                    }
+
+                    // All members of the lan party should be friends with the new member.
+                    auto found{true};
+                    for (auto it = ++lan_party.cbegin(); it != lan_party.cend(); it++) {
                         const auto& old_member = *it;
 
-                        // All members of the lan party should be friends with the new member.
                         if (new_member < old_member) {
+                            if (!pairs.count(new_member)) {
+                                found = false;
+                                break;
+                            }
                             const auto& new_friends = pairs.at(new_member);
                             if (std::find(
                                 new_friends.cbegin(), new_friends.cend(), old_member) == new_friends.cend()) {
-                                continue;
+                                found = false;
+                                break;
                             }
                         }
 
                         if (old_member < new_member) {
+                            if (!pairs.count(old_member)) {
+                                found = false;
+                                break;
+                            }
                             const auto& old_friends = pairs.at(old_member);
                             if (std::find(
                                 old_friends.cbegin(), old_friends.cend(), new_member) == old_friends.cend()) {
-                                continue;
+                                found = false;
+                                break;
                             }
                         }
+                    }
 
+                    if (found) {
                         // A true friend! Add it to the party.
                         auto new_lan_party = std::set<std::string>({new_member});
                         new_lan_party.insert(lan_party.cbegin(), lan_party.cend());
-                        new_lan_parties.push_back(new_lan_party);
+                        new_lan_parties.insert(new_lan_party);
                     }
                 }
             }
+            if (!new_lan_parties.size()) {
+                if (!lan_parties.size()) {
+                    throw std::domain_error("Not found!");
+                }
+
+                std::string result;
+                const auto& lan_party = *(lan_parties.cbegin());
+                for (const auto& member : lan_party) {
+                    if (result.size()) {
+                        result += ",";
+                    }
+                    result += member;
+                }
+                return result;
+            }
+            lan_parties = new_lan_parties;
         }
 
-        return -1;
+        throw std::domain_error("Not found!");
     }
 
     std::vector<std::set<std::string>> get_triples(std::unordered_map<std::string, std::vector<std::string>> pairs) {
