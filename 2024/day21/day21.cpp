@@ -4,6 +4,14 @@
 
 namespace day21 {
     std::int64_t part1(const std::vector<std::string>& rows) {
+        return solve(rows, 2);
+    }
+
+    std::int64_t part2(const std::vector<std::string>& rows) {
+        return solve(rows, 25);
+    }
+
+    int64_t solve(const std::vector<std::string>& rows, int times) {
         std::int64_t result{0};
         const auto& directional_moves = get_directional_moves();
 
@@ -14,7 +22,7 @@ namespace day21 {
                 std::int64_t min_moves{-1};
                 for (const auto& move : get_numerical_moves(numerical_move[i], numerical_move[i + 1])) {
                     for (const auto& mapping : directional_moves) {
-                        const auto& moves = get_moves(move, mapping, 2);
+                        const auto& moves = get_moves(move, mapping, times);
                         if (min_moves == -1 || moves < min_moves) {
                             min_moves = moves;
                         }
@@ -26,11 +34,6 @@ namespace day21 {
         }
 
         return result;
-    }
-
-    std::int64_t part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 
     std::vector<std::map<std::string, std::string>> get_directional_moves() {
