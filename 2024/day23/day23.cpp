@@ -6,6 +6,22 @@
 
 namespace day23 {
     int part1(const std::vector<std::string>& rows) {
+        const auto& triples = get_triples(rows);
+
+        auto counter{0};
+        for (const auto& triple : triples) {
+            for (const auto& value : triple) {
+                if (value[0] == 't') {
+                    counter++;
+                    break;
+                }
+            }
+        }
+
+        return counter;
+    }
+
+     std::vector<std::vector<std::string>> get_triples(const std::vector<std::string>& rows) {
         std::unordered_map<std::string, std::vector<std::string>> pairs;
 
         for (const auto& row : rows) {
@@ -18,7 +34,8 @@ namespace day23 {
             }
         }
 
-        auto counter{0};
+        std::vector<std::vector<std::string>> triples;
+
         for (const auto& [value1, values1] : pairs) {
             for (const auto& value2 : values1) {
                 if (pairs.count(value2)) {
@@ -26,14 +43,14 @@ namespace day23 {
                     for (const auto& value3 : values2) {
                         const auto& it = std::find(values1.cbegin(), values1.cend(), value3);
                         if (it != values1.cend()) {
-                            counter += value1[0] == 't' || value2[0] == 't' || value3[0] == 't';
+                            triples.push_back({value1, value2, value3});
                         }
                     }
                 }
             }
         }
 
-        return counter;
+        return triples;
     }
 
     int part2(const std::vector<std::string>& rows) {
