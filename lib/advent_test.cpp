@@ -21,6 +21,12 @@ struct test_data_split {
     std::vector<std::string> expected;
 };
 
+struct test_data_join {
+    std::vector<std::string> items;
+    std::string delimiter;
+    std::string expected;
+};
+
 TEST_CASE("changes") {
     const auto item = GENERATE(
         test_data_ints{"", {}},
@@ -152,4 +158,18 @@ TEST_CASE("split") {
     );
 
     REQUIRE(advent::split(item.text, item.delimiter) == item.expected);
+}
+
+TEST_CASE("join") {
+    const auto item = GENERATE(
+        test_data_join{{}, "", ""},
+        test_data_join{{}, ",", ""},
+        test_data_join{{"a"}, "", "a"},
+        test_data_join{{"a", "b", "c"}, "", "abc"},
+        test_data_join{{"a", "b", "c"}, ",", "a,b,c"},
+        test_data_join{{"a", "xb", "xc"}, "xx", "axxxbxxxc"},
+        test_data_join{{"a", "", "b", "", "xc"}, "xx", "axxxxbxxxxxc"}
+    );
+
+    REQUIRE(advent::join(item.items.cbegin(), item.items.cend(), item.delimiter) == item.expected);
 }

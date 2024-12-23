@@ -58,11 +58,12 @@ namespace day22 {
 
         auto max_bananas{0};
 
-        for (int change1 = -9; change1 <= 9; change1++) {
-            for (int change2 = -9; change2 <= 9; change2++) {
-                for (int change3 = -9; change3 <= 9; change3++) {
-                    for (int change4 = -9; change4 <= 9; change4++) {
-                        const Key sequence = {change1, change2, change3, change4};
+        // Find all combinations of changes. Make sure there sum is between -9 and 9 (inclusive).
+        for (int c1 = -9; c1 <= 9; c1++) {
+            for (int c2 = std::max(-9, -9 - c1); c2 <= std::min(9, 9 - c1); c2++) {
+                for (int c3 = std::max(-9, -9 - c1 - c2); c3 <= std::min(9, 9 - c1 - c2); c3++) {
+                    for (int c4 = std::max(-9, -9 - c1 - c2 - c3); c4 <= std::min(9, 9 - c1 - c2 - c3); c4++) {
+                        const Key sequence = {c1, c2, c3, c4};
                         auto bananas{0};
                         for (const auto& table : tables) {
                             if (table.count(sequence)) {
