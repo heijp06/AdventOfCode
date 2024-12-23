@@ -9,14 +9,20 @@ namespace day21 {
 
         for (const auto& row : rows) {
             const std::string& numerical_move = "A" + row;
+            std::int64_t total = 0;
             for (size_t i = 0; i < numerical_move.size() - 1; i++) {
                 std::int64_t min_moves{-1};
                 for (const auto& move : get_numerical_moves(numerical_move[i], numerical_move[i + 1])) {
                     for (const auto& mapping : directional_moves) {
-                        const auto moves = get_moves(move, mapping, 2);
+                        const auto& moves = get_moves(move, mapping, 2);
+                        if (min_moves == -1 || moves < min_moves) {
+                            min_moves = moves;
+                        }
                     }
                 }
+                total += min_moves;
             }
+            result += total * advent::ints<std::int64_t>(row)[0];
         }
 
         return result;
@@ -29,11 +35,11 @@ namespace day21 {
 
     std::vector<std::map<std::string, std::string>> get_directional_moves() {
         std::map<std::string, std::vector<std::string>> mapping = {
-            {"AA", {"A"}}, {"A^", {"<A"}}, {"A>", {"vA"}}, {"Av", {"<vA", "v<A"}}, {"A<", {"<v<A", "v<<A"}},
-            {"^A", {">A"}}, {"^^", {"A"}}, {"^>", {">vA", "v>A"}}, {"^v", {"vA"}}, {"^<", {"v<A"}},
-            {">A", {"^A"}}, {">^", {"^<A", "<^A"}}, {">>", {"A"}}, {">v", {"<A"}}, {"><", {"<<A"}},
-            {"vA", {">^A", "^>A"}}, {"v^", {"^A"}}, {"v>", {">A"}}, {"vv", {"A"}}, {"v<", {"<A"}},
-            {"<A", {">^>A", ">>^A"}}, {"<^", {">^A"}}, {"<>", {">>A"}}, {"<v", {">A"}}, {"<<", {"A"}}
+            {"AA", {""}}, {"A^", {"<"}}, {"A>", {"v"}}, {"Av", {"<v", "v<"}}, {"A<", {"<v<", "v<<"}},
+            {"^A", {">"}}, {"^^", {""}}, {"^>", {">v", "v>"}}, {"^v", {"v"}}, {"^<", {"v<"}},
+            {">A", {"^"}}, {">^", {"^<", "<^"}}, {">>", {""}}, {">v", {"<"}}, {"><", {"<<"}},
+            {"vA", {">^", "^>"}}, {"v^", {"^"}}, {"v>", {">"}}, {"vv", {""}}, {"v<", {"<"}},
+            {"<A", {">^>", ">>^"}}, {"<^", {">^"}}, {"<>", {">>"}}, {"<v", {">"}}, {"<<", {""}}
         };
 
         std::vector<std::map<std::string, std::string>> result{{}};
@@ -65,7 +71,7 @@ namespace day21 {
             std::vector<std::pair<advent::coord, std::string>> new_results;
             for (const auto& result : results) {
                 if (result.first == target) {
-                    new_results.push_back({result.first, result.second + "A"});
+                    new_results.push_back({result.first, result.second + ""});
                     stop = true;
                     continue;
                 }
@@ -109,23 +115,32 @@ namespace day21 {
         return {3 - (c - '0' + 2) / 3, (c - '0' + 2) % 3};
     }
 
-    std::int64_t get_moves(const std::string& move, const std::map<std::string, std::string>& mapping, int count) {
+    std::int64_t get_moves(const std::string& move, const std::map<std::string, std::string>& mapping, int times) {
         std::map<std::string, std::int64_t> key_strokes;
-        //std::string first_move = "A" + move.substr(0, 1);
-        //key_strokes[first_move] = 1;
-        std::string actual_move = "A" + move.substr(0, 1);
-        for (size_t i = 0; i < actual_move.size() - 1; i++) {
-            key_strokes[actual_move.substr(i, 2)]++;
+        if (move.size()) {
+            key_strokes[std::string("A") + move[0]]++;
+            for (size_t i = 0; i < move.size() - 1; i++) {
+                key_strokes[move.substr(i, 2)]++;
+            }
+            key_strokes[move.back() + std::string("A")]++;
+        }
+        else {
+            key_strokes[std::string("AA")]++;
         }
 
-        for (size_t i = 0; i < count; i++) {
+        for (size_t i = 0; i < times; i++) {
             std::map<std::string, std::int64_t> new_key_strokes;
-            //first_move = ("A" + mapping.at(first_move)).substr(0, 2);
-            //new_key_strokes[first_move] = 1;
             for (const auto& [key_stroke, count] : key_strokes) {
                 const auto& directional_move = mapping.at(key_stroke);
-                for (size_t j = 0; j < directional_move.size() - 1; j++) {
-                    new_key_strokes[directional_move.substr(j, 2)] += count;
+                if (directional_move.size()) {
+                    new_key_strokes[std::string("A") + directional_move[0]] += count;
+                    for (size_t j = 0; j < directional_move.size() - 1; j++) {
+                        new_key_strokes[directional_move.substr(j, 2)] += count;
+                    }
+                    new_key_strokes[directional_move.back() + std::string("A")] += count;
+                }
+                else {
+                    new_key_strokes[std::string("AA")] += count;
                 }
             }
             key_strokes = new_key_strokes;
