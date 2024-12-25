@@ -15,6 +15,13 @@ namespace day24 {
         std::string input2;
         std::string output;
         operations operation;
+
+        friend bool operator==(const gate& left, const gate& right) {
+            return left.input1 == right.input1
+                && left.input2 == right.input1
+                && left.output == right.output
+                && left.operation == right.operation;
+        }
     };
 
     std::int64_t part1(const std::vector<std::string>& rows);

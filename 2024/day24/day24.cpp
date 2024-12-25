@@ -23,6 +23,11 @@ namespace day24 {
 
                 known_wires[gate.output] = output.value();
             }
+
+            if (gates == new_gates) {
+                break;
+            }
+
             gates = new_gates;
         }
 
