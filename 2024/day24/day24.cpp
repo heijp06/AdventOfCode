@@ -10,32 +10,19 @@ namespace day24 {
         auto& known_wires = parse_known_wires(rows);
         const auto& z_wires = get_z_wires(gates);
 
-        while (!gates.empty()) {
-            std::vector<gate> new_gates;
-            for (const auto& gate : gates) {
-                const auto& input1 = get_input(known_wires, gate.input1);
-                const auto& input2 = get_input(known_wires, gate.input2);
-                const auto& output = get_output(gate.operation, input1, input2);
-                if (!output.has_value()) {
-                    new_gates.push_back(gate);
-                    continue;
-                }
+        auto device = monitoring_device{gates};
 
-                known_wires[gate.output] = output.value();
-            }
-
-            if (gates == new_gates) {
-                break;
-            }
-
-            gates = new_gates;
+        for (const auto& [wire, value] : known_wires) {
+            device.set_wire(wire, value);
         }
+
+        device.run();
 
         std::int64_t result{0};
         std::int64_t bit_value{1};
 
         for (const auto& z_wire : z_wires) {
-            if (known_wires[z_wire]){
+            if (device.get_wire(z_wire)) {
                 result += bit_value;
             }
             bit_value <<= 1;
@@ -96,7 +83,43 @@ namespace day24 {
         return z_wires;
     }
 
-    std::optional<bool> get_output(operations operation, std::optional<bool> input1, std::optional<bool> input2) {
+    monitoring_device::monitoring_device(const std::vector<gate>& gates) :
+        gates_{gates},
+        known_wires_{} {
+    }
+
+    void monitoring_device::set_wire(const std::string& wire, bool value) {
+        known_wires_[wire] = value;
+    }
+
+    bool monitoring_device::get_wire(const std::string& wire) const {
+        return known_wires_.at(wire);
+    }
+
+    void monitoring_device::run() {
+        while (!gates_.empty()) {
+            std::vector<gate> new_gates;
+            for (const auto& gate : gates_) {
+                const auto& input1 = get_input(known_wires_, gate.input1);
+                const auto& input2 = get_input(known_wires_, gate.input2);
+                const auto& output = get_output(gate.operation, input1, input2);
+                if (!output.has_value()) {
+                    new_gates.push_back(gate);
+                    continue;
+                }
+
+                known_wires_[gate.output] = output.value();
+            }
+
+            if (gates_ == new_gates) {
+                break;
+            }
+
+            gates_ = new_gates;
+        }
+    }
+
+    std::optional<bool> monitoring_device::get_output(operations operation, std::optional<bool> input1, std::optional<bool> input2)  const {
         switch (operation) {
         case day24::operations::AND:
             if (input1.has_value() && !input1.value()) {
@@ -130,7 +153,7 @@ namespace day24 {
         }
     }
 
-    std::optional<bool> get_input(std::unordered_map<std::string, bool> known_wires, std::string input) {
+    std::optional<bool> monitoring_device::get_input(std::unordered_map<std::string, bool> known_wires, std::string input) const {
         return known_wires.count(input) ? std::optional<bool>(known_wires[input]) : std::nullopt;
     }
 }
