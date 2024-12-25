@@ -14,12 +14,8 @@ namespace day24 {
         while (!unknown_z_wires.empty()) {
             std::vector<gate> new_gates;
             for (const auto& gate : gates) {
-                const auto& input1 = known_wires.count(gate.input1)
-                    ? std::optional<bool>(known_wires[gate.input1])
-                    : std::nullopt;
-                const auto& input2 = known_wires.count(gate.input2)
-                    ? std::optional<bool>(known_wires[gate.input2])
-                    : std::nullopt;
+                const auto& input1 = get_input(known_wires, gate.input1);
+                const auto& input2 = get_input(known_wires, gate.input2);
                 const auto& output = get_output(gate.operation, input1, input2);
                 if (!output.has_value()) {
                     new_gates.push_back(gate);
@@ -132,5 +128,9 @@ namespace day24 {
         default:
             throw std::domain_error("Unknown operation.");
         }
+    }
+
+    std::optional<bool> get_input(std::unordered_map<std::string, bool> known_wires, std::string input) {
+        return known_wires.count(input) ? std::optional<bool>(known_wires[input]) : std::nullopt;
     }
 }

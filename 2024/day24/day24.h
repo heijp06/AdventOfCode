@@ -24,4 +24,5 @@ namespace day24 {
     std::unordered_map<std::string, bool> parse_known_wires(const std::vector<std::string>& rows);
     std::set<std::string> get_z_wires(const std::vector<gate>& gates);
     std::optional<bool> get_output(operations operation, std::optional<bool> input1, std::optional<bool> input2);
+    std::optional<bool> get_input(std::unordered_map<std::string, bool> known_wires, std::string input);
 }
