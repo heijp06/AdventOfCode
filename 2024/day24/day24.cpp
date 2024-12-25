@@ -9,9 +9,8 @@ namespace day24 {
         auto& gates = parse_gates(rows);
         auto& known_wires = parse_known_wires(rows);
         const auto& z_wires = get_z_wires(gates);
-        auto unknown_z_wires = z_wires;
 
-        while (!unknown_z_wires.empty()) {
+        while (!gates.empty()) {
             std::vector<gate> new_gates;
             for (const auto& gate : gates) {
                 const auto& input1 = get_input(known_wires, gate.input1);
@@ -23,10 +22,6 @@ namespace day24 {
                 }
 
                 known_wires[gate.output] = output.value();
-
-                if (gate.output[0] == 'z') {
-                    unknown_z_wires.erase(gate.output);
-                }
             }
             gates = new_gates;
         }
