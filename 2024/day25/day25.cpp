@@ -6,28 +6,16 @@ namespace day25 {
         std::vector<std::vector<int>> locks;
 
         for (size_t i = 0; i < rows.size(); i += 8) {
-            if (rows[i][0] == '#') {
-                std::vector<int> key;
-                for (size_t column = 0; column < 5; column++) {
-                    auto count{0};
-                    for (size_t row = 1; row <= 5; row++) {
-                        count += rows[i + row][column] == '#';
-                    }
-                    key.push_back(count);
+            auto& items = rows[i][0] == '#' ? keys : locks;
+            std::vector<int> item;
+            for (size_t column = 0; column < 5; column++) {
+                auto count{0};
+                for (size_t row = 1; row <= 5; row++) {
+                    count += rows[i + row][column] == '#';
                 }
-                keys.push_back(key);
+                item.push_back(count);
             }
-            else {
-                std::vector<int> lock;
-                for (size_t column = 0; column < 5; column++) {
-                    auto count{0};
-                    for (size_t row = 1; row <= 5; row++) {
-                        count += rows[i + row][column] == '#';
-                    }
-                    lock.push_back(count);
-                }
-                locks.push_back(lock);
-            }
+            items.push_back(item);
         }
 
         auto result{0};
