@@ -2,6 +2,7 @@
 #include <iterator>
 
 #include "day04.h"
+#include "../../lib/advent.h"
 
 namespace day04 {
     int part1(const std::vector<std::string>& rows) {
@@ -9,6 +10,26 @@ namespace day04 {
 
         std::transform(rows.cbegin(), rows.cend(), std::back_inserter(records), start_at_midnight);
         std::sort(records.begin(), records.end());
+
+        std::map<std::string, guard> guards;
+        std::string id;
+
+        for (const auto& record : records) {
+            const auto& date = record.substr(6, 5);
+            const auto& minute = std::stoi(record.substr(15, 2));
+            switch (record.at(19)) {
+            case 'G': // Guard #99 begins shift
+                id = advent::split(record, " ").at(3);
+                guards[id].add_date(date);
+                break;
+            case 'f': // falls asleep
+                guards[id].sleep(date, minute);
+                break;
+            case 'w': // wakes up
+                guards[id].wake(date, minute);
+                break;
+            }
+        }
 
         return -1;
     }
@@ -31,5 +52,25 @@ namespace day04 {
         }
 
         return line.substr(0, 10) + std::string(1, ones_digit + 1) + std::string(" 00:00") + line.substr(17);
+    }
+
+    void guard::add_date(const std::string& date) {
+        dates_[date] = std::vector<bool>(60);
+    }
+
+    void guard::sleep(const std::string& date, int minute) {
+        change_sleep_state(date, minute, true);
+    }
+
+    void guard::wake(const std::string& date, int minute) {
+        change_sleep_state(date, minute, false);
+    }
+
+    void guard::change_sleep_state(const std::string& date, int minute, bool state) {
+        auto& sleep_state = dates_[date];
+
+        for (size_t i = minute; i < sleep_state.size(); i++) {
+            sleep_state[i] = state;
+        }
     }
 }
