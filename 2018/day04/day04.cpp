@@ -80,6 +80,16 @@ namespace day04 {
         change_sleep_state(date, minute, false);
     }
 
+    int guard::minutes_asleep() const {
+        auto result{0};
+        for (const auto& [_, minutes] : sleep_state_) {
+            for (auto minute : minutes) {
+                result += minute;
+            }
+        }
+        return result;
+    }
+
     void guard::change_sleep_state(const std::string& date, int minute, bool state) {
         auto& sleep_state = sleep_state_[date];
 

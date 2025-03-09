@@ -44,3 +44,19 @@ TEST_CASE("start at midnight") {
 
     REQUIRE(day04::start_at_midnight(item.line) == item.expected);
 }
+
+TEST_CASE("minutes asleep") {
+    struct test_data {
+        std::string id;
+        int expected;
+    };
+
+    auto item = GENERATE(
+        test_data{"#10", 50},
+        test_data{"#99", 30}
+    );
+
+    const auto& guards = day04::parse(rows);
+
+    REQUIRE(guards.at(item.id).minutes_asleep() == item.expected);
+}

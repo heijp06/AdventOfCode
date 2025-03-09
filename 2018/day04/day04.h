@@ -10,6 +10,7 @@ namespace day04 {
         void add_date(const std::string& date);
         void sleep(const std::string& date, int minute);
         void wake(const std::string& date, int minute);
+        int minutes_asleep() const;
     private:
         std::map<std::string, std::vector<bool>> sleep_state_;
         void change_sleep_state(const std::string& date, int minute, bool state);
