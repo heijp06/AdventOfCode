@@ -1,8 +1,15 @@
+#include <algorithm>
+#include <iterator>
+
 #include "day04.h"
 
 namespace day04 {
     int part1(const std::vector<std::string>& rows) {
-        (void)rows;
+        std::vector<std::string> records;
+
+        std::transform(rows.cbegin(), rows.cend(), std::back_inserter(records), start_at_midnight);
+        std::sort(records.begin(), records.end());
+
         return -1;
     }
 
