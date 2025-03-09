@@ -61,7 +61,7 @@ namespace day04 {
     }
 
     void guard::add_date(const std::string& date) {
-        dates_[date] = std::vector<bool>(60);
+        sleep_state_[date] = std::vector<bool>(60);
     }
 
     void guard::sleep(const std::string& date, int minute) {
@@ -73,7 +73,7 @@ namespace day04 {
     }
 
     void guard::change_sleep_state(const std::string& date, int minute, bool state) {
-        auto& sleep_state = dates_[date];
+        auto& sleep_state = sleep_state_[date];
 
         for (size_t i = minute; i < sleep_state.size(); i++) {
             sleep_state[i] = state;
