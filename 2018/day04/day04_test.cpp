@@ -38,7 +38,8 @@ TEST_CASE("start at midnight") {
         test_data{"[1518-11-01 00:55] wakes up", "[1518-11-01 00:55] wakes up"},
         test_data{"[1518-11-01 23:58] Guard #99 begins shift", "[1518-11-02 00:00] Guard #99 begins shift"},
         test_data{"[1518-11-09 23:58] Guard #99 begins shift", "[1518-11-10 00:00] Guard #99 begins shift"},
-        test_data{"[1518-11-19 23:58] Guard #99 begins shift", "[1518-11-20 00:00] Guard #99 begins shift"}
+        test_data{"[1518-11-19 23:58] Guard #99 begins shift", "[1518-11-20 00:00] Guard #99 begins shift"},
+        test_data{"[1518-05-31 23:58] Guard #99 begins shift", "[1518-06-01 00:00] Guard #99 begins shift"}
         );
 
     REQUIRE(day04::start_at_midnight(item.line) == item.expected);
