@@ -1,5 +1,9 @@
 #include <algorithm>
+#include <ctime>
+#include <iomanip>
+#include <iostream>
 #include <iterator>
+#include <sstream>
 
 #include "day04.h"
 #include "../../lib/advent.h"
@@ -50,14 +54,18 @@ namespace day04 {
             return line;
         }
 
-        auto ones_digit = line.at(10);
+        tm tm1 = {};
+        std::istringstream ss("2018-" + line.substr(6, 5));
+        ss >> std::get_time(&tm1, "%Y-%m-%d");
+        auto timestamp = mktime(&tm1);
+        timestamp += 24 * 60 * 60;
+        tm tm2 = *localtime(&timestamp);
 
-        if (ones_digit == '9') {
-            auto tens_digit = line.at(9);
-            return line.substr(0, 9) + std::string(1, tens_digit + 1) + std::string("0 00:00") + line.substr(17);
-        }
+        return "[1518-" + format(tm2.tm_mon + 1) + "-" + format(tm2.tm_mday) + " 00:00" + line.substr(17);
+    }
 
-        return line.substr(0, 10) + std::string(1, ones_digit + 1) + std::string(" 00:00") + line.substr(17);
+    std::string format(int number) {
+        return number < 10 ? "0" + std::to_string(number) : std::to_string(number);
     }
 
     void guard::add_date(const std::string& date) {
