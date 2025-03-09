@@ -6,6 +6,12 @@
 
 namespace day04 {
     int part1(const std::vector<std::string>& rows) {
+        const auto& guards = parse(rows);
+
+        return -1;
+    }
+
+    std::map<std::string, guard> parse(const std::vector<std::string>& rows) {
         std::vector<std::string> records;
 
         std::transform(rows.cbegin(), rows.cend(), std::back_inserter(records), start_at_midnight);
@@ -31,7 +37,7 @@ namespace day04 {
             }
         }
 
-        return -1;
+        return guards;
     }
 
     int part2(const std::vector<std::string>& rows) {
