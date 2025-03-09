@@ -11,6 +11,7 @@ namespace day04 {
         void sleep(const std::string& date, int minute);
         void wake(const std::string& date, int minute);
         int minutes_asleep() const;
+        int asleep_most() const;
     private:
         std::map<std::string, std::vector<bool>> sleep_state_;
         void change_sleep_state(const std::string& date, int minute, bool state);

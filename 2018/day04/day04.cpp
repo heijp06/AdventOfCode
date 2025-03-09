@@ -90,6 +90,24 @@ namespace day04 {
         return result;
     }
 
+    int guard::asleep_most() const {
+        auto result{-1};
+        auto most = 0;
+
+        for (int i = 0; i < 60; i++) {
+            auto current = 0;
+            for (const auto& [_, minutes] : sleep_state_) {
+                current += minutes.at(i);
+            }
+            if (current > most) {
+                most = current;
+                result = i;
+            }
+        }
+
+        return result;
+    }
+
     void guard::change_sleep_state(const std::string& date, int minute, bool state) {
         auto& sleep_state = sleep_state_[date];
 
