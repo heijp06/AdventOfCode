@@ -12,7 +12,18 @@ namespace day04 {
     int part1(const std::vector<std::string>& rows) {
         const auto& guards = parse(rows);
 
-        return -1;
+        auto minutes_asleep{-1};
+        std::string current_id;
+
+        for (const auto& [id, guard] : guards) {
+            auto minutes = guard.minutes_asleep();
+            if (minutes > minutes_asleep) {
+                minutes_asleep = minutes;
+                current_id = id;
+            }
+        }
+
+        return std::stoi(current_id.substr(1)) * guards.at(current_id).asleep_most();
     }
 
     std::map<std::string, guard> parse(const std::vector<std::string>& rows) {
