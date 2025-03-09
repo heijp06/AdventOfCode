@@ -23,7 +23,24 @@ namespace day04 {
             }
         }
 
-        return std::stoi(current_id.substr(1)) * guards.at(current_id).asleep_most();
+        return std::stoi(current_id.substr(1)) * guards.at(current_id).asleep_most().first;
+    }
+
+    int part2(const std::vector<std::string>& rows) {
+        const auto& guards = parse(rows);
+
+        auto asleep_most = std::make_pair(-1, -1);
+        std::string current_id;
+
+        for (const auto& [id, guard] : guards) {
+            auto most = guard.asleep_most();
+            if (most.second > asleep_most.second) {
+                asleep_most = most;
+                current_id = id;
+            }
+        }
+
+        return std::stoi(current_id.substr(1)) * asleep_most.first;
     }
 
     std::map<std::string, guard> parse(const std::vector<std::string>& rows) {
@@ -53,11 +70,6 @@ namespace day04 {
         }
 
         return guards;
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 
     std::string start_at_midnight(const std::string& line) {
@@ -101,7 +113,7 @@ namespace day04 {
         return result;
     }
 
-    int guard::asleep_most() const {
+    std::pair<int, int> guard::asleep_most() const {
         auto result{-1};
         auto most = 0;
 
@@ -116,7 +128,7 @@ namespace day04 {
             }
         }
 
-        return result;
+        return std::make_pair(result, most);
     }
 
     void guard::change_sleep_state(const std::string& date, int minute, bool state) {

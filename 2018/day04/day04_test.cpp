@@ -28,6 +28,10 @@ TEST_CASE("part1") {
     REQUIRE(day04::part1(rows) == 240);
 }
 
+TEST_CASE("part2") {
+    REQUIRE(day04::part2(rows) == 4455);
+}
+
 TEST_CASE("start at midnight") {
     struct test_data {
         std::string line;
@@ -64,12 +68,12 @@ TEST_CASE("minutes asleep") {
 TEST_CASE("asleep most") {
     struct test_data {
         std::string id;
-        int expected;
+        std::pair<int, int> expected;
     };
 
     auto item = GENERATE(
-        test_data{"#10", 24},
-        test_data{"#99", 45}
+        test_data{"#10", std::make_pair(24, 2)},
+        test_data{"#99", std::make_pair(45, 3)}
     );
 
     const auto& guards = day04::parse(rows);
