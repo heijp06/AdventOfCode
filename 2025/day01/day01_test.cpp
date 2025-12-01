@@ -20,3 +20,7 @@ std::vector<std::string> rows{
 TEST_CASE("part1") {
     REQUIRE(day01::part1(rows) == 3);
 }
+
+TEST_CASE("part2") {
+    REQUIRE(day01::part2(rows) == 6);
+}
