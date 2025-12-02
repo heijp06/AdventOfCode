@@ -1,11 +1,12 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
 namespace day02 {
-    long part1(const std::vector<std::string>& rows);
-    long part2(const std::vector<std::string>& rows);
+    std::int64_t part1(const std::vector<std::string>& rows);
+    std::int64_t part2(const std::vector<std::string>& rows);
 
-    long sum_invalid(const std::string& start, const std::string& end);
+    std::int64_t sum_invalid(const std::int64_t& num_start, const std::int64_t& num_end);
 }
