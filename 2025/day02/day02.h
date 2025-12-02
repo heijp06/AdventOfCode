@@ -4,6 +4,6 @@
 #include <vector>
 
 namespace day02 {
-    int part1(const std::vector<std::string>& rows);
-    int part2(const std::vector<std::string>& rows);
+    long part1(const std::vector<std::string>& rows);
+    long part2(const std::vector<std::string>& rows);
 }
