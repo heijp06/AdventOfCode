@@ -12,7 +12,7 @@ N=$1
 NN=$(printf "%02d" $1)
 DAY=day$NN
 
-YEAR=2024
+YEAR=2025
 if [[ $# -eq 2 ]]
 then
     YEAR=$2
