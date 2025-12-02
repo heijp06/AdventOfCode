@@ -9,3 +9,7 @@ std::vector<std::string> rows{"11-22,95-115,998-1012,1188511880-1188511890,22222
 TEST_CASE("part1") {
     REQUIRE(day02::part1(rows) == 1227775554L);
 }
+
+TEST_CASE("part2") {
+    REQUIRE(day02::part2(rows) == 4174379265L);
+}
