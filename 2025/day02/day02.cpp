@@ -1,8 +1,15 @@
+#include "../../lib/advent.h"
 #include "day02.h"
 
 namespace day02 {
     long part1(const std::vector<std::string>& rows) {
-        (void)rows;
+        long sum{0};
+        for (const auto& pair : advent::split(rows[0], ",")) {
+            const auto& fields = advent::split(pair, "-");
+
+            
+        }
+
         return -1;
     }
 
