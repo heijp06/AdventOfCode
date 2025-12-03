@@ -36,7 +36,7 @@ namespace day02 {
         const auto& start = std::to_string(num_start);
         const auto& end = std::to_string(num_end);
 
-        auto stop = part2 ? end.length() : 2;
+        auto stop = part2 ? static_cast<int>(end.length()) : 2;
 
         for (int i = 2; i <= stop; i++) {
             if (start.length() % i && end.length() % i) {
