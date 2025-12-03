@@ -3,25 +3,34 @@
 
 namespace day03 {
     std::int64_t part1(const std::vector<std::string>& rows) {
-        auto sum{0};
+        return calculate_sum(rows, 2);
+    }
+
+    std::int64_t part2(const std::vector<std::string>& rows) {
+        return calculate_sum(rows, 12);
+    }
+
+    int64_t calculate_sum(const std::vector<std::string>& rows, int digits) {
+        int64_t sum{0};
 
         for (const auto& row : rows) {
-            sum += joltage(row);
+            sum += joltage(row, digits);
         }
 
         return sum;
     }
 
-    std::int64_t part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
-    }
+    std::int64_t joltage(const std::string& row, int digits) {
+        std::int64_t joltage{0};
+        auto pos = row.begin();
 
-    std::int64_t joltage(const std::string& row) {
-        const auto& d1 = *std::max_element(row.cbegin(), row.cend() - 1);
-        const auto& pos = std::find(row.cbegin(), row.cend(), d1);
-        const auto& d2 = *std::max_element(pos + 1, row.cend());
+        for (int i = 0; i < digits; i++) {
+            pos = std::max_element(pos, row.cend() - digits + i + 1);
+            joltage *= 10;
+            joltage += *pos - '0';
+            pos++;
+        }
 
-        return (d1 - '0') * 10 + d2 - '0';
+        return joltage;
     }
 }

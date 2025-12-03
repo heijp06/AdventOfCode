@@ -8,5 +8,6 @@ namespace day03 {
     std::int64_t part1(const std::vector<std::string>& rows);
     std::int64_t part2(const std::vector<std::string>& rows);
 
-    std::int64_t joltage(const std::string& row);
+    int64_t calculate_sum(const std::vector<std::string>& rows, int digits);
+    std::int64_t joltage(const std::string& row, int digits);
 }
