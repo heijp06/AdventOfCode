@@ -1,15 +1,45 @@
 #include "day04.h"
-#include "../../lib/advent.h"
 
 namespace day04 {
     int part1(const std::vector<std::string>& rows) {
-        auto result{0};
         const auto& grid = advent::grid{rows};
-        std::vector<advent::coord> directions{
+        const std::vector<advent::coord> directions{
             {-1, -1}, {-1, 0}, {-1, 1},
             {0, -1}, {0, 1},
             {1, -1}, {1, 0}, {1, 1},
         };
+
+        std::vector<advent::coord> result = get_accessible_rolls(grid, directions);
+        
+        return static_cast<int>(result.size());
+    }
+
+    int part2(const std::vector<std::string>& rows) {
+        int result{0};
+        auto grid = advent::grid{rows};
+        const std::vector<advent::coord> directions{
+            {-1, -1}, {-1, 0}, {-1, 1},
+            {0, -1}, {0, 1},
+            {1, -1}, {1, 0}, {1, 1},
+        };
+
+        std::vector<advent::coord> accessible = get_accessible_rolls(grid, directions);
+        while (!accessible.empty())
+        {
+            result += static_cast<int>(accessible.size());
+            for (const auto& roll : accessible) {
+                grid[roll] = '.';
+            }
+            accessible = get_accessible_rolls(grid, directions);
+        }
+        
+        return result;
+    }
+
+    std::vector<advent::coord> get_accessible_rolls(
+        const advent::grid& grid, const std::vector<advent::coord>& directions)
+    {
+        std::vector<advent::coord> result;
 
         for (const auto& current : grid.find_all('@')) {
             auto counter{0};
@@ -21,14 +51,11 @@ namespace day04 {
                     counter++;
                 }
             }
-            result += counter < 4;
+            if (counter < 4)
+            {
+                result.push_back(current);
+            }
         }
-        
         return result;
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 }
