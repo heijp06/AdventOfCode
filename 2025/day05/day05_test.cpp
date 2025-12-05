@@ -21,3 +21,12 @@ std::vector<std::string> rows{
 TEST_CASE("part1") {
     REQUIRE(day05::part1(rows) == 3);
 }
+
+TEST_CASE("merge empty") {
+    std::vector<range_t> actual;
+
+    day05::merge({2, 3}, actual);
+
+    REQUIRE(actual == std::vector<range_t>{std::make_pair(2, 3)});
+}
+
