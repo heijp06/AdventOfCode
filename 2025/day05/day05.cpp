@@ -64,25 +64,25 @@ namespace day05 {
         std::vector<range_t> merging;
         merging.reserve(ranges.size());
 
-        for (auto to_merge : ranges) {
+        for (auto range : ranges) {
             bool done = false;
-            for (const auto& range : merged) {
-                if (done || range.second < to_merge.first - 1) {
-                    merging.emplace_back(range);
-                    continue;
-                }
-
-                if (range.first > to_merge.second + 1) {
-                    done = true;
+            for (const auto& to_merge : merged) {
+                if (done || to_merge.second < range.first - 1) {
                     merging.emplace_back(to_merge);
-                    merging.emplace_back(range);
                     continue;
                 }
 
-                to_merge = std::make_pair(std::min(to_merge.first, range.first), std::max(to_merge.second, range.second));
+                if (to_merge.first > range.second + 1) {
+                    done = true;
+                    merging.emplace_back(range);
+                    merging.emplace_back(to_merge);
+                    continue;
+                }
+
+                range = std::make_pair(std::min(range.first, to_merge.first), std::max(range.second, to_merge.second));
             }
             if (!done) {
-                merging.emplace_back(to_merge);
+                merging.emplace_back(range);
             }
             std::swap(merged, merging);
             merging.clear();
