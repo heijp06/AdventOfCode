@@ -43,7 +43,7 @@ namespace day02 {
                 continue;
             }
 
-            int len = start.length() % i ? end.length() / i : start.length() / i;
+            int len = static_cast<int>(start.length() % i ? end.length() / i : start.length() / i);
             auto power = pow(10, len);
             auto div = pow(power, i - 1);
             std::int64_t val = start.length() % i ? power / 10 : num_start / div;

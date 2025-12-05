@@ -10,13 +10,25 @@ add_executable(advent_test advent_test.cpp)
 add_library(adventlib advent.cpp advent.h)
 add_library(testsmain tests-main.cpp)
 
-target_link_libraries(advent_test adventlib testsmain)
-
 set_target_properties(advent_test PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED OFF
     CXX_EXTENSIONS OFF
 )
+
+set_target_properties(adventlib PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
+
+set_target_properties(testsmain PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
+
+target_link_libraries(advent_test adventlib testsmain)
 
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -28,6 +40,7 @@ endif()
 
 # Tell MSVC not to warn us about unchecked iterators in debug builds
 if(${MSVC})
+    set_target_properties(adventlib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
     set_target_properties(advent_test PROPERTIES
         COMPILE_DEFINITIONS_DEBUG _SCL_SECURE_NO_WARNINGS
         COMPILE_FLAGS "/WX /w44244 /w44267")
