@@ -3,7 +3,6 @@
 name: Advent of Code CI build
 
 on:
-  workflow_dispatch
   push:
     branches: [ "master" ]
   pull_request:
