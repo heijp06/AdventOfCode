@@ -19,11 +19,12 @@ endif()
 link_directories(../../lib)
 
 # Build executable from sources and headers
-add_executable(${year}_${day}_test ${day}_test.cpp ${day_cpp} ${day}.h)
-add_executable(${year}_${day} ${day}_main.cpp ${day_cpp} ${day}.h)
+add_library(${day} ${day_cpp})
+add_executable(${year}_${day}_test ${day}_test.cpp)
+add_executable(${year}_${day} ${day}_main.cpp)
 
-target_link_libraries(${year}_${day}_test PRIVATE adventlib testsmain)
-target_link_libraries(${year}_${day} PRIVATE adventlib)
+target_link_libraries(${year}_${day}_test PRIVATE ${day} adventlib testsmain)
+target_link_libraries(${year}_${day} PRIVATE ${day} adventlib)
 
 set_target_properties(${year}_${day} PROPERTIES
     CXX_STANDARD 17
