@@ -16,15 +16,28 @@ else()
     set(day_cpp "")
 endif()
 
-link_directories(../../lib)
+if(${MSVC})
+    find_library(ADVENTLIB NAMES adventlib PATHS ../../lib/out/build/x64-Debug)
+    find_library(TESTSMAIN NAMES testsmain PATHS ../../lib/out/build/x64-Debug)
+endif()
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "(GNU|Clang)")
+    find_library(ADVENTLIB NAMES adventlib PATHS ../../lib)
+    find_library(TESTSMAIN NAMES testsmain PATHS ../../lib)
+endif()
 
 # Build executable from sources and headers
 add_library(${day} ${day_cpp})
 add_executable(${year}_${day}_test ${day}_test.cpp)
 add_executable(${year}_${day} ${day}_main.cpp)
 
-target_link_libraries(${year}_${day}_test PRIVATE ${day} adventlib testsmain)
-target_link_libraries(${year}_${day} PRIVATE ${day} adventlib)
+target_link_libraries(${year}_${day}_test PRIVATE ${day} ${ADVENTLIB} ${TESTSMAIN})
+target_link_libraries(${year}_${day} PRIVATE ${day} ${ADVENTLIB})
+
+set_target_properties(${day} PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
 
 set_target_properties(${year}_${day} PROPERTIES
     CXX_STANDARD 17

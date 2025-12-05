@@ -40,7 +40,6 @@ endif()
 
 # Tell MSVC not to warn us about unchecked iterators in debug builds
 if(${MSVC})
-    set_target_properties(adventlib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
     set_target_properties(advent_test PROPERTIES
         COMPILE_DEFINITIONS_DEBUG _SCL_SECURE_NO_WARNINGS
         COMPILE_FLAGS "/WX /w44244 /w44267")
