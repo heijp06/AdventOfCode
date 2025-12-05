@@ -16,13 +16,13 @@ else()
     set(day_cpp "")
 endif()
 
-# Build executable from sources and headers
-add_executable(${year}_${day}_test ${day}_test.cpp ${day_cpp} ${day}.h ../../lib/tests-main.cpp)
-add_executable(${year}_${day} ${day}_main.cpp ${day_cpp} ${day}.h)
-
 link_directories(../../lib)
 
-target_link_libraries(${year}_${day}_test PRIVATE adventlib)
+# Build executable from sources and headers
+add_executable(${year}_${day}_test ${day}_test.cpp ${day_cpp} ${day}.h)
+add_executable(${year}_${day} ${day}_main.cpp ${day_cpp} ${day}.h)
+
+target_link_libraries(${year}_${day}_test PRIVATE adventlib testsmain)
 target_link_libraries(${year}_${day} PRIVATE adventlib)
 
 set_target_properties(${year}_${day} PROPERTIES
