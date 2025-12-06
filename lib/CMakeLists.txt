@@ -5,13 +5,30 @@ cmake_minimum_required(VERSION 3.5.1)
 project(advent CXX)
 
 # Build executable from sources and headers
-add_executable(advent_test advent_test.cpp  "advent.cpp" tests-main.cpp)
+add_executable(advent_test advent_test.cpp)
+
+add_library(adventlib advent.cpp advent.h)
+add_library(testsmain tests-main.cpp)
 
 set_target_properties(advent_test PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED OFF
     CXX_EXTENSIONS OFF
 )
+
+set_target_properties(adventlib PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
+
+set_target_properties(testsmain PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
+
+target_link_libraries(advent_test adventlib testsmain)
 
 set(CMAKE_BUILD_TYPE Debug)
 

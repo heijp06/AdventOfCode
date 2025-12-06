@@ -9,6 +9,4 @@ function(add_year year)
 endfunction()
 
 add_subdirectory("lib")
-add_year(2018)
-add_year(2024)
 add_year(2025)
