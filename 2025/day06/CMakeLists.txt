@@ -24,6 +24,12 @@ add_executable(${year}_${day} ${day}_main.cpp ../../lib/advent.cpp)
 target_link_libraries(${year}_${day}_test PRIVATE ${year}_${day}_lib)
 target_link_libraries(${year}_${day} PRIVATE ${year}_${day}_lib)
 
+set_target_properties(${year}_${day}_lib PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
+
 set_target_properties(${year}_${day} PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED OFF
