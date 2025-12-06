@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cctype>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -15,16 +16,31 @@ namespace advent {
     template<typename T>
     std::vector<T> ints(const std::string& row) {
         std::vector<T> result{};
-        std::regex int_regex{R"([+-]?\d+)"};
-        const auto& begin = std::sregex_iterator(row.cbegin(), row.cend(), int_regex);
-        const auto& end = std::sregex_iterator();
+        T num{};
+        bool negative{};
+        bool innum{};
 
-        for (auto it = begin; it != end; ++it) {
-            T value;
-            const auto& match = *it;
-            std::istringstream rs{match.str()};
-            rs >> value;
-            result.push_back(value);
+        for (const auto c : row) {
+            if (std::isdigit(c)) {
+                innum = true;
+                num = 10 * num + c - '0';
+                continue;
+            }
+
+            if (innum) {
+                innum = false;
+                result.push_back(negative ? -num : num);
+                negative = false;
+                num = 0;
+            }
+
+            negative = c == '-';
+
+            continue;
+        }
+
+        if (innum) {
+            result.push_back(negative ? -num : num);
         }
 
         return result;
