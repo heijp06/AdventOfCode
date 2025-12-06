@@ -16,7 +16,7 @@ else()
     set(day_cpp "")
 endif()
 
-link_directories(../../lib ../../lib/out/build/x64-Debug)
+link_directories(../../lib)
 
 # Build executable from sources and headers
 add_library(${day} ${day_cpp})
