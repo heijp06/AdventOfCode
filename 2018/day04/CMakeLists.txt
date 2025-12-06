@@ -56,7 +56,7 @@ endif()
 if(${MSVC})
     set_target_properties(${year}_${day} PROPERTIES
         COMPILE_DEFINITIONS_DEBUG _SCL_SECURE_NO_WARNINGS
-        COMPILE_FLAGS "/WX /w44244 /w44267 w44996")
+        COMPILE_FLAGS "/WX /w44244 /w44267 /w44996")
 endif()
 
 # Run the tests on every build
