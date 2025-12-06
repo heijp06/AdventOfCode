@@ -12,7 +12,7 @@ namespace day06 {
                 const auto& split = advent::split(row, " ");
                 for (const auto& op : split) {
                     if (!op.empty()) {
-                        operators.emplace_back(split[0]);
+                        operators.emplace_back(op[0]);
                     }
                 }
             }

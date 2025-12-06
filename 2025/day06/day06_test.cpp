@@ -12,5 +12,5 @@ std::vector<std::string> rows{
 };
 
 TEST_CASE("part1") {
-    REQUIRE(day06::part1(rows) == -1);
+    REQUIRE(day06::part1(rows) == 4277556);
 }
