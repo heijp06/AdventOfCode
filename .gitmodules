@@ -1,3 +1,4 @@
 [submodule "data"]
 	path = data
 	url = https://github.com/heijp06/AdventOfCode-Data.git
+	update = merge
