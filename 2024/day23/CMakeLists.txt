@@ -16,9 +16,21 @@ else()
     set(day_cpp "")
 endif()
 
+link_directories(../../lib ../../lib/out/build/x64-Debug)
+
 # Build executable from sources and headers
-add_executable(${year}_${day}_test ${day}_test.cpp ${day_cpp} ${day}.h ../../lib/tests-main.cpp ../../lib/advent.cpp)
-add_executable(${year}_${day} ${day}_main.cpp ${day_cpp} ${day}.h ../../lib/advent.cpp)
+add_library(${year}_${day}_lib ${day_cpp})
+add_executable(${year}_${day}_test ${day}_test.cpp)
+add_executable(${year}_${day} ${day}_main.cpp)
+
+target_link_libraries(${year}_${day}_test PRIVATE ${year}_${day}_lib adventlib testsmain)
+target_link_libraries(${year}_${day} PRIVATE ${year}_${day}_lib adventlib)
+
+set_target_properties(${year}_${day}_lib PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED OFF
+    CXX_EXTENSIONS OFF
+)
 
 set_target_properties(${year}_${day} PROPERTIES
     CXX_STANDARD 17
