@@ -17,8 +17,12 @@ else()
 endif()
 
 # Build executable from sources and headers
-add_executable(${year}_${day}_test ${day}_test.cpp ${day_cpp} ${day}.h ../../lib/tests-main.cpp ../../lib/advent.cpp)
-add_executable(${year}_${day} ${day}_main.cpp ${day_cpp} ${day}.h ../../lib/advent.cpp)
+add_library(${year}_${day}_lib ${day_cpp})
+add_executable(${year}_${day}_test ${day}_test.cpp ../../lib/tests-main.cpp ../../lib/advent.cpp)
+add_executable(${year}_${day} ${day}_main.cpp ../../lib/advent.cpp)
+
+target_link_libraries(${year}_${day}_test PRIVATE ${year}_${day}_lib)
+target_link_libraries(${year}_${day} PRIVATE ${year}_${day}_lib)
 
 set_target_properties(${year}_${day} PROPERTIES
     CXX_STANDARD 17
