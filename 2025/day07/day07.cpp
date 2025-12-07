@@ -13,7 +13,7 @@ namespace day07 {
         return solve(rows, true);
     }
 
-    int64_t day07::solve(const std::vector<std::string>& rows, bool part2) {
+    int64_t solve(const std::vector<std::string>& rows, bool part2) {
         const auto& manifold = advent::grid{rows};
         auto start = manifold.find('S').column;
         auto current_row = std::vector<std::int64_t>(manifold.get_width());
