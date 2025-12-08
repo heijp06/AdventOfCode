@@ -30,7 +30,6 @@ namespace advent {
             if (innum) {
                 innum = false;
                 result.push_back(negative ? -num : num);
-                negative = false;
                 num = 0;
             }
 
