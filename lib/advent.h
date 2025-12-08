@@ -34,8 +34,6 @@ namespace advent {
             }
 
             negative = c == '-';
-
-            continue;
         }
 
         if (innum) {
