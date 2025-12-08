@@ -6,21 +6,21 @@
 
 namespace day08 {
     struct coord3d_t {
-        int x;
-        int y;
-        int z;
+        std::int64_t x;
+        std::int64_t y;
+        std::int64_t z;
 
         friend bool operator<(const coord3d_t& l, const coord3d_t& r) {
-            if (l.x < r.y) return true;
-            if (l.x > r.y) return false;
+            if (l.x < r.x) return true;
+            if (l.x > r.x) return false;
             if (l.y < r.y) return true;
             if (l.y > r.y) return false;
             return l.z < r.z;
         }
 
         friend bool operator>(const coord3d_t& l, const coord3d_t& r) {
-            if (l.x < r.y) return false;
-            if (l.x > r.y) return true;
+            if (l.x < r.x) return false;
+            if (l.x > r.x) return true;
             if (l.y < r.y) return false;
             if (l.y > r.y) return true;
             return l.z > r.z;
