@@ -11,7 +11,7 @@ namespace day08 {
 
         for (const auto& row : rows) {
             const auto& fields = advent::ints(row);
-            coords.emplace_back(coord3d{ fields[0] , fields[1], fields[2] });
+            coords.emplace_back(coord3d_t{ fields[0] , fields[1], fields[2] });
         }
 
         for (size_t i = 0; i < coords.size() - 1; ++i)
@@ -20,8 +20,12 @@ namespace day08 {
             for (size_t j = i + 1; j < coords.size(); ++j)
             {
                 const auto& coord2 = coords[j];
-                std::int64_t distance = (coord1.x - coord2.x) * (coord1.x - coord2.x) +
-                const auto& item = item_t{}
+                std::int64_t distance =
+                    (coord1.x - coord2.x) * (coord1.x - coord2.x) +
+                    (coord1.y - coord2.y) * (coord1.y - coord2.y) +
+                    (coord1.z - coord2.z) * (coord1.z - coord2.z);
+                const auto& item = item_t{ distance, coord1, coord2 };
+                items.insert(item);
             }
         }
 
