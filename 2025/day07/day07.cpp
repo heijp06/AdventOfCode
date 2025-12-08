@@ -35,9 +35,10 @@ namespace day07 {
                 else {
                     next_row[column] += current_row[column];
                 }
+
+                current_row[column] = 0;
             }
             std::swap(current_row, next_row);
-            std::fill(next_row.begin(), next_row.end(), 0);
         }
 
         return part2 ? std::reduce(current_row.cbegin(), current_row.cend()) : split;
