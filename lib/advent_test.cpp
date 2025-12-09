@@ -121,9 +121,14 @@ TEST_CASE("empty grid") {
 
 TEST_CASE("initialize grid with height and width") {
     const auto& grid = advent::grid(2, 3);
-
+    
     REQUIRE(grid.get_height() == 2);
     REQUIRE(grid.get_width() == 3);
+
+    auto row = GENERATE(0, 1);
+    auto column = GENERATE(0, 1, 2);
+
+    REQUIRE(grid[{row, column}] == '.');
 }
 
 TEST_CASE("directions") {
