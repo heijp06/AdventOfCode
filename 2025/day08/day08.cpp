@@ -1,3 +1,4 @@
+#include "day08.h"
 #include <iostream>
 #include <map>
 #include <memory>
@@ -8,6 +9,14 @@
 
 namespace day08 {
     int part1(const std::vector<std::string>& rows, int times) {
+        return solve(rows, times);
+    }
+
+    int part2(const std::vector<std::string>& rows) {
+        return solve(rows, -1);
+    }
+
+    int solve(const std::vector<std::string>& rows, int times) {
         auto coords = std::vector<coord3d_t>();
         coords.reserve(rows.size());
         std::set<item_t> items;
@@ -16,14 +25,12 @@ namespace day08 {
 
         for (const auto& row : rows) {
             const auto& fields = advent::ints(row);
-            coords.emplace_back(coord3d_t{ fields[0] , fields[1], fields[2] });
+            coords.emplace_back(coord3d_t{fields[0] , fields[1], fields[2]});
         }
 
-        for (size_t i = 0; i < coords.size() - 1; ++i)
-        {
+        for (size_t i = 0; i < coords.size() - 1; ++i) {
             const auto& coord1 = coords[i];
-            for (size_t j = i + 1; j < coords.size(); ++j)
-            {
+            for (size_t j = i + 1; j < coords.size(); ++j) {
                 const auto& coord2 = coords[j];
                 std::int64_t distance =
                     (coord1.x - coord2.x) * (coord1.x - coord2.x) +
@@ -32,7 +39,7 @@ namespace day08 {
                 if (distance < 0) {
                     distance++;
                 }
-                const auto& item = item_t{ distance, coord1, coord2 };
+                const auto& item = item_t{distance, coord1, coord2};
                 items.insert(item);
             }
         }
@@ -69,6 +76,10 @@ namespace day08 {
                 junctions[item.p1] = junction;
                 junctions[item.p2] = junction;
             }
+
+            if (times < 0 && rows.size() == junctions.cbegin()->second->size()) {
+                return item.p1.x * item.p2.x;
+            }
         }
 
         auto values = std::vector<std::shared_ptr<std::vector<coord3d_t>>>();
@@ -87,10 +98,5 @@ namespace day08 {
         std::sort(sizes.rbegin(), sizes.rend());
 
         return sizes[0] * sizes[1] * sizes[2];
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 }

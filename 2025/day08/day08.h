@@ -43,4 +43,6 @@ namespace day08 {
 
     int part1(const std::vector<std::string>& rows, int times = 1000);
     int part2(const std::vector<std::string>& rows);
+
+    int solve(const std::vector<std::string>& rows, int times);
 }
