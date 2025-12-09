@@ -21,6 +21,22 @@ namespace day09 {
     }
 
     std::int64_t part2(const std::vector<std::string>& rows) {
+        auto& pairs = parse(rows);
+        std::int64_t max_x{};
+        std::int64_t max_y{};
+        for (const auto& pair : pairs) {
+            max_x = std::max(max_x, pair.first);
+            max_y = std::max(max_y, pair.second);
+        }
+
+        auto grid = advent::grid(static_cast<int>(max_x + 1), static_cast<int>(max_y + 1));
+
+        const auto& current = pairs.back();
+        grid[{static_cast<int>(current.first), static_cast<int>(current.second)}] = 'O';
+        for (const auto& pair : pairs) {
+            
+        }
+        ////grid.draw();
 
         return -1;
     }
