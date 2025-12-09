@@ -28,7 +28,7 @@ std::vector<std::string> rows{
 };
 
 TEST_CASE("part1") {
-    REQUIRE(day08::part1(rows) == 40);
+    REQUIRE(day08::part1(rows, 10) == 40);
 }
 
 TEST_CASE("part2") {
