@@ -111,6 +111,7 @@ namespace advent {
     class grid {
     public:
         grid(const std::vector<std::string>& rows);
+        grid(int height, int width);
         int get_height() const;
         int get_width() const;
         std::vector<coord> get_positions() const;

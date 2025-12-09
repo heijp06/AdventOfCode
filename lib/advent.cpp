@@ -2,7 +2,6 @@
 
 #include <filesystem>
 #include <fstream>
-#include <regex>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -77,6 +76,12 @@ namespace advent {
         rows_{rows},
         height_{static_cast<int>(rows.size())},
         width_{static_cast<int>(height_ ? rows[0].size() : 0)} {
+    }
+
+    grid::grid(int height, int width) :
+        rows_{ static_cast<size_t>(height), std::string(width, '.')},
+        height_{height},
+        width_{width} {
     }
 
     int grid::get_height() const {
