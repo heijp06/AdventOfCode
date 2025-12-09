@@ -6,14 +6,8 @@
 
 namespace day09 {
     std::int64_t part1(const std::vector<std::string>& rows) {
-        std::vector<std::pair<std::int64_t, std::int64_t>> pairs;
-        pairs.reserve(rows.size());
         std::int64_t max_area{};
-
-        for (const auto& row : rows) {
-            const auto& ints = advent::ints<int64_t>(row);
-            pairs.emplace_back(std::make_pair(ints[0], ints[1]));
-        }
+        const auto& pairs = parse(rows);
 
         for (const auto& pair1 : pairs) {
             for (const auto& pair2 : pairs) {
@@ -27,7 +21,19 @@ namespace day09 {
     }
 
     std::int64_t part2(const std::vector<std::string>& rows) {
-        (void)rows;
+
         return -1;
+    }
+
+    std::vector<std::pair<int64_t, int64_t>> parse(const std::vector<std::string>& rows) {
+        std::vector<std::pair<int64_t, int64_t>> pairs;
+        pairs.reserve(rows.size());
+
+        for (const auto& row : rows) {
+            const auto& ints = advent::ints<int64_t>(row);
+            pairs.emplace_back(std::make_pair(ints[0], ints[1]));
+        }
+
+        return pairs;
     }
 }
