@@ -23,10 +23,6 @@ namespace day07 {
 
         for (int row = 1; row < manifold.get_height(); row++) {
             for (int column = 0; column < manifold.get_width(); column++) {
-                if (!current_row[column]) {
-                    continue;
-                }
-
                 if (manifold[{row, column}] == '^') {
                     next_row[column - 1] += current_row[column];
                     next_row[column + 1] += current_row[column];
