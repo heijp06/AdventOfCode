@@ -10,6 +10,7 @@ namespace day11 {
         std::vector<std::string> outputs;
         int paths;
         int pending_inputs;
+        bool reachable;
     };
 
     int part1(const std::vector<std::string>& rows);

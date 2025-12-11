@@ -3,7 +3,7 @@
 
 namespace day11 {
     int part1(const std::vector<std::string>& rows) {
-        auto& reactor = parse(rows);
+        auto reactor = parse(rows);
 
         return -1;
     }
@@ -22,13 +22,35 @@ namespace day11 {
 
             device.name = row.substr(0, 3);
             device.outputs = advent::split(row.substr(5), " ");
-            device.paths = device.name == "you" ? 1 : 0;
+            device.paths = 0;
             device.pending_inputs = 0;
 
             result[device.name] = device;
         }
 
-        // Todo set pending inputs, note that aaa is never reached but inputs to ccc that is reached.
+        result["you"].paths = 1;
+        result["you"].reachable = true;
+
+        std::vector<std::string> current{};
+        current.reserve(rows.size());
+        auto next = current;
+        current.emplace_back("you");
+
+        while (!current.empty()) {
+            for (const auto& d : current) {
+                for (const auto& o : result[d].outputs) {
+                    if (result[o].reachable) {
+                        continue;
+                    }
+
+                    result[o].reachable = true;
+                    next.emplace_back(result[o].name);
+                }
+            }
+            std::swap(current, next);
+            next.clear();
+        }
+
         return result;
     }
 }
