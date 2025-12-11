@@ -17,15 +17,24 @@ namespace day11 {
     {
         std::map<std::string, Device> result{};
 
+        auto out = Device{ "out", {}, {}, 0, 0, false };
+        result[out.name] = out;
+
         for (const auto& row : rows) {
             Device device{};
 
             device.name = row.substr(0, 3);
             device.outputs = advent::split(row.substr(5), " ");
-            device.paths = 0;
+            device.paths = device.name == "you" ? 1 : 0;
             device.pending_inputs = 0;
 
             result[device.name] = device;
+        }
+
+        for (const auto& item : result) {
+            for (const auto& output : item.second.outputs) {
+                result[output].inputs.emplace_back(item.first);
+            }
         }
 
         result["you"].paths = 1;
@@ -34,6 +43,7 @@ namespace day11 {
         std::vector<std::string> current{};
         current.reserve(rows.size());
         auto next = current;
+        next.reserve(rows.size());
         current.emplace_back("you");
 
         while (!current.empty()) {

@@ -7,6 +7,7 @@
 namespace day11 {
     struct Device {
         std::string name;
+        std::vector<std::string> inputs;
         std::vector<std::string> outputs;
         int paths;
         int pending_inputs;
