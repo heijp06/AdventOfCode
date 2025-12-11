@@ -2,7 +2,7 @@
 #include "../../lib/advent.h"
 
 namespace day11 {
-    int part1(const std::vector<std::string>& rows) {
+    std::int64_t part1(const std::vector<std::string>& rows) {
         const std::string start = "you";
         auto reactor = parse(rows, start);
 
@@ -11,7 +11,7 @@ namespace day11 {
         return reactor["out"].paths;
     }
 
-    int part2(const std::vector<std::string>& rows) {
+    std::int64_t part2(const std::vector<std::string>& rows) {
         const std::string start = "svr";
         auto reactor = parse(rows, start);
 
