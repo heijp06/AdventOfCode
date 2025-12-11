@@ -5,7 +5,28 @@ namespace day11 {
     int part1(const std::vector<std::string>& rows) {
         auto reactor = parse(rows);
 
-        return -1;
+        std::vector<Device> current{};
+        current.reserve(rows.size());
+        current.emplace_back(reactor["you"]);
+        std::vector<Device> next{};
+        next.reserve(rows.size());
+
+        while (!current.empty()) {
+            for (const auto& device : current) {
+                for (const auto& output : device.outputs) {
+                    auto& next_device = reactor[output];
+                    next_device.pending_inputs--;
+                    next_device.paths += device.paths;
+                    if (!next_device.pending_inputs) {
+                        next.emplace_back(next_device);
+                    }
+                }
+            }
+            std::swap(current, next);
+            next.clear();
+        }
+
+        return reactor["out"].paths;
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -59,6 +80,12 @@ namespace day11 {
             }
             std::swap(current, next);
             next.clear();
+        }
+
+        for (auto& item : result) {
+            for (const auto& input : item.second.inputs) {
+                item.second.pending_inputs += result[input].reachable;
+            }
         }
 
         return result;
