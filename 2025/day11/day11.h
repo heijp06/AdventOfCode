@@ -17,5 +17,6 @@ namespace day11 {
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
-    std::map <std::string, Device> parse(const std::vector<std::string>& rows);
+    std::map <std::string, Device> parse(const std::vector<std::string>& rows, std::string start);
+    void solve(const std::vector<std::string>& rows, std::map<std::string, day11::Device>& reactor, std::string start);
 }

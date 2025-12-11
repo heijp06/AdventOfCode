@@ -1,13 +1,30 @@
 #include "day11.h"
+#include "day11.h"
 #include "../../lib/advent.h"
 
 namespace day11 {
     int part1(const std::vector<std::string>& rows) {
-        auto reactor = parse(rows);
+        const std::string start = "you";
+        auto reactor = parse(rows, start);
 
+        solve(rows, reactor, start);
+
+        return reactor["out"].paths;
+    }
+
+    int part2(const std::vector<std::string>& rows) {
+        const std::string start = "srv";
+        auto reactor = parse(rows, start);
+
+        solve(rows, reactor, start);
+
+        return -1;
+    }
+
+    void solve(const std::vector<std::string>& rows, std::map<std::string, day11::Device>& reactor, std::string start) {
         std::vector<Device> current{};
         current.reserve(rows.size());
-        current.emplace_back(reactor["you"]);
+        current.emplace_back(reactor[start]);
         std::vector<Device> next{};
         next.reserve(rows.size());
 
@@ -25,16 +42,9 @@ namespace day11 {
             std::swap(current, next);
             next.clear();
         }
-
-        return reactor["out"].paths;
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
-    }
-
-    std::map<std::string, Device> parse(const std::vector<std::string>& rows)
+    std::map<std::string, Device> parse(const std::vector<std::string>& rows, std::string start)
     {
         std::map<std::string, Device> result{};
 
@@ -46,7 +56,7 @@ namespace day11 {
 
             device.name = row.substr(0, 3);
             device.outputs = advent::split(row.substr(5), " ");
-            device.paths = device.name == "you" ? 1 : 0;
+            device.paths = device.name == start ? 1 : 0;
             device.pending_inputs = 0;
 
             result[device.name] = device;
@@ -58,14 +68,14 @@ namespace day11 {
             }
         }
 
-        result["you"].paths = 1;
-        result["you"].reachable = true;
+        result[start].paths = 1;
+        result[start].reachable = true;
 
         std::vector<std::string> current{};
         current.reserve(rows.size());
         auto next = current;
         next.reserve(rows.size());
-        current.emplace_back("you");
+        current.emplace_back(start);
 
         while (!current.empty()) {
             for (const auto& d : current) {
