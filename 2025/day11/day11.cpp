@@ -15,7 +15,7 @@ namespace day11 {
 
     std::map<std::string, Device> parse(const std::vector<std::string>& rows)
     {
-        std::map<std::string, Device> result;
+        std::map<std::string, Device> result{};
 
         for (const auto& row : rows) {
             Device device{};
