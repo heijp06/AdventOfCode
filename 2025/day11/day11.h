@@ -10,6 +10,9 @@ namespace day11 {
         std::vector<std::string> inputs;
         std::vector<std::string> outputs;
         int paths;
+        int fft;
+        int dac;
+        int both;
         int pending_inputs;
         bool reachable;
     };

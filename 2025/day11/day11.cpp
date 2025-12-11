@@ -1,5 +1,4 @@
 #include "day11.h"
-#include "day11.h"
 #include "../../lib/advent.h"
 
 namespace day11 {
@@ -13,12 +12,12 @@ namespace day11 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        const std::string start = "srv";
+        const std::string start = "svr";
         auto reactor = parse(rows, start);
 
         solve(rows, reactor, start);
 
-        return -1;
+        return reactor["out"].both;
     }
 
     void solve(const std::vector<std::string>& rows, std::map<std::string, day11::Device>& reactor, std::string start) {
@@ -34,6 +33,17 @@ namespace day11 {
                     auto& next_device = reactor[output];
                     next_device.pending_inputs--;
                     next_device.paths += device.paths;
+                    next_device.both += device.both;
+                    next_device.dac += device.dac;
+                    next_device.fft += device.fft;
+                    if (device.name == "fft") {
+                        next_device.fft += device.paths;
+                        next_device.both += device.dac;
+                    }
+                    else if (device.name == "dac") {
+                        next_device.dac += device.paths;
+                        next_device.both += device.fft;
+                    }
                     if (!next_device.pending_inputs) {
                         next.emplace_back(next_device);
                     }
@@ -48,7 +58,7 @@ namespace day11 {
     {
         std::map<std::string, Device> result{};
 
-        auto out = Device{ "out", {}, {}, 0, 0, false };
+        auto out = Device{ "out", {}, {}, 0, 0, 0, 0, 0, false };
         result[out.name] = out;
 
         for (const auto& row : rows) {
@@ -57,6 +67,9 @@ namespace day11 {
             device.name = row.substr(0, 3);
             device.outputs = advent::split(row.substr(5), " ");
             device.paths = device.name == start ? 1 : 0;
+            device.fft = 0;
+            device.dac = 0;
+            device.both = 0;
             device.pending_inputs = 0;
 
             result[device.name] = device;

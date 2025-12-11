@@ -38,5 +38,5 @@ TEST_CASE("part1") {
 }
 
 TEST_CASE("part2") {
-    REQUIRE(day11::part2(rows1) == 2);
+    REQUIRE(day11::part2(rows2) == 2);
 }
