@@ -5,7 +5,6 @@
 #include "day12.h"
 
 std::vector<std::string> rows{
-
 };
 
 TEST_CASE("part1") {
