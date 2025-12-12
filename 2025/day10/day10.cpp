@@ -1,6 +1,7 @@
+#include "day10.h"
+#include "day10.h"
 #include <cmath>
 
-#include "day10.h"
 #include "../../lib/advent.h"
 
 namespace day10 {
@@ -33,8 +34,21 @@ namespace day10 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
+        const auto& machines = parse(rows);
+        
+        for (const auto& machine : machines) {
+            auto& equations = parse_equations(machine);
+        }
+
         return -1;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Equation& arg) {
+        for (const auto& coefficient : arg.coefficients) {
+            os << std::setw(4) << coefficient;
+        }
+        os << std::setw(4) << "|" << std::setw(4) << arg.value;
+        return os;
     }
 
     std::vector<Machine> day10::parse(const std::vector<std::string>& rows) {
@@ -69,5 +83,34 @@ namespace day10 {
         }
 
         return machines;
+    }
+
+    std::vector<Equation> parse_equations(const Machine& machine) {
+        std::vector<Equation> equations{};
+        equations.reserve(machine.lamps);
+
+        int wire = 1;
+        for (size_t i = 0; i < machine.lamps; i++) {
+            std::vector<int> coefficients{};
+            coefficients.reserve(machine.buttons.size());
+            for (const auto& button : machine.buttons) {
+                coefficients.push_back(button & wire ? 1 : 0);
+            }
+            equations.push_back({coefficients, machine.joltages[i]});
+            wire <<= 1;
+        }
+
+        return equations;
+    }
+
+    void dump(const std::vector<Equation>& equations) {
+        for (const auto& equation : equations) {
+            std::cout << equation << std::endl;
+        }
+        std::cout << std::endl;
+    }
+
+    std::vector<int> upper_bounds(const std::vector<Equation>& equation) {
+        return std::vector<int>();
     }
 }
