@@ -65,7 +65,7 @@ namespace day10 {
                 buttons.push_back(wiring);
             }
 
-            machines.push_back({lamps, diagram, buttons});
+            machines.push_back({lamps, diagram, buttons, advent::ints(fields.back())});
         }
 
         return machines;

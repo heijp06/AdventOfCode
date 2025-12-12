@@ -19,5 +19,5 @@ TEST_CASE("extra") {
 }
 
 TEST_CASE("part2") {
-    REQUIRE(day10::part2(rows) == -1);
+    REQUIRE(day10::part2(rows) == 33);
 }

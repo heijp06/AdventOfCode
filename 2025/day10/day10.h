@@ -8,6 +8,7 @@ namespace day10 {
         int lamps;
         int diagram;
         std::vector<int> buttons;
+        std::vector<int> joltages;
     };
 
     int part1(const std::vector<std::string>& rows);
