@@ -1,5 +1,6 @@
 #include "day10.h"
 #include "day10.h"
+#include "day10.h"
 #include <cmath>
 
 #include "../../lib/advent.h"
@@ -35,19 +36,31 @@ namespace day10 {
 
     int part2(const std::vector<std::string>& rows) {
         const auto& machines = parse(rows);
-        
-        for (const auto& machine : machines) {
-            auto& equations = parse_equations(machine);
-        }
+        auto& systems = parse_systems(machines);
 
+        for (const auto& system : systems) {
+            dump(system);
+        }
+        
         return -1;
     }
 
-    std::ostream& operator<<(std::ostream& os, const Equation& arg) {
-        for (const auto& coefficient : arg.coefficients) {
+    std::ostream& operator<<(std::ostream& os, const Equation& equation) {
+        for (const auto& coefficient : equation.coefficients) {
             os << std::setw(4) << coefficient;
         }
-        os << std::setw(4) << "|" << std::setw(4) << arg.value;
+        os << std::setw(4) << "|" << std::setw(4) << equation.value;
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const System& system) {
+        for (const auto& upper_bound : system.upper_bounds) {
+            os << std::setw(4) << upper_bound;
+        }
+        std::cout << std::endl;
+        for (const auto& equation : system.equations) {
+            std::cout << equation << std::endl;
+        }
         return os;
     }
 
@@ -85,6 +98,30 @@ namespace day10 {
         return machines;
     }
 
+    std::vector<System> parse_systems(const std::vector<Machine>& machines) {
+        std::vector<System> systems{};
+        systems.reserve(machines.size());
+
+        for (const auto& machine : machines) {
+            auto& equations = parse_equations(machine);
+            std::vector<int> upper_bounds{};
+            upper_bounds.reserve(machine.buttons.size());
+            for (size_t j = 0; j < machine.buttons.size(); j++) {
+                int max = -1;
+                for (size_t i = 0; i < machine.lamps; i++) {
+                    const auto& equation = equations[i];
+                    if (equation.coefficients[j] && (max == -1 || max > equation.value)) {
+                        max = equation.value;
+                    }
+                }
+                upper_bounds.push_back(max);
+            }
+            systems.push_back({upper_bounds, equations});
+        }
+
+        return systems;
+    }
+
     std::vector<Equation> parse_equations(const Machine& machine) {
         std::vector<Equation> equations{};
         equations.reserve(machine.lamps);
@@ -103,14 +140,8 @@ namespace day10 {
         return equations;
     }
 
-    void dump(const std::vector<Equation>& equations) {
-        for (const auto& equation : equations) {
-            std::cout << equation << std::endl;
-        }
+    void dump(const System& system) {
+        std::cout << system << std::endl;
         std::cout << std::endl;
-    }
-
-    std::vector<int> upper_bounds(const std::vector<Equation>& equation) {
-        return std::vector<int>();
     }
 }

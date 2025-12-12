@@ -18,11 +18,16 @@ namespace day10 {
         int value = 0;
     };
 
+    struct System {
+        std::vector<int> upper_bounds;
+        std::vector<Equation> equations;
+    };
+
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
     std::vector<Machine> parse(const std::vector<std::string>& rows);
     std::vector<Equation> parse_equations(const Machine& machine);
-    void dump(const std::vector<Equation>& equations);
-    std::vector<int> upper_bounds(const std::vector<Equation>& equation);
+    std::vector<System> parse_systems(const std::vector<Machine>& machines);
+    void dump(const System& system);
 }
