@@ -71,9 +71,9 @@ namespace day10 {
             dump(system);
             int min = -1;
             for (const auto& solution : solve(system)) {
-                if (!check(system, solution)) {
-                    continue;
-                }
+                //if (!check(system, solution)) {
+                //    continue;
+                //}
                 int sum = std::reduce(solution.values.cbegin(), solution.values.cend());
                 if (min < 0 || min > sum) {
                     min = sum;
