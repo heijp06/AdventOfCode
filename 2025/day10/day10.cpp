@@ -71,7 +71,7 @@ namespace day10 {
             int min = -1;
             for (const auto& solution : solve(system)) {
                 if (!check(system, solution)) {
-                    break;
+                    throw std::logic_error("Illegal solution returned.");
                 }
                 int sum = std::reduce(solution.values.cbegin(), solution.values.cend());
                 if (min < 0 || min > sum) {
@@ -175,6 +175,7 @@ namespace day10 {
                 for (int value = 0; value <= upper_bound; value++) {
                     std::vector<int> values{value};
                     values.reserve(system.upper_bounds.size());
+                    values.insert(values.end(), solution.values.cbegin(), solution.values.cend());
                     solutions.emplace_back(Solution{values});
                 }
             }
