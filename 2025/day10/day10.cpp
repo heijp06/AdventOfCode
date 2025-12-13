@@ -19,9 +19,8 @@ namespace day10 {
         for (const auto& upper_bound : system.upper_bounds) {
             os << std::setw(4) << upper_bound;
         }
-        std::cout << std::endl;
         for (const auto& equation : system.equations) {
-            std::cout << equation << std::endl;
+            std::cout << std::endl << equation;
         }
         return os;
     }
@@ -63,6 +62,7 @@ namespace day10 {
     }
 
     int part2(const std::vector<std::string>& rows) {
+        // 16638: too low.
         int total{};
         const auto& machines = parse(rows);
         auto& systems = parse_systems(machines);
@@ -71,18 +71,34 @@ namespace day10 {
             dump(system);
             int min = -1;
             for (const auto& solution : solve(system)) {
+                if (!check(system, solution)) {
+                    continue;
+                }
                 int sum = std::reduce(solution.values.cbegin(), solution.values.cend());
                 if (min < 0 || min > sum) {
                     min = sum;
                 }
-                std::cout << solution << std::endl;
+                //std::cout << solution << std::endl;
             }
-            std::cout << min << std::endl;
-            std::cout << std::endl;
+            std::cout << min << std::endl << std::endl;
             total += min;
         }
         
         return total;
+    }
+
+    bool check(const System& system, const Solution& solution) {
+        for (const auto& equation : system.equations) {
+            int sum{};
+            for (int i = 0; i < solution.values.size(); i++) {
+                sum += equation.coefficients[i] * solution.values[i];
+            }
+            if (sum != equation.value) {
+                //std::cout << "ERR: " << solution << std::endl;
+                return false;
+            }
+        }
+        return true;
     }
 
     std::vector<Machine> day10::parse(const std::vector<std::string>& rows) {
@@ -280,6 +296,5 @@ namespace day10 {
 
     void dump(const System& system) {
         std::cout << system << std::endl;
-        std::cout << std::endl;
     }
 }

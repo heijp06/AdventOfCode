@@ -36,5 +36,6 @@ namespace day10 {
     std::vector<System> parse_systems(const std::vector<Machine>& machines);
     std::vector<Solution> solve(const System& system);
     System reduce(const System& system, const int row_index);
+    bool check(const System& system, const Solution& solution);
     void dump(const System& system);
 }
