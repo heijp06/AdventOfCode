@@ -67,7 +67,7 @@ namespace day10 {
         auto& systems = parse_systems(machines);
 
         for (const auto& system : systems) {
-            dump(system);
+            //dump(system);
             int min = -1;
             for (const auto& solution : solve(system)) {
                 if (!check(system, solution)) {
@@ -79,7 +79,7 @@ namespace day10 {
                 }
                 //std::cout << solution << std::endl;
             }
-            std::cout << min << std::endl << std::endl;
+            //std::cout << min << std::endl << std::endl;
             total += min;
         }
         
