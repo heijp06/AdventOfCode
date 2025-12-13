@@ -35,5 +35,6 @@ namespace day10 {
     std::vector<Equation> parse_equations(const Machine& machine);
     std::vector<System> parse_systems(const std::vector<Machine>& machines);
     std::vector<Solution> solve(const System& system);
+    System reduce(const System& system);
     void dump(const System& system);
 }

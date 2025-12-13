@@ -1,7 +1,9 @@
+#include "day10.h"
 #include <cmath>
+#include <numeric>
+#include <stdexcept>
 #include <utility>
 
-#include "day10.h"
 #include "../../lib/advent.h"
 
 namespace day10 {
@@ -148,6 +150,45 @@ namespace day10 {
         }
 
         return solutions;
+    }
+
+    System reduce(const System& system) {
+        int row_index = -1;
+        for (int i = 0; i < system.equations.size(); i++) {
+            if (system.equations[i].coefficients[0] != 0) {
+                row_index = i;
+                break;
+            }
+        }
+        if (row_index == -1) {
+            throw std::logic_error("No row with non zero first coefficient found.");
+        }
+
+        std::vector<Equation> equations{};
+        equations.reserve(system.equations.size() - 1);
+        const auto& remove = system.equations[row_index];
+        for (int i = 0; i < system.equations.size(); i++) {
+            if (i == row_index) {
+                continue;
+            }
+
+            const auto& equation = system.equations[i];
+            int gcd = std::gcd(remove.coefficients[0], equation.coefficients[0]);
+            int factor_remove = equation.coefficients[0] / gcd;
+            int factor_equation = remove.coefficients[0] / gcd;
+            std::vector<int> coefficients{};
+            coefficients.reserve(equation.coefficients.size() - 1);
+            for (int j = 1; j < equation.coefficients.size(); j++) {
+                coefficients.push_back(
+                    factor_equation * equation.coefficients[j] - factor_remove * remove.coefficients[j]);
+            }
+
+            equations.push_back({coefficients, factor_equation * equation.value - factor_remove * remove.value});
+        }
+
+        auto upper_bounds = std::vector<int>(system.upper_bounds.cbegin() + 1, system.upper_bounds.cend());
+
+        return System{upper_bounds, equations};
     }
 
     std::vector<Equation> parse_equations(const Machine& machine) {
