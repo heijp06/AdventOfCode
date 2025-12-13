@@ -1,3 +1,4 @@
+#include <set>
 #include <string>
 #include <vector>
 
@@ -20,4 +21,16 @@ TEST_CASE("extra") {
 
 TEST_CASE("part2") {
     REQUIRE(day10::part2(rows) == 33);
+}
+
+TEST_CASE("1 row 1 element 1 solution") {
+    day10::System system = {
+        {3},
+        {{{ 2 }, 4 }}
+    };
+
+    const auto& solutions = day10::solve(system);
+
+    REQUIRE(solutions.size() == 1);
+    REQUIRE(solutions.front().values == std::vector<int>{2});
 }

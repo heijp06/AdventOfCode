@@ -1,11 +1,29 @@
-#include "day10.h"
-#include "day10.h"
-#include "day10.h"
 #include <cmath>
+#include <utility>
 
+#include "day10.h"
 #include "../../lib/advent.h"
 
 namespace day10 {
+    std::ostream& operator<<(std::ostream& os, const Equation& equation) {
+        for (const auto& coefficient : equation.coefficients) {
+            os << std::setw(4) << coefficient;
+        }
+        os << std::setw(4) << "|" << std::setw(4) << equation.value;
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const System& system) {
+        for (const auto& upper_bound : system.upper_bounds) {
+            os << std::setw(4) << upper_bound;
+        }
+        std::cout << std::endl;
+        for (const auto& equation : system.equations) {
+            std::cout << equation << std::endl;
+        }
+        return os;
+    }
+
     int part1(const std::vector<std::string>& rows) {
         const auto& machines = parse(rows);
         int sum{};
@@ -40,28 +58,10 @@ namespace day10 {
 
         for (const auto& system : systems) {
             dump(system);
+            //const auto& solutions = solve(system);
         }
         
         return -1;
-    }
-
-    std::ostream& operator<<(std::ostream& os, const Equation& equation) {
-        for (const auto& coefficient : equation.coefficients) {
-            os << std::setw(4) << coefficient;
-        }
-        os << std::setw(4) << "|" << std::setw(4) << equation.value;
-        return os;
-    }
-
-    std::ostream& operator<<(std::ostream& os, const System& system) {
-        for (const auto& upper_bound : system.upper_bounds) {
-            os << std::setw(4) << upper_bound;
-        }
-        std::cout << std::endl;
-        for (const auto& equation : system.equations) {
-            std::cout << equation << std::endl;
-        }
-        return os;
     }
 
     std::vector<Machine> day10::parse(const std::vector<std::string>& rows) {
@@ -120,6 +120,23 @@ namespace day10 {
         }
 
         return systems;
+    }
+
+    std::vector<Solution> solve(const System& system) {
+        std::vector<Solution> solutions;
+        if (system.equations.size() == 1) {
+            if (system.upper_bounds.size() == 1) {
+                const auto& equation = system.equations.front();
+                const auto& upper_bound = system.upper_bounds.front();
+                int value = equation.value / equation.coefficients.front();
+                if (value * equation.coefficients.front() == equation.value) {
+                    solutions.emplace_back(Solution{{value}});
+                }
+                return solutions;
+            }
+        }
+
+        return solutions;
     }
 
     std::vector<Equation> parse_equations(const Machine& machine) {

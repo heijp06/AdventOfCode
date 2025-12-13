@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -23,11 +24,16 @@ namespace day10 {
         std::vector<Equation> equations;
     };
 
+    struct Solution {
+        std::vector<int> values;
+    };
+
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
     std::vector<Machine> parse(const std::vector<std::string>& rows);
     std::vector<Equation> parse_equations(const Machine& machine);
     std::vector<System> parse_systems(const std::vector<Machine>& machines);
+    std::vector<Solution> solve(const System& system);
     void dump(const System& system);
 }
