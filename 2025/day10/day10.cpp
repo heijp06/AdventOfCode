@@ -75,10 +75,10 @@ namespace day10 {
                 if (min < 0 || min > sum) {
                     min = sum;
                 }
-                //std::cout << solution << std::endl;
+                std::cout << solution << std::endl;
             }
-            //std::cout << min << std::endl;
-            //std::cout << std::endl;
+            std::cout << min << std::endl;
+            std::cout << std::endl;
             total += min;
         }
         
@@ -144,7 +144,7 @@ namespace day10 {
     }
 
     std::vector<Solution> solve(const System& system) {
-        dump(system);
+        //dump(system);
         std::vector<Solution> solutions;
         const auto& upper_bound = system.upper_bounds.front();
         if (system.equations.size() == 1 || system.upper_bounds.size() == 1) {
