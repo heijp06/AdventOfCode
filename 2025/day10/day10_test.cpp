@@ -24,7 +24,7 @@ TEST_CASE("extra") {
 }
 
 TEST_CASE("test system that gives the wrong solution") {
-    REQUIRE(day10::part2({"[###.#] (1,2) (0,3,4) (0,1,2,4) {20,20,20,1,20}"}) == 21);
+    REQUIRE(day10::part2({"[####] (1,2) (0,3) (0,1,2) {20,20,20,1}"}) == 21);
 }
 
 TEST_CASE("1 row 1 element 1 solution") {
