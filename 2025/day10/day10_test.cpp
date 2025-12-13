@@ -19,17 +19,35 @@ TEST_CASE("part2") {
     REQUIRE(day10::part2(rows) == 33);
 }
 
-TEST_CASE("extra") {
+TEST_CASE(" part 1 extra") {
     REQUIRE(day10::part1({"[##.#] (1,2) (0,2) (2,3) (0,3) (0,1,2) {24,4,29,37}"}) == 2);
 }
 
-TEST_CASE("wrong solution 1") {
-    REQUIRE(day10::part2({"[####] (1,2) (0,3) (0,1,2) {20,20,20,1}"}) == 21);
+TEST_CASE("part 2 extra") {
+    struct test_data {
+        std::string line;
+        int button_presses;
+    };
+
+    const auto& cases = GENERATE(
+        test_data{"[####] (1,2) (0,3) (0,1,2) {20,20,20,1}", 21},
+        test_data{"[..#.] (0,1,2) (0,3) (2) (3) (0,1) {30,21,32,20}", 52}
+    );
+
+    REQUIRE(day10::part2({cases.line}) == cases.button_presses);
 }
 
-TEST_CASE("wrong solution 2") {
-    REQUIRE(day10::part2({"[..#.] (0,1,2) (0,3) (2) (3) (0,1) {30,21,32,20}"}) != -1);
-}
+/*
+  44  42  44  44  66  48  58  42  42
+   0   1   0   0   0   0   0   1   1   |  42
+   1   0   1   1   0   0   0   1   0   |  44
+   0   1   0   0   1   0   1   0   1   |  66
+   0   0   1   1   0   1   0   1   0   |  48
+   0   0   0   1   1   1   0   1   1   |  66
+   0   0   0   1   0   1   1   0   1   |  58
+   1   0   0   1   0   0   0   1   1   |  46
+114
+*/
 
 TEST_CASE("1 row 1 element 1 solution") {
     day10::System system = {
