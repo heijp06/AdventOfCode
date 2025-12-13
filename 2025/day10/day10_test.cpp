@@ -58,6 +58,20 @@ TEST_CASE("1 row 2 elements 1 solution") {
     REQUIRE(solutions.front().values == std::vector<int>{{1, 1}});
 }
 
+TEST_CASE("2 row 2 elements 1 solution") {
+    day10::System system = {
+        {4, 5}, {
+            {{ 2, 3 }, 18 },
+            {{ -1, 1}, 1}
+        }
+    };
+
+    const auto& solutions = day10::solve(system);
+
+    REQUIRE(solutions.size() == 1);
+    REQUIRE(solutions.front().values == std::vector<int>{{3, 4}});
+}
+
 TEST_CASE("reduce system") {
     day10::System system = {
         {1, 2, 3}, {
@@ -72,7 +86,7 @@ TEST_CASE("reduce system") {
             {{3, -4}, 1}
     }};
 
-    const auto& actual = day10::reduce(system);
+    const auto& actual = day10::reduce(system, 1);
 
     REQUIRE(actual.upper_bounds == expected.upper_bounds);
     REQUIRE(actual.equations.size() == expected.equations.size());

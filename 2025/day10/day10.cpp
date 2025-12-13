@@ -126,8 +126,8 @@ namespace day10 {
 
     std::vector<Solution> solve(const System& system) {
         std::vector<Solution> solutions;
+        const auto& upper_bound = system.upper_bounds.front();
         if (system.equations.size() == 1) {
-            const auto& upper_bound = system.upper_bounds.front();
             const auto& equation = system.equations.front();
             if (system.upper_bounds.size() == 1) {
                 int value = equation.value / equation.coefficients.front();
@@ -147,12 +147,9 @@ namespace day10 {
                     solutions.emplace_back(solution);
                 }
             }
+            return solutions;
         }
 
-        return solutions;
-    }
-
-    System reduce(const System& system) {
         int row_index = -1;
         for (int i = 0; i < system.equations.size(); i++) {
             if (system.equations[i].coefficients[0] != 0) {
@@ -164,6 +161,26 @@ namespace day10 {
             throw std::logic_error("No row with non zero first coefficient found.");
         }
 
+        const auto& sub_system = reduce(system, row_index);
+        const auto& equation = system.equations[row_index];
+        for (const auto& sub_solution : solve(sub_system)) {
+            int sum{};
+            for (int i = 0; i < sub_solution.values.size(); i++) {
+                sum += equation.coefficients[i + 1] * sub_solution.values[i];
+            }
+            int value = (equation.value - sum) / equation.coefficients[0];
+            if (value <= upper_bound && value * equation.coefficients[0] == equation.value - sum) {
+                std::vector<int> solution{value};
+                solution.reserve(system.upper_bounds.size());
+                solution.insert(solution.end(), sub_solution.values.cbegin(), sub_solution.values.cend());
+                solutions.push_back({solution});
+            }
+        }
+
+        return solutions;
+    }
+
+    System reduce(const System& system, const int row_index) {
         std::vector<Equation> equations{};
         equations.reserve(system.equations.size() - 1);
         const auto& remove = system.equations[row_index];
