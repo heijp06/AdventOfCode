@@ -23,21 +23,13 @@ TEST_CASE("extra") {
     REQUIRE(day10::part1({"[##.#] (1,2) (0,2) (2,3) (0,3) (0,1,2) {24,4,29,37}"}) == 2);
 }
 
-TEST_CASE("test system that gives the wrong solution") {
+TEST_CASE("wrong solution 1") {
     REQUIRE(day10::part2({"[####] (1,2) (0,3) (0,1,2) {20,20,20,1}"}) == 21);
 }
 
-/*
-
-  21  20  32  20  21
-   1   1   0   0   1   |  30
-   1   0   0   0   1   |  21
-   1   0   1   0   0   |  32
-   0   1   0   1   0   |  20
-
-ERR:   21   9  11   0   0
-
-*/
+TEST_CASE("wrong solution 2") {
+    REQUIRE(day10::part2({"[..#.] (0,1,2) (0,3) (2) (3) (0,1) {30,21,32,20}"}) != -1);
+}
 
 TEST_CASE("1 row 1 element 1 solution") {
     day10::System system = {

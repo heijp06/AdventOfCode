@@ -192,7 +192,7 @@ namespace day10 {
                         solutions.emplace_back(Solution{{value}});
                     }
                 }
-                else {
+                else if (!equation.value) {
                     for (int value = 0; value <= upper_bound; value++) {
                         solutions.emplace_back(Solution{{value}});
                     }
@@ -204,7 +204,7 @@ namespace day10 {
             std::vector<int> coefficients = {equation.coefficients.cbegin() + 1, equation.coefficients.cend()};
             int coefficient = equation.coefficients.front();
             for (int i = 0; i <= upper_bound; i++) {
-                std::vector<Equation> equations = {Equation{coefficients,  equation.value - coefficient * i}};
+                std::vector<Equation> equations = {Equation{coefficients, equation.value - coefficient * i}};
                 for (auto solution : solve({upper_bounds, equations})) {
                     solution.values.emplace(solution.values.begin(), i);
                     solutions.emplace_back(solution);
