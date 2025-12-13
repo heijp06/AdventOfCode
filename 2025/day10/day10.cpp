@@ -70,9 +70,9 @@ namespace day10 {
             dump(system);
             int min = -1;
             for (const auto& solution : solve(system)) {
-                //if (!check(system, solution)) {
-                //    continue;
-                //}
+                if (!check(system, solution)) {
+                    break;
+                }
                 int sum = std::reduce(solution.values.cbegin(), solution.values.cend());
                 if (min < 0 || min > sum) {
                     min = sum;
@@ -93,7 +93,7 @@ namespace day10 {
                 sum += equation.coefficients[i] * solution.values[i];
             }
             if (sum != equation.value) {
-                //std::cout << "ERR: " << solution << std::endl;
+                std::cout << "ERR: " << solution << std::endl;
                 return false;
             }
         }
@@ -159,9 +159,28 @@ namespace day10 {
     }
 
     std::vector<Solution> solve(const System& system) {
-        dump(system);
+        //dump(system);
         std::vector<Solution> solutions;
+        if (system.upper_bounds.empty()) {
+            solutions.emplace_back(Solution{{}});
+            return solutions;
+        }
         const auto& upper_bound = system.upper_bounds.front();
+        if (system.equations.empty()) {
+            auto sub_system = System{
+                {system.upper_bounds.cbegin() + 1, system.upper_bounds.cend()},
+                {}
+            };
+            for (const auto& solution : solve(sub_system)) {
+                for (int value = 0; value <= upper_bound; value++) {
+                    std::vector<int> values{value};
+                    values.reserve(system.upper_bounds.size());
+                    solutions.emplace_back(Solution{values});
+                }
+            }
+            return solutions;
+        }
+
         if (system.equations.size() == 1 || system.upper_bounds.size() == 1) {
             const auto& equation = system.equations.front();
             if (system.upper_bounds.size() == 1) {

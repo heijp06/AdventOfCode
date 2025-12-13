@@ -27,6 +27,18 @@ TEST_CASE("test system that gives the wrong solution") {
     REQUIRE(day10::part2({"[####] (1,2) (0,3) (0,1,2) {20,20,20,1}"}) == 21);
 }
 
+/*
+
+  21  20  32  20  21
+   1   1   0   0   1   |  30
+   1   0   0   0   1   |  21
+   1   0   1   0   0   |  32
+   0   1   0   1   0   |  20
+
+ERR:   21   9  11   0   0
+
+*/
+
 TEST_CASE("1 row 1 element 1 solution") {
     day10::System system = {
         {3},
