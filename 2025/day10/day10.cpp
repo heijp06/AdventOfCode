@@ -62,7 +62,6 @@ namespace day10 {
     }
 
     int part2(const std::vector<std::string>& rows) {
-        // 16638: too low.
         int total{};
         const auto& machines = parse(rows);
         auto& systems = parse_systems(machines);
