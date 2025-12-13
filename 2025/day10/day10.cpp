@@ -159,7 +159,7 @@ namespace day10 {
     }
 
     std::vector<Solution> solve(const System& system) {
-        //dump(system);
+        dump(system);
         std::vector<Solution> solutions;
         const auto& upper_bound = system.upper_bounds.front();
         if (system.equations.size() == 1 || system.upper_bounds.size() == 1) {
@@ -262,12 +262,17 @@ namespace day10 {
             int factor_equation = remove.coefficients[0] / gcd;
             std::vector<int> coefficients{};
             coefficients.reserve(equation.coefficients.size() - 1);
+            bool all_zero = true;
             for (int j = 1; j < equation.coefficients.size(); j++) {
-                coefficients.push_back(
-                    factor_equation * equation.coefficients[j] - factor_remove * remove.coefficients[j]);
+                auto coefficient = factor_equation * equation.coefficients[j] - factor_remove * remove.coefficients[j];
+                coefficients.push_back(coefficient);
+                if (coefficient) {
+                    all_zero = false;
+                }
             }
-
-            equations.push_back({coefficients, factor_equation * equation.value - factor_remove * remove.value});
+            if (!all_zero) {
+                equations.push_back({coefficients, factor_equation * equation.value - factor_remove * remove.value});
+            }
         }
 
         auto upper_bounds = std::vector<int>(system.upper_bounds.cbegin() + 1, system.upper_bounds.cend());
@@ -294,6 +299,6 @@ namespace day10 {
     }
 
     void dump(const System& system) {
-        std::cout << system << std::endl;
+        std::cout << system << std::endl << std::endl;
     }
 }
