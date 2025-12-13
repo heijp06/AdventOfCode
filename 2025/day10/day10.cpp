@@ -26,6 +26,14 @@ namespace day10 {
         return os;
     }
 
+    std::ostream& operator<<(std::ostream& os, const Solution& solution) {
+        for (const auto& value : solution.values) {
+            os << std::setw(4) << value;
+        }
+        return os;
+    }
+
+
     int part1(const std::vector<std::string>& rows) {
         const auto& machines = parse(rows);
         int sum{};
@@ -55,15 +63,26 @@ namespace day10 {
     }
 
     int part2(const std::vector<std::string>& rows) {
+        int total{};
         const auto& machines = parse(rows);
         auto& systems = parse_systems(machines);
 
         for (const auto& system : systems) {
             dump(system);
-            //const auto& solutions = solve(system);
+            int min = -1;
+            for (const auto& solution : solve(system)) {
+                int sum = std::reduce(solution.values.cbegin(), solution.values.cend());
+                if (min < 0 || min > sum) {
+                    min = sum;
+                }
+                //std::cout << solution << std::endl;
+            }
+            //std::cout << min << std::endl;
+            //std::cout << std::endl;
+            total += min;
         }
         
-        return -1;
+        return total;
     }
 
     std::vector<Machine> day10::parse(const std::vector<std::string>& rows) {
@@ -125,13 +144,15 @@ namespace day10 {
     }
 
     std::vector<Solution> solve(const System& system) {
+        dump(system);
         std::vector<Solution> solutions;
         const auto& upper_bound = system.upper_bounds.front();
         if (system.equations.size() == 1) {
             const auto& equation = system.equations.front();
             if (system.upper_bounds.size() == 1) {
                 int value = equation.value / equation.coefficients.front();
-                if (value * equation.coefficients.front() == equation.value) {
+                if (value >= 0 && value <= upper_bound &&
+                    value * equation.coefficients.front() == equation.value) {
                     solutions.emplace_back(Solution{{value}});
                 }
                 return solutions;
@@ -169,7 +190,8 @@ namespace day10 {
                 sum += equation.coefficients[i + 1] * sub_solution.values[i];
             }
             int value = (equation.value - sum) / equation.coefficients[0];
-            if (value <= upper_bound && value * equation.coefficients[0] == equation.value - sum) {
+            if (value >= 0 && value <= upper_bound &&
+                value * equation.coefficients[0] == equation.value - sum) {
                 std::vector<int> solution{value};
                 solution.reserve(system.upper_bounds.size());
                 solution.insert(solution.end(), sub_solution.values.cbegin(), sub_solution.values.cend());
