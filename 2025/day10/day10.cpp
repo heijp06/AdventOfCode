@@ -147,13 +147,21 @@ namespace day10 {
         dump(system);
         std::vector<Solution> solutions;
         const auto& upper_bound = system.upper_bounds.front();
-        if (system.equations.size() == 1) {
+        if (system.equations.size() == 1 || system.upper_bounds.size() == 1) {
             const auto& equation = system.equations.front();
             if (system.upper_bounds.size() == 1) {
-                int value = equation.value / equation.coefficients.front();
-                if (value >= 0 && value <= upper_bound &&
-                    value * equation.coefficients.front() == equation.value) {
-                    solutions.emplace_back(Solution{{value}});
+                auto coefficient = equation.coefficients.front();
+                if (coefficient) {
+                    int value = equation.value / coefficient;
+                    if (value >= 0 && value <= upper_bound &&
+                        value * equation.coefficients.front() == equation.value) {
+                        solutions.emplace_back(Solution{{value}});
+                    }
+                }
+                else {
+                    for (int value = 0; value <= upper_bound; value++) {
+                        solutions.emplace_back(Solution{{value}});
+                    }
                 }
                 return solutions;
             }
@@ -178,24 +186,46 @@ namespace day10 {
                 break;
             }
         }
-        if (row_index == -1) {
-            throw std::logic_error("No row with non zero first coefficient found.");
-        }
 
-        const auto& sub_system = reduce(system, row_index);
-        const auto& equation = system.equations[row_index];
-        for (const auto& sub_solution : solve(sub_system)) {
-            int sum{};
-            for (int i = 0; i < sub_solution.values.size(); i++) {
-                sum += equation.coefficients[i + 1] * sub_solution.values[i];
+        if (row_index == -1) {
+            std::vector<Equation> sub_equations{};
+            sub_equations.reserve(system.equations.size());
+            for (const auto& equation : system.equations) {
+                const Equation& sub_equation = {
+                    {equation.coefficients.cbegin() + 1, equation.coefficients.cend()},
+                    equation.value
+                };
+                sub_equations.emplace_back(sub_equation);
             }
-            int value = (equation.value - sum) / equation.coefficients[0];
-            if (value >= 0 && value <= upper_bound &&
-                value * equation.coefficients[0] == equation.value - sum) {
-                std::vector<int> solution{value};
-                solution.reserve(system.upper_bounds.size());
-                solution.insert(solution.end(), sub_solution.values.cbegin(), sub_solution.values.cend());
-                solutions.push_back({solution});
+            const System& sub_system = {
+                {system.upper_bounds.cbegin() + 1, system.upper_bounds.cend()},
+                sub_equations
+            };
+            for (const auto& sub_solution : solve(sub_system)) {
+                for (int value = 0; value <= upper_bound; value++) {
+                    std::vector<int> solution{value};
+                    solution.reserve(system.upper_bounds.size());
+                    solution.insert(solution.end(), sub_solution.values.cbegin(), sub_solution.values.cend());
+                    solutions.push_back({solution});
+                }
+            }
+        }
+        else {
+            const auto& sub_system = reduce(system, row_index);
+            const auto& equation = system.equations[row_index];
+            for (const auto& sub_solution : solve(sub_system)) {
+                int sum{};
+                for (int i = 0; i < sub_solution.values.size(); i++) {
+                    sum += equation.coefficients[i + 1] * sub_solution.values[i];
+                }
+                int value = (equation.value - sum) / equation.coefficients[0];
+                if (value >= 0 && value <= upper_bound &&
+                    value * equation.coefficients[0] == equation.value - sum) {
+                    std::vector<int> solution{value};
+                    solution.reserve(system.upper_bounds.size());
+                    solution.insert(solution.end(), sub_solution.values.cbegin(), sub_solution.values.cend());
+                    solutions.push_back({solution});
+                }
             }
         }
 
