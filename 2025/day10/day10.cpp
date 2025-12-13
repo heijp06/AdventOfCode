@@ -182,38 +182,6 @@ namespace day10 {
             return solutions;
         }
 
-        if (system.equations.size() == 1 || system.upper_bounds.size() == 1) {
-            const auto& equation = system.equations.front();
-            if (system.upper_bounds.size() == 1) {
-                auto coefficient = equation.coefficients.front();
-                if (coefficient) {
-                    int value = equation.value / coefficient;
-                    if (value >= 0 && value <= upper_bound &&
-                        value * equation.coefficients.front() == equation.value) {
-                        solutions.emplace_back(Solution{{value}});
-                    }
-                }
-                else if (!equation.value) {
-                    for (int value = 0; value <= upper_bound; value++) {
-                        solutions.emplace_back(Solution{{value}});
-                    }
-                }
-                return solutions;
-            }
-
-            std::vector<int> upper_bounds{system.upper_bounds.cbegin() + 1, system.upper_bounds.end()};
-            std::vector<int> coefficients = {equation.coefficients.cbegin() + 1, equation.coefficients.cend()};
-            int coefficient = equation.coefficients.front();
-            for (int i = 0; i <= upper_bound; i++) {
-                std::vector<Equation> equations = {Equation{coefficients, equation.value - coefficient * i}};
-                for (auto solution : solve({upper_bounds, equations})) {
-                    solution.values.emplace(solution.values.begin(), i);
-                    solutions.emplace_back(solution);
-                }
-            }
-            return solutions;
-        }
-
         int row_index = -1;
         for (int i = 0; i < system.equations.size(); i++) {
             if (system.equations[i].coefficients[0] != 0) {
