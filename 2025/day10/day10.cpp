@@ -125,14 +125,25 @@ namespace day10 {
     std::vector<Solution> solve(const System& system) {
         std::vector<Solution> solutions;
         if (system.equations.size() == 1) {
+            const auto& upper_bound = system.upper_bounds.front();
+            const auto& equation = system.equations.front();
             if (system.upper_bounds.size() == 1) {
-                const auto& equation = system.equations.front();
-                const auto& upper_bound = system.upper_bounds.front();
                 int value = equation.value / equation.coefficients.front();
                 if (value * equation.coefficients.front() == equation.value) {
                     solutions.emplace_back(Solution{{value}});
                 }
                 return solutions;
+            }
+
+            std::vector<int> upper_bounds{system.upper_bounds.cbegin() + 1, system.upper_bounds.end()};
+            std::vector<int> coefficients = {equation.coefficients.cbegin() + 1, equation.coefficients.cend()};
+            int coefficient = equation.coefficients.front();
+            for (int i = 0; i <= upper_bound; i++) {
+                std::vector<Equation> equations = {Equation{coefficients,  equation.value - coefficient * i}};
+                for (auto solution : solve({upper_bounds, equations})) {
+                    solution.values.emplace(solution.values.begin(), i);
+                    solutions.emplace_back(solution);
+                }
             }
         }
 

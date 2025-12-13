@@ -45,3 +45,15 @@ TEST_CASE("1 row 1 element no solution") {
 
     REQUIRE(solutions.empty());
 }
+
+TEST_CASE("1 row 2 elements 1 solution") {
+    day10::System system = {
+        {2, 2},
+        {{{ 2, 3 }, 5 }}
+    };
+
+    const auto& solutions = day10::solve(system);
+
+    REQUIRE(solutions.size() == 1);
+    REQUIRE(solutions.front().values == std::vector<int>{{1, 1}});
+}
