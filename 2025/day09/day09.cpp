@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 
 #include "day09.h"
@@ -46,18 +47,29 @@ namespace day09 {
     }
 
     std::int64_t part2(const std::vector<std::string>& rows) {
-        auto& pairs = parse(rows);
-
-        // Scan from top to bottom.
-        // Skip rows that do not contain red tiles
-        // Keep list of tops of rectangles
-        // Update when bottom is reached
-        // Lots of corner cases.... Maybe need special test data
-        // Maybe scan from left to right and from right to left
-
-
+        const auto& tops = get_tops(parse(rows));
 
         return -1;
+    }
+
+    std::vector<TopOfRectangle> get_tops(std::vector<std::pair<int64_t, int64_t>>& pairs) {
+        std::vector<TopOfRectangle> tops{};
+        tops.reserve(pairs.size());
+
+        auto& previous = pairs[0];
+        for (size_t i = 1; i < pairs.size(); i++) {
+            auto& current = pairs[i];
+            if (current.second == previous.second) {
+                const auto left(std::min(current.first, previous.first));
+                const auto right(std::max(current.first, previous.first));
+                tops.emplace_back(TopOfRectangle{current.second, left, right, true, true});
+            }
+            std::swap(previous, current);
+        }
+
+        std::sort(tops.begin(), tops.end());
+
+        return tops;
     }
 
     std::vector<std::pair<int64_t, int64_t>> parse(const std::vector<std::string>& rows) {
