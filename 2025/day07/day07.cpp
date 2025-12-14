@@ -17,8 +17,8 @@ namespace day07 {
         const auto& manifold = advent::grid{rows};
         auto start = manifold.find('S').column;
         auto current_row = std::vector<std::int64_t>(manifold.get_width());
+        auto next_row = current_row;
         current_row[start] = 1;
-        auto next_row = std::vector<std::int64_t>(manifold.get_width());
         std::int64_t split{};
 
         for (int row = 1; row < manifold.get_height(); row++) {
