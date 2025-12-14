@@ -4,7 +4,17 @@
 #include <string>
 #include <vector>
 
+#include "../../lib/advent.h"
+
 namespace day09 {
+    struct TopOfRectangle {
+        std::int64_t row;
+        std::int64_t left;
+        std::int16_t right;
+        bool left_is_red;
+        bool right_is_red;
+    };
+
     std::int64_t part1(const std::vector<std::string>& rows);
     std::int64_t part2(const std::vector<std::string>& rows);
 
