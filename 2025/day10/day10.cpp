@@ -64,7 +64,7 @@ namespace day10 {
     int part2(const std::vector<std::string>& rows) {
         int total{};
         const auto& machines = parse(rows);
-        auto& systems = parse_systems(machines);
+        const auto& systems = parse_systems(machines);
 
         for (const auto& system : systems) {
             //dump(system);
@@ -100,7 +100,7 @@ namespace day10 {
         return true;
     }
 
-    std::vector<Machine> day10::parse(const std::vector<std::string>& rows) {
+    std::vector<Machine> parse(const std::vector<std::string>& rows) {
         std::vector<Machine> machines;
         machines.reserve(rows.size());
 
@@ -139,7 +139,7 @@ namespace day10 {
         systems.reserve(machines.size());
 
         for (const auto& machine : machines) {
-            auto& equations = parse_equations(machine);
+            const auto& equations = parse_equations(machine);
             std::vector<int> upper_bounds{};
             upper_bounds.reserve(machine.buttons.size());
             for (size_t j = 0; j < machine.buttons.size(); j++) {
