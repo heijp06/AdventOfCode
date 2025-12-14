@@ -1,4 +1,4 @@
-#include <numeric>;
+#include <numeric>
 #include "day12.h"
 #include "../../lib/advent.h"
 
