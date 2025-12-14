@@ -7,12 +7,14 @@
 #include "../../lib/advent.h"
 
 namespace day09 {
+    enum class EndType { Top, Middle, Bottom };
+
     struct TopOfRectangle {
         std::int64_t row;
         std::int64_t left;
         std::int64_t right;
-        bool left_is_red;
-        bool right_is_red;
+        EndType left_type;
+        EndType right_type;
     };
 
     std::int64_t part1(const std::vector<std::string>& rows);

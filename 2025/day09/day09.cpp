@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 #include "day09.h"
 #include "../../lib/advent.h"
@@ -10,8 +11,8 @@ namespace day09 {
             left.row == right.row &&
             left.left == right.left &&
             left.right == right.right &&
-            left.left_is_red == right.left_is_red &&
-            left.right_is_red == right.right_is_red;
+            left.left_type == right.left_type &&
+            left.right_type == right.right_type;
     }
 
     bool static operator!=(const TopOfRectangle& left, const TopOfRectangle& right) {
@@ -25,10 +26,31 @@ namespace day09 {
         if (left.left > right.left) return false;
         if (left.right < right.right) return true;
         if (left.right > right.right) return false;
-        if (left.left_is_red < right.left_is_red) return true;
-        if (left.left_is_red > right.left_is_red) return false;
-        if (left.right_is_red < right.right_is_red) return true;
+        if (left.left_type < right.left_type) return true;
+        if (left.left_type > right.left_type) return false;
+        if (left.right_type < right.right_type) return true;
         return false;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const EndType& end_type) {
+        switch (end_type) {
+        case EndType::Top:
+            os << "Top";
+            break;
+        case EndType::Middle:
+            os << "Middle";
+            break;
+        case EndType::Bottom:
+            os << "Bottom";
+            break;
+        }
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const TopOfRectangle& segment) {
+        os << segment.row << " " << segment.left << " " << segment.left_type << " ";
+        os << segment.right << " " << segment.right_type;
+        return os;
     }
 
     std::int64_t part1(const std::vector<std::string>& rows) {
@@ -48,23 +70,34 @@ namespace day09 {
 
     std::int64_t part2(const std::vector<std::string>& rows) {
         const auto& tops = get_tops(parse(rows));
+        int max_area{};
 
-        return -1;
+        for (const auto& top : tops) {
+            std::cout << top << std::endl;
+        }
+
+        return max_area;
     }
 
     std::vector<TopOfRectangle> get_tops(std::vector<std::pair<int64_t, int64_t>>& pairs) {
         std::vector<TopOfRectangle> tops{};
         tops.reserve(pairs.size());
 
-        auto& previous = pairs[0];
         for (size_t i = 1; i < pairs.size(); i++) {
-            auto& current = pairs[i];
-            if (current.second == previous.second) {
-                const auto left(std::min(current.first, previous.first));
-                const auto right(std::max(current.first, previous.first));
-                tops.emplace_back(TopOfRectangle{current.second, left, right, true, true});
+            const auto& start = pairs[i - 1];
+            const auto& end = pairs[i];
+            if (end.second == start.second) {
+                const auto& previous = pairs[(i + pairs.size() - 2) % pairs.size()];
+                const auto& next = pairs[(i + 1) % pairs.size()];
+                EndType start_type = previous.second < start.second ? EndType::Bottom : EndType::Top;
+                EndType end_type = end.second < next.second ? EndType::Top : EndType::Bottom;
+                if (start.first < end.first) {
+                    tops.emplace_back(TopOfRectangle{end.second, start.first, end.first, start_type, end_type});
+                }
+                else {
+                    tops.emplace_back(TopOfRectangle{end.second, end.first, start.first, end_type, start_type});
+                }
             }
-            std::swap(previous, current);
         }
 
         std::sort(tops.begin(), tops.end());
@@ -74,7 +107,7 @@ namespace day09 {
 
     std::vector<std::pair<int64_t, int64_t>> parse(const std::vector<std::string>& rows) {
         std::vector<std::pair<int64_t, int64_t>> pairs;
-        pairs.reserve(rows.size() + 1);
+        pairs.reserve(rows.size());
 
         for (const auto& row : rows) {
             const auto& ints = advent::ints<int64_t>(row);
