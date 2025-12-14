@@ -6,7 +6,7 @@
 #include "../../lib/advent.h"
 
 namespace day09 {
-    bool static operator==(const TopOfRectangle& left, const TopOfRectangle& right) {
+    bool static operator==(const Segment& left, const Segment& right) {
         return
             left.row == right.row &&
             left.left == right.left &&
@@ -15,11 +15,11 @@ namespace day09 {
             left.right_type == right.right_type;
     }
 
-    bool static operator!=(const TopOfRectangle& left, const TopOfRectangle& right) {
+    bool static operator!=(const Segment& left, const Segment& right) {
         return !(left == right);
     }
 
-    bool static operator<(const TopOfRectangle& left, const TopOfRectangle& right) {
+    bool static operator<(const Segment& left, const Segment& right) {
         if (left.row < right.row) return true;
         if (left.row > right.row) return false;
         if (left.left < right.left) return true;
@@ -47,7 +47,7 @@ namespace day09 {
         return os;
     }
 
-    std::ostream& operator<<(std::ostream& os, const TopOfRectangle& segment) {
+    std::ostream& operator<<(std::ostream& os, const Segment& segment) {
         os << segment.row << " " << segment.left << " " << segment.left_type << " ";
         os << segment.right << " " << segment.right_type;
         return os;
@@ -69,19 +69,19 @@ namespace day09 {
     }
 
     std::int64_t part2(const std::vector<std::string>& rows) {
-        const auto& tops = get_tops(parse(rows));
+        const auto& segments = get_segments(parse(rows));
         int max_area{};
 
-        for (const auto& top : tops) {
-            std::cout << top << std::endl;
+        for (const auto& segment : segments) {
+            std::cout << segment << std::endl;
         }
 
         return max_area;
     }
 
-    std::vector<TopOfRectangle> get_tops(std::vector<std::pair<int64_t, int64_t>>& pairs) {
-        std::vector<TopOfRectangle> tops{};
-        tops.reserve(pairs.size());
+    std::vector<Segment> get_segments(std::vector<std::pair<int64_t, int64_t>>& pairs) {
+        std::vector<Segment> segments{};
+        segments.reserve(pairs.size());
 
         for (size_t i = 1; i < pairs.size(); i++) {
             const auto& start = pairs[i - 1];
@@ -92,17 +92,17 @@ namespace day09 {
                 EndType start_type = previous.second < start.second ? EndType::Bottom : EndType::Top;
                 EndType end_type = end.second < next.second ? EndType::Top : EndType::Bottom;
                 if (start.first < end.first) {
-                    tops.emplace_back(TopOfRectangle{end.second, start.first, end.first, start_type, end_type});
+                    segments.emplace_back(Segment{end.second, start.first, end.first, start_type, end_type});
                 }
                 else {
-                    tops.emplace_back(TopOfRectangle{end.second, end.first, start.first, end_type, start_type});
+                    segments.emplace_back(Segment{end.second, end.first, start.first, end_type, start_type});
                 }
             }
         }
 
-        std::sort(tops.begin(), tops.end());
+        std::sort(segments.begin(), segments.end());
 
-        return tops;
+        return segments;
     }
 
     std::vector<std::pair<int64_t, int64_t>> parse(const std::vector<std::string>& rows) {

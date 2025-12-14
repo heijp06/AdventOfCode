@@ -9,7 +9,7 @@
 namespace day09 {
     enum class EndType { Top, Middle, Bottom };
 
-    struct TopOfRectangle {
+    struct Segment {
         std::int64_t row;
         std::int64_t left;
         std::int64_t right;
@@ -20,6 +20,6 @@ namespace day09 {
     std::int64_t part1(const std::vector<std::string>& rows);
     std::int64_t part2(const std::vector<std::string>& rows);
 
-    std::vector<TopOfRectangle> get_tops(std::vector<std::pair<int64_t, int64_t>>& pairs);
+    std::vector<Segment> get_segments(std::vector<std::pair<int64_t, int64_t>>& pairs);
     std::vector<std::pair<int64_t, int64_t>> parse(const std::vector<std::string>& rows);
 }
