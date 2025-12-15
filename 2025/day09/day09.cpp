@@ -53,6 +53,10 @@ namespace day09 {
         return os;
     }
 
+    std::int64_t Segment::length() const {
+        return right - left + 1;
+    }
+
     std::int64_t part1(const std::vector<std::string>& rows) {
         std::int64_t max_area{};
         const auto& pairs = parse(rows);
@@ -70,10 +74,32 @@ namespace day09 {
 
     std::int64_t part2(const std::vector<std::string>& rows) {
         const auto& segments = get_segments(parse(rows));
-        int max_area{};
+        std::vector<Segment> current{};
+        current.reserve(segments.size() * 2);
+        std::vector<Segment> next{};
+        next.reserve(segments.size() * 2);
+        std::int64_t max_area{};
 
-        for (const auto& segment : segments) {
-            std::cout << segment << std::endl;
+        for (const auto& new_segment : segments) {
+            max_area = std::max(max_area, new_segment.length());
+            for (const auto& segment : current) {
+                if (new_segment.right < segment.left || new_segment.left > segment.right) {
+                    continue;
+                }
+
+                if (new_segment.left < segment.left) {
+                    if (new_segment.right > segment.right) {
+                        continue;
+                    }
+                    if (segment.left_is_red) {
+                        //auto area = (new)
+                        //max_area = std::max(max_area, )
+                    }
+                }
+            }
+            next.push_back(new_segment);
+            std::swap(current, next);
+            next.clear();
         }
 
         return max_area;
@@ -92,10 +118,10 @@ namespace day09 {
                 EndType start_type = previous.second < start.second ? EndType::Bottom : EndType::Top;
                 EndType end_type = end.second < next.second ? EndType::Top : EndType::Bottom;
                 if (start.first < end.first) {
-                    segments.emplace_back(Segment{end.second, start.first, end.first, start_type, end_type});
+                    segments.emplace_back(Segment{end.second, start.first, end.first, start_type, end_type, true, true});
                 }
                 else {
-                    segments.emplace_back(Segment{end.second, end.first, start.first, end_type, start_type});
+                    segments.emplace_back(Segment{end.second, end.first, start.first, end_type, start_type, true, true});
                 }
             }
         }

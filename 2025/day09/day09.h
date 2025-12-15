@@ -15,6 +15,10 @@ namespace day09 {
         std::int64_t right;
         EndType left_type;
         EndType right_type;
+        bool left_is_red;
+        bool right_is_red;
+
+        std::int64_t length() const;
     };
 
     std::int64_t part1(const std::vector<std::string>& rows);
