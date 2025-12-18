@@ -61,6 +61,7 @@ namespace day09 {
 
     // 8098967: Too low.
     std::int64_t part2(const std::vector<std::string>& rows) {
+        std::cout << std::endl;
         const auto& segments = get_segments(parse(rows));
         std::vector<Segment> current{};
         current.reserve(segments.size() * 2);
@@ -71,11 +72,11 @@ namespace day09 {
         to_add.reserve(2);
 
         for (const auto& new_segment : segments) {
-            ////std::cout << new_segment << std::endl;
+            std::cout << new_segment << std::endl;
             max_area = std::max(max_area, new_segment.length());
             to_add.push_back(new_segment);
             for (const auto& segment : current) {
-                ////std::cout << '\t' << segment << std::endl;
+                std::cout << '\t' << segment << std::endl;
                 if (new_segment.right <= segment.left || new_segment.left >= segment.right) {
                     next.push_back(segment);
                     if (new_segment.right == segment.left && segment.left_is_red) {
@@ -85,6 +86,7 @@ namespace day09 {
                         max_area = std::max(max_area, new_segment.row - segment.row + 1);
                         to_add.push_back({new_segment.row, segment.left, new_segment.right, segment.left_is_red, true});
                     }
+                    std::cout << '\t' << max_area << std::endl;
                     continue;
                 }
 
@@ -117,6 +119,8 @@ namespace day09 {
                         next.push_back({segment.row, new_segment.right, segment.right, false, segment.right_is_red});
                     }
                 }
+
+                std::cout << '\t' << max_area << std::endl;
             }
             next.insert(next.end(), to_add.cbegin(), to_add.cend());
             std::swap(current, next);
