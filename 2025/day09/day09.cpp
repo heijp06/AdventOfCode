@@ -85,19 +85,24 @@ namespace day09 {
             max_area = std::max(max_area, new_segment.length());
             auto add{true};
             for (const auto& segment : current) {
-                if (new_segment.right < segment.left || new_segment.left > segment.right) {
+                if (new_segment.right <= segment.left || new_segment.left >= segment.right) {
+                    if (new_segment.right == segment.left && segment.left_is_red ||
+                        new_segment.left == segment.right && segment.right_is_red) {
+                        max_area == std::max(max_area, new_segment.row - segment.row + 1);
+                    }
                     next.push_back(segment);
                     continue;
                 }
 
+                add = false;
+
                 if (new_segment.left <= segment.left) {
                     if (new_segment.right >= segment.right) {
-                        if (new_segment.left == segment.left && new_segment.left_is_red && segment.right_is_red ||
-                            new_segment.right == segment.right && new_segment.right_is_red && segment.left_is_red) {
+                        if (new_segment.left == segment.left && segment.right_is_red ||
+                            new_segment.right == segment.right && segment.left_is_red) {
                             max_area =
                                 std::max(max_area, segment.length() * (new_segment.row - segment.row + 1));
                         }
-                        add = false;
                         continue;
                     }
                 }
