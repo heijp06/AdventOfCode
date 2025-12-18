@@ -1,6 +1,5 @@
 #include <cstdint>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "../../lib/catch.hpp"

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <stdexcept>
 
 #include "day09.h"
 #include "../../lib/advent.h"
@@ -82,22 +83,28 @@ namespace day09 {
 
         for (const auto& new_segment : segments) {
             max_area = std::max(max_area, new_segment.length());
+            auto add{true};
             for (const auto& segment : current) {
                 if (new_segment.right < segment.left || new_segment.left > segment.right) {
+                    next.push_back(segment);
                     continue;
                 }
 
-                if (new_segment.left < segment.left) {
-                    if (new_segment.right > segment.right) {
+                if (new_segment.left <= segment.left) {
+                    if (new_segment.right >= segment.right) {
+                        if (new_segment.left == segment.left && new_segment.left_is_red && segment.right_is_red ||
+                            new_segment.right == segment.right && new_segment.right_is_red && segment.left_is_red) {
+                            max_area =
+                                std::max(max_area, segment.length() * (new_segment.row - segment.row + 1));
+                        }
+                        add = false;
                         continue;
-                    }
-                    if (segment.left_is_red) {
-                        //auto area = (new)
-                        //max_area = std::max(max_area, )
                     }
                 }
             }
-            next.push_back(new_segment);
+            if (add) {
+                next.push_back(new_segment);
+            }
             std::swap(current, next);
             next.clear();
         }
