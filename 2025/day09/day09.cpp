@@ -12,8 +12,8 @@ namespace day09 {
             left.row == right.row &&
             left.left == right.left &&
             left.right == right.right &&
-            left.left_type == right.left_type &&
-            left.right_type == right.right_type;
+            left.left_is_red == right.left_is_red &&
+            left.right_is_red == right.right_is_red;
     }
 
     bool static operator!=(const Segment& left, const Segment& right) {
@@ -27,30 +27,16 @@ namespace day09 {
         if (left.left > right.left) return false;
         if (left.right < right.right) return true;
         if (left.right > right.right) return false;
-        if (left.left_type < right.left_type) return true;
-        if (left.left_type > right.left_type) return false;
-        if (left.right_type < right.right_type) return true;
+        if (left.left_is_red < right.left_is_red) return true;
+        if (left.left_is_red < right.left_is_red) return false;
+        if (left.right_is_red < right.right_is_red) return true;
+        if (left.right_is_red < right.right_is_red) return false;
         return false;
     }
 
-    std::ostream& operator<<(std::ostream& os, const EndType& end_type) {
-        switch (end_type) {
-        case EndType::Top:
-            os << "Top";
-            break;
-        case EndType::Middle:
-            os << "Middle";
-            break;
-        case EndType::Bottom:
-            os << "Bottom";
-            break;
-        }
-        return os;
-    }
-
     std::ostream& operator<<(std::ostream& os, const Segment& segment) {
-        os << segment.row << " " << segment.left << " " << segment.left_type << " ";
-        os << segment.right << " " << segment.right_type;
+        os << segment.row << " " << segment.left << " " << segment.right;
+        os << " " << segment.left_is_red << " " << segment.right_is_red;
         return os;
     }
 
@@ -88,7 +74,7 @@ namespace day09 {
                 if (new_segment.right <= segment.left || new_segment.left >= segment.right) {
                     if (new_segment.right == segment.left && segment.left_is_red ||
                         new_segment.left == segment.right && segment.right_is_red) {
-                        max_area == std::max(max_area, new_segment.row - segment.row + 1);
+                        max_area = std::max(max_area, new_segment.row - segment.row + 1);
                     }
                     next.push_back(segment);
                     continue;
@@ -127,13 +113,11 @@ namespace day09 {
             if (end.second == start.second) {
                 const auto& previous = pairs[(i + pairs.size() - 2) % pairs.size()];
                 const auto& next = pairs[(i + 1) % pairs.size()];
-                EndType start_type = previous.second < start.second ? EndType::Bottom : EndType::Top;
-                EndType end_type = end.second < next.second ? EndType::Top : EndType::Bottom;
                 if (start.first < end.first) {
-                    segments.emplace_back(Segment{end.second, start.first, end.first, start_type, end_type, true, true});
+                    segments.emplace_back(Segment{end.second, start.first, end.first, true, true});
                 }
                 else {
-                    segments.emplace_back(Segment{end.second, end.first, start.first, end_type, start_type, true, true});
+                    segments.emplace_back(Segment{end.second, end.first, start.first, true, true});
                 }
             }
         }

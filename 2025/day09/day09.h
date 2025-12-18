@@ -7,14 +7,10 @@
 #include "../../lib/advent.h"
 
 namespace day09 {
-    enum class EndType { Top, Middle, Bottom };
-
     struct Segment {
         std::int64_t row;
         std::int64_t left;
         std::int64_t right;
-        EndType left_type;
-        EndType right_type;
         bool left_is_red;
         bool right_is_red;
 
