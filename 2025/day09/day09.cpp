@@ -79,12 +79,16 @@ namespace day09 {
                 std::cout << '\t' << segment << std::endl;
                 if (new_segment.right <= segment.left || new_segment.left >= segment.right) {
                     next.push_back(segment);
-                    if (new_segment.right == segment.left && segment.left_is_red) {
-                        max_area = std::max(max_area, new_segment.row - segment.row + 1);
-                        to_add.push_back({new_segment.row, new_segment.left, segment.right, true, segment.right_is_red});
-                    } else if (new_segment.left == segment.right && segment.right_is_red) {
-                        max_area = std::max(max_area, new_segment.row - segment.row + 1);
-                        to_add.push_back({new_segment.row, segment.left, new_segment.right, segment.left_is_red, true});
+                    if (new_segment.right == segment.left) {
+                        if (segment.left_is_red) {
+                            max_area = std::max(max_area, new_segment.row - segment.row + 1);
+                        }
+                        to_add.push_back({new_segment.row, new_segment.left, segment.right, true, new_segment.row == segment.row && segment.right_is_red});
+                    } else if (new_segment.left == segment.right) {
+                        if (segment.right_is_red) {
+                            max_area = std::max(max_area, new_segment.row - segment.row + 1);
+                        }
+                        to_add.push_back({new_segment.row, segment.left, new_segment.right, new_segment.row == segment.row && segment.left_is_red, true});
                     }
                     std::cout << '\t' << max_area << std::endl;
                     continue;
@@ -92,26 +96,18 @@ namespace day09 {
 
                 to_add.clear();
 
-                if (new_segment.left <= segment.left) {
-                    if (new_segment.right >= segment.right) {
-                        if (new_segment.left == segment.left && segment.right_is_red ||
-                            new_segment.right == segment.right && segment.left_is_red) {
-                            max_area =
-                                std::max(max_area, segment.length() * (new_segment.row - segment.row + 1));
-                        }
-                    }
-                    else {
-                        if (segment.left_is_red) {
-                            max_area = std::max(max_area, (new_segment.right - segment.left + 1) * (new_segment.row - segment.row + 1));
-                        }
-                        next.push_back({segment.row, segment.left, new_segment.right, segment.left_is_red, false});
-                    }
+                if (new_segment.left >= segment.left && segment.right_is_red) {
+                    max_area = std::max(max_area, (segment.right - new_segment.left + 1) * (new_segment.row - segment.row + 1));
+                }
+                if (new_segment.right <= segment.right && segment.left_is_red) {
+                    max_area = std::max(max_area, (new_segment.right - segment.left + 1) * (new_segment.row - segment.row + 1));
+                }
+
+                if (new_segment.left <= segment.left && new_segment.right < segment.right) {
+                    next.push_back({segment.row, segment.left, new_segment.right, segment.left_is_red, false});
                 }
                 else {
                     if (new_segment.right >= segment.right) {
-                        if (segment.right_is_red) {
-                            max_area = std::max(max_area, (segment.right - new_segment.left + 1) * (new_segment.row - segment.row + 1));
-                        }
                         next.push_back({segment.row, new_segment.left, segment.right, false, segment.right_is_red});
                     }
                     else {
