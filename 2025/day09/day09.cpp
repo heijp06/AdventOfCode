@@ -114,7 +114,7 @@ namespace day09 {
         return max_area;
     }
 
-    std::vector<Segment> get_segments(std::vector<std::pair<int64_t, int64_t>>& pairs) {
+    std::vector<Segment> get_segments(const std::vector<std::pair<int64_t, int64_t>>& pairs) {
         std::vector<Segment> segments{};
         segments.reserve(pairs.size());
 
