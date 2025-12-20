@@ -62,7 +62,7 @@ namespace day09 {
     // 8098967: Too low.
     // 3104285892: Too high.
     std::int64_t part2(const std::vector<std::string>& rows) {
-        //std::cout << std::endl;
+        std::cout << std::endl << advent::join(rows.cbegin(), rows.cend(), " ") << std::endl;
         const auto& segments = get_segments(parse(rows));
         std::vector<Segment> current{};
         current.reserve(segments.size() * 2);
