@@ -73,11 +73,11 @@ namespace day09 {
         to_add.reserve(2);
 
         for (const auto& new_segment : segments) {
-            //std::cout << new_segment << std::endl;
+            std::cout << new_segment << std::endl;
             max_area = std::max(max_area, new_segment.length());
             to_add.push_back(new_segment);
             for (const auto& segment : current) {
-                //std::cout << '\t' << segment << std::endl;
+                std::cout << '\t' << segment << std::endl;
                 if (new_segment.right <= segment.left || new_segment.left >= segment.right) {
                     next.push_back(segment);
                     if (new_segment.right == segment.left) {
@@ -91,7 +91,7 @@ namespace day09 {
                         }
                         to_add.push_back({new_segment.row, segment.left, new_segment.right, new_segment.row == segment.row && segment.left_is_red, true});
                     }
-                    //std::cout << '\t' << max_area << std::endl;
+                    std::cout << '\t' << max_area << std::endl;
                     continue;
                 }
 
@@ -104,20 +104,19 @@ namespace day09 {
                     max_area = std::max(max_area, (new_segment.right - segment.left + 1) * (new_segment.row - segment.row + 1));
                 }
 
-                if (new_segment.left <= segment.left && new_segment.right < segment.right) {
-                    next.push_back({segment.row, segment.left, new_segment.right, segment.left_is_red, false});
+                if (new_segment.left > segment.left) {
+                    next.push_back(
+                        {segment.row, segment.left, new_segment.left, segment.left_is_red, new_segment.left >= segment.right && segment.right_is_red});
                 }
-                else {
-                    if (new_segment.right >= segment.right) {
-                        next.push_back({segment.row, new_segment.left, segment.right, false, segment.right_is_red});
-                    }
-                    else {
-                        next.push_back({segment.row, segment.left, new_segment.left, segment.left_is_red, false});
-                        next.push_back({segment.row, new_segment.right, segment.right, false, segment.right_is_red});
-                    }
+                if (new_segment.right < segment.right) {
+                    next.push_back({segment.row, new_segment.right, segment.right, new_segment.right <= segment.left && segment.left_is_red, segment.right_is_red});
                 }
+                //else {
+                //    next.push_back({segment.row, segment.left, new_segment.left, segment.left_is_red, false});
+                //    next.push_back({segment.row, new_segment.right, segment.right, false, segment.right_is_red});
+                //}
 
-                //std::cout << '\t' << max_area << std::endl;
+                std::cout << '\t' << max_area << std::endl;
             }
             next.insert(next.end(), to_add.cbegin(), to_add.cend());
             std::swap(current, next);
