@@ -28,9 +28,9 @@ namespace day09 {
         if (left.right < right.right) return true;
         if (left.right > right.right) return false;
         if (left.left_is_red < right.left_is_red) return true;
-        if (left.left_is_red < right.left_is_red) return false;
+        if (left.left_is_red > right.left_is_red) return false;
         if (left.right_is_red < right.right_is_red) return true;
-        if (left.right_is_red < right.right_is_red) return false;
+        if (left.right_is_red > right.right_is_red) return false;
         return false;
     }
 
