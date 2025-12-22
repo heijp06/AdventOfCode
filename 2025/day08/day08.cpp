@@ -36,9 +36,6 @@ namespace day08 {
                     (coord1.x - coord2.x) * (coord1.x - coord2.x) +
                     (coord1.y - coord2.y) * (coord1.y - coord2.y) +
                     (coord1.z - coord2.z) * (coord1.z - coord2.z);
-                if (distance < 0) {
-                    distance++;
-                }
                 const auto& item = item_t{distance, coord1, coord2};
                 items.insert(item);
             }
