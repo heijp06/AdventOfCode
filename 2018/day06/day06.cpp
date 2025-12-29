@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 
 #include "day06.h"
 
@@ -9,7 +10,75 @@ namespace day06 {
         int min_column{-1};
         int max_column{-1};
 
-        const auto regions = parse(rows, min_column, max_column, min_row, max_row);
+        auto regions = parse(rows, min_column, max_column, min_row, max_row);
+
+        auto grid = advent::grid(max_row + 1, max_column + 1);
+        bool growing{true};
+        while (growing) {
+            growing = false;
+
+            for (auto& region : regions) {
+                if (region.edge.empty()) {
+                    continue;
+                }
+
+                for (const auto& pos : region.edge) {
+                    grid[pos] = 'X';
+                }
+            }
+
+            grid.draw();
+            std::cout << std::endl;
+
+            for (auto& region : regions) {
+                if (region.edge.empty()) {
+                    continue;
+                }
+                std::set<advent::coord> new_edge{};
+
+                for (const auto& coord : region.edge) {
+                    for (const auto& direction : advent::direction::nsew()) {
+                        const auto& pos = coord + direction;
+                        if (pos.column < min_column || pos.column > max_column || pos.row < min_row || pos.row > max_row) {
+                            region.infinite = true;
+                            continue;
+                        }
+
+                        if (grid[pos] == 'X' || grid[pos] == ' ') {
+                            continue;
+                        }
+
+                        if (grid[pos] == '?') {
+                            grid[pos] = ' ';
+                        }
+
+                        grid[pos] = '?';
+                        new_edge.insert(pos);
+                    }
+                }
+
+                std::swap(region.edge, new_edge);
+            }
+
+            grid.draw();
+            std::cout << std::endl;
+
+            for (auto& region : regions) {
+                for (const auto& coord : region.edge) {
+                    if (grid[coord] == ' ') {
+                        region.edge.erase(coord);
+                        continue;
+                    }
+
+                    growing = true;
+                    region.area.insert(coord);
+                    grid[coord] = 'X';
+                }
+            }
+
+            grid.draw();
+            std::cout << std::endl;
+        }
 
         return -1;
     }
