@@ -55,15 +55,10 @@ namespace day06 {
                 }
 
                 std::vector<advent::coord> new_edge{};
-                std::set<advent::coord> candidates{};
 
                 for (const auto& coord : region.edge) {
                     for (const auto& direction : advent::direction::nsew()) {
-                        candidates.insert(coord + direction);
-                    }
-                }
-
-                for (const auto& pos : candidates) {
+                        const auto pos = coord + direction;
                         if (pos.column < min_column || pos.column > max_column || pos.row < min_row || pos.row > max_row) {
                             region.infinite = true;
                             continue;
@@ -77,6 +72,7 @@ namespace day06 {
                         new_edge.push_back(pos);
                         region.area.insert(pos);
                         growing = true;
+                    }
                 }
 
                 std::swap(region.edge, new_edge);
