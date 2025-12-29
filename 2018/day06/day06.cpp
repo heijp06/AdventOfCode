@@ -34,11 +34,17 @@ namespace day06 {
                 if (region.edge.empty()) {
                     continue;
                 }
+
                 std::set<advent::coord> new_edge{};
+                std::set<advent::coord> candidates{};
 
                 for (const auto& coord : region.edge) {
                     for (const auto& direction : advent::direction::nsew()) {
-                        const auto& pos = coord + direction;
+                        candidates.insert(coord + direction);
+                    }
+                }
+
+                for (const auto& pos : candidates) {
                         if (pos.column < min_column || pos.column > max_column || pos.row < min_row || pos.row > max_row) {
                             region.infinite = true;
                             continue;
@@ -55,7 +61,6 @@ namespace day06 {
 
                         grid[pos] = '?';
                         new_edge.insert(pos);
-                    }
                 }
 
                 std::swap(region.edge, new_edge);
