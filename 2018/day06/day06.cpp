@@ -11,24 +11,24 @@ namespace day06 {
         int max_column{-1};
 
         auto regions = parse(rows, min_column, max_column, min_row, max_row);
-
         auto grid = advent::grid(max_row + 1, max_column + 1);
+
+        for (auto& region : regions) {
+            if (region.edge.empty()) {
+                continue;
+            }
+
+            for (const auto& pos : region.edge) {
+                grid[pos] = 'X';
+            }
+        }
+
+        grid.draw();
+        std::cout << std::endl;
+
         bool growing{true};
         while (growing) {
             growing = false;
-
-            for (auto& region : regions) {
-                if (region.edge.empty()) {
-                    continue;
-                }
-
-                for (const auto& pos : region.edge) {
-                    grid[pos] = 'X';
-                }
-            }
-
-            grid.draw();
-            std::cout << std::endl;
 
             for (auto& region : regions) {
                 if (region.edge.empty()) {
