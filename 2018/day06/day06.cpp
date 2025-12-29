@@ -100,9 +100,46 @@ namespace day06 {
         return static_cast<int>(largest->area.size());
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+    int part2(const std::vector<std::string>& rows, int max) {
+        int min_row{-1};
+        int max_row{-1};
+        int min_column{-1};
+        int max_column{-1};
+
+        auto regions = parse(rows, min_column, max_column, min_row, max_row);
+
+        std::vector<int> sum_row{};
+        sum_row.reserve(max_row + 1);
+        std::vector<int> sum_column{};
+        sum_column.reserve(max_column + 1);
+
+        for (int row = 0; row <= max_row; row++) {
+            int distance{};
+            for (const auto& region : regions) {
+                distance += std::abs(row - region.area.front().row);
+            }
+            sum_row.push_back(distance);
+        }
+
+        for (int column = 0; column <= max_column; column++) {
+            int distance{};
+            for (const auto& region : regions) {
+                distance += std::abs(column - region.area.front().column);
+            }
+            sum_column.push_back(distance);
+        }
+
+        int count{};
+
+        for (int row = min_row; row <= max_row; row++) {
+            for (int column = min_column; column <= max_column; column++) {
+                if (sum_row[row] + sum_column[column] < max) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     std::vector<Region> parse(const std::vector<std::string>& rows, int& min_column, int& max_column, int& min_row, int& max_row) {

@@ -13,7 +13,7 @@ namespace day06 {
     };
 
     int part1(const std::vector<std::string>& rows);
-    int part2(const std::vector<std::string>& rows);
+    int part2(const std::vector<std::string>& rows, int max = 10000);
 
     std::vector<Region> parse(const std::vector<std::string>& rows, int& min_column, int& max_column, int& min_row, int& max_row);
 }
