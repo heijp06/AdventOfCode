@@ -23,8 +23,30 @@ namespace day06 {
             }
         }
 
-        grid.draw();
-        std::cout << std::endl;
+        //grid.draw();
+        //std::cout << std::endl;
+
+        for (const auto& coord : grid.get_positions()) {
+            auto min_distance = max_row + max_column + 10;
+            auto count = 0;
+            for (const auto& region : regions) {
+                const auto& pos = *region.area.cbegin();
+                auto distance = std::abs(coord.column - pos.column) + std::abs(coord.row - pos.row);
+                if (distance < min_distance) {
+                    count = 1;
+                    min_distance = distance;
+                }
+                else if (distance == min_distance) {
+                    count++;
+                }
+            }
+            if (count > 1) {
+                grid[coord] = ' ';
+            }
+        }
+
+        //grid.draw();
+        //std::cout << std::endl;
 
         bool growing{true};
         while (growing) {
@@ -66,8 +88,8 @@ namespace day06 {
                 std::swap(region.edge, new_edge);
             }
 
-            grid.draw();
-            std::cout << std::endl;
+            //grid.draw();
+            //std::cout << std::endl;
 
             for (auto& region : regions) {
                 std::set<advent::coord> erase{};
@@ -87,11 +109,24 @@ namespace day06 {
                 }
             }
 
-            grid.draw();
-            std::cout << std::endl;
+            //grid.draw();
+            //std::cout << std::endl;
         }
 
-        return -1;
+        const auto& largest = std::max_element(
+            regions.cbegin(), regions.cend(), [](const auto& left, const auto& right) {
+                if (left.infinite == right.infinite) {
+                    return left.area < right.area;
+                }
+
+                if (left.infinite) {
+                    return true;
+                }
+
+                return false;
+            });
+
+        return static_cast<int>(largest->area.size());
     }
 
     int part2(const std::vector<std::string>& rows) {
