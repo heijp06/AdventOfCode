@@ -65,15 +65,20 @@ namespace day06 {
             std::cout << std::endl;
 
             for (auto& region : regions) {
+                std::set<advent::coord> erase{};
                 for (const auto& coord : region.edge) {
                     if (grid[coord] == ' ') {
-                        region.edge.erase(coord);
+                        erase.insert(coord);
                         continue;
                     }
 
                     growing = true;
                     region.area.insert(coord);
                     grid[coord] = 'X';
+                }
+
+                for (const auto& coord : erase) {
+                    region.edge.erase(coord);
                 }
             }
 
