@@ -46,6 +46,7 @@ namespace day06 {
         //std::cout << std::endl;
 
         bool growing{true};
+        std::vector<advent::coord> new_edge{};
         while (growing) {
             growing = false;
 
@@ -53,8 +54,6 @@ namespace day06 {
                 if (region.edge.empty()) {
                     continue;
                 }
-
-                std::vector<advent::coord> new_edge{};
 
                 for (const auto& coord : region.edge) {
                     for (const auto& direction : advent::direction::nsew()) {
@@ -76,6 +75,7 @@ namespace day06 {
                 }
 
                 std::swap(region.edge, new_edge);
+                new_edge.clear();
             }
 
             //grid.draw();
