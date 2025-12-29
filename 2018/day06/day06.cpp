@@ -146,8 +146,8 @@ namespace day06 {
         std::vector<Region> regions{};
         regions.reserve(rows.size());
 
-        for (const auto& row : rows) {
-            const auto& fields = advent::ints(row);
+        for (const auto& line : rows) {
+            const auto& fields = advent::ints(line);
             const auto row = fields[1];
             const auto column = fields[0];
             min_column = min_column == -1 ? column : std::min(min_column, column);
