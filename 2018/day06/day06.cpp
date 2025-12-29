@@ -50,6 +50,7 @@ namespace day06 {
 
                         if (grid[pos] == '?') {
                             grid[pos] = ' ';
+                            continue;
                         }
 
                         grid[pos] = '?';
