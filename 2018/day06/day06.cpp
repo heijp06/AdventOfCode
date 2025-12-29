@@ -23,22 +23,24 @@ namespace day06 {
             }
         }
 
-        for (const auto& coord : grid.get_positions()) {
-            auto min_distance = max_row + max_column + 10;
-            auto count = 0;
-            for (const auto& region : regions) {
-                const auto& pos = region.area.front();
-                auto distance = std::abs(coord.column - pos.column) + std::abs(coord.row - pos.row);
-                if (distance < min_distance) {
-                    count = 1;
-                    min_distance = distance;
+        for (int row = min_row; row <= max_row; row++) {
+            for (int column = min_column; column <= max_column; column++) {
+                auto min_distance = max_row + max_column + 10;
+                auto count = 0;
+                for (const auto& region : regions) {
+                    const auto& pos = region.area.front();
+                    auto distance = std::abs(column - pos.column) + std::abs(row - pos.row);
+                    if (distance < min_distance) {
+                        count = 1;
+                        min_distance = distance;
+                    }
+                    else if (distance == min_distance) {
+                        count++;
+                    }
                 }
-                else if (distance == min_distance) {
-                    count++;
+                if (count > 1) {
+                    grid[{row, column}] = 'X';
                 }
-            }
-            if (count > 1) {
-                grid[coord] = 'X';
             }
         }
 
