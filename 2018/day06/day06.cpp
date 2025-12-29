@@ -23,9 +23,6 @@ namespace day06 {
             }
         }
 
-        //grid.draw();
-        //std::cout << std::endl;
-
         for (const auto& coord : grid.get_positions()) {
             auto min_distance = max_row + max_column + 10;
             auto count = 0;
@@ -41,7 +38,7 @@ namespace day06 {
                 }
             }
             if (count > 1) {
-                grid[coord] = ' ';
+                grid[coord] = 'X';
             }
         }
 
@@ -72,41 +69,17 @@ namespace day06 {
                             continue;
                         }
 
-                        if (grid[pos] == 'X' || grid[pos] == ' ') {
+                        if (grid[pos] == 'X') {
                             continue;
                         }
 
-                        if (grid[pos] == '?') {
-                            grid[pos] = ' ';
-                            continue;
-                        }
-
-                        grid[pos] = '?';
+                        grid[pos] = 'X';
                         new_edge.insert(pos);
+                        region.area.insert(pos);
+                        growing = true;
                 }
 
                 std::swap(region.edge, new_edge);
-            }
-
-            //grid.draw();
-            //std::cout << std::endl;
-
-            for (auto& region : regions) {
-                std::set<advent::coord> erase{};
-                for (const auto& coord : region.edge) {
-                    if (grid[coord] == ' ') {
-                        erase.insert(coord);
-                        continue;
-                    }
-
-                    growing = true;
-                    region.area.insert(coord);
-                    grid[coord] = 'X';
-                }
-
-                for (const auto& coord : erase) {
-                    region.edge.erase(coord);
-                }
             }
 
             //grid.draw();
