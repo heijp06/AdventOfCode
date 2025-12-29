@@ -1,6 +1,5 @@
 #pragma once
 
-#include <set>
 #include <string>
 #include <vector>
 
@@ -8,7 +7,7 @@
 
 namespace day06 {
     struct Region {
-        std::set<advent::coord> area;
+        std::vector<advent::coord> area;
         std::vector<advent::coord> edge;
         bool infinite;
     };

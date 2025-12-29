@@ -27,7 +27,7 @@ namespace day06 {
             auto min_distance = max_row + max_column + 10;
             auto count = 0;
             for (const auto& region : regions) {
-                const auto& pos = *region.area.cbegin();
+                const auto& pos = region.area.front();
                 auto distance = std::abs(coord.column - pos.column) + std::abs(coord.row - pos.row);
                 if (distance < min_distance) {
                     count = 1;
@@ -70,7 +70,7 @@ namespace day06 {
 
                         grid[pos] = 'X';
                         new_edge.push_back(pos);
-                        region.area.insert(pos);
+                        region.area.push_back(pos);
                         growing = true;
                     }
                 }
