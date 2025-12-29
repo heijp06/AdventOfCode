@@ -54,7 +54,7 @@ namespace day06 {
                     continue;
                 }
 
-                std::set<advent::coord> new_edge{};
+                std::vector<advent::coord> new_edge{};
                 std::set<advent::coord> candidates{};
 
                 for (const auto& coord : region.edge) {
@@ -74,7 +74,7 @@ namespace day06 {
                         }
 
                         grid[pos] = 'X';
-                        new_edge.insert(pos);
+                        new_edge.push_back(pos);
                         region.area.insert(pos);
                         growing = true;
                 }

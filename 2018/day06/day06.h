@@ -9,7 +9,7 @@
 namespace day06 {
     struct Region {
         std::set<advent::coord> area;
-        std::set<advent::coord> edge;
+        std::vector<advent::coord> edge;
         bool infinite;
     };
 
