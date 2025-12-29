@@ -116,7 +116,7 @@ namespace day06 {
         const auto& largest = std::max_element(
             regions.cbegin(), regions.cend(), [](const auto& left, const auto& right) {
                 if (left.infinite == right.infinite) {
-                    return left.area < right.area;
+                    return left.area.size() < right.area.size();
                 }
 
                 if (left.infinite) {
