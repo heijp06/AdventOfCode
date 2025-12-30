@@ -19,5 +19,9 @@ TEST_CASE("part1") {
 }
 
 TEST_CASE("part2") {
-    REQUIRE(day07::part2(rows, 2, 0) == -1);
+    REQUIRE(day07::part2(rows, 2, 0) == 15);
+}
+
+TEST_CASE("solve.first") {
+    REQUIRE(day07::solve(rows, 2, 0).first == "CABFDE");
 }
