@@ -21,6 +21,7 @@ namespace day07 {
         std::string result{};
         std::set<char> available{};
         std::set<char> to{};
+        std::set<char> working{};
         int time{};
         auto update{true};
 
@@ -53,6 +54,7 @@ namespace day07 {
                     from.insert(pair.first);
                     to.insert(pair.second);
                 }
+                to.insert(working.cbegin(), working.cend());
 
                 std::vector<char> difference{};
                 difference.reserve(26);
@@ -68,6 +70,7 @@ namespace day07 {
                     available.erase(available.cbegin());
                     worker.timer = delay + c - 'A' + 1;
                     worker.step = c;
+                    working.insert(c);
                 }
             }
 
