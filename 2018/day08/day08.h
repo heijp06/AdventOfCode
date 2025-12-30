@@ -18,4 +18,5 @@ namespace day08 {
     int part2(const std::vector<std::string>& rows);
 
     int sum_of_metadata(Reader& reader);
+    int value(Reader& reader);
 }
