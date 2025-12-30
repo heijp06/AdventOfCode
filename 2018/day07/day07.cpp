@@ -24,14 +24,11 @@ namespace day07 {
             difference.reserve(26);
             std::set_difference(from.begin(), from.end(), to.begin(), to.end(), std::back_inserter(difference));
 
-            for (const auto& c : difference) {
-                pairs.erase(std::remove_if(pairs.begin(), pairs.end(), [&](auto& p) { return p.first == c; }), pairs.cend());
-            }
-
             available.insert(difference.cbegin(), difference.cend());
 
             const auto c = *(available.cbegin());
             available.erase(available.cbegin());
+            pairs.erase(std::remove_if(pairs.begin(), pairs.end(), [&](auto& p) { return p.first == c; }), pairs.cend());
 
             result += c;
         }
