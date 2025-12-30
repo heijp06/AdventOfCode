@@ -5,11 +5,11 @@
 #include "day08.h"
 
 std::vector<std::string> rows{
-
+    "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2"
 };
 
 TEST_CASE("part1") {
-    REQUIRE(day08::part1(rows) == -1);
+    REQUIRE(day08::part1(rows) == 138);
 }
 
 TEST_CASE("part2") {
