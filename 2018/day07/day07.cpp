@@ -87,13 +87,6 @@ namespace day07 {
             time++;
         }
 
-        //for (const auto& c : available) {
-        //    result += c;
-        //}
-
-        //for (const auto& c : to) {
-        //    result += c;
-        //}
         result += last;
         time += delay + last - 'A';
 
