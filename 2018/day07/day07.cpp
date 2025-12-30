@@ -1,11 +1,18 @@
+#include "day07.h"
 #include <algorithm>
 #include <iterator>
 #include <set>
 
-#include "day07.h"
-
 namespace day07 {
     std::string part1(const std::vector<std::string>& rows) {
+        return solve(rows, 1, 0).first;
+    }
+
+    int part2(const std::vector<std::string>& rows, int workers, int delay) {
+        return solve(rows, workers, delay).second;
+    }
+
+    std::pair<std::string, int> solve(const std::vector<std::string>& rows, int workers, int delay) {
         auto& pairs = parse(rows);
         std::string result{};
         std::set<char> available{};
@@ -41,7 +48,7 @@ namespace day07 {
             result += c;
         }
 
-        return result;
+        return {result, 0};
     }
 
     std::vector<std::pair<char, char>> parse(const std::vector<std::string>& rows) {
@@ -53,10 +60,5 @@ namespace day07 {
         }
 
         return pairs;
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 }
