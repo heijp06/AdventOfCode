@@ -1,8 +1,10 @@
 #include "day08.h"
+#include "../../lib/advent.h"
 
 namespace day08 {
     int part1(const std::vector<std::string>& rows) {
-        (void)rows;
+        const auto& numbers = advent::ints(rows[0]);
+
         return -1;
     }
 
