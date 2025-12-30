@@ -24,6 +24,7 @@ namespace day07 {
         std::set<char> working{};
         int time{};
         auto update{true};
+        auto last{'.'};
 
         std::vector<Worker> workers{};
         workers.reserve(number_of_workers);
@@ -53,6 +54,7 @@ namespace day07 {
                 for (const auto& pair : pairs) {
                     from.insert(pair.first);
                     to.insert(pair.second);
+                    last = pair.second;
                 }
                 to.insert(working.cbegin(), working.cend());
 
@@ -74,13 +76,13 @@ namespace day07 {
                 }
             }
 
-            std::cout << std::setw(width) << time;
+            //std::cout << std::setw(width) << time;
 
-            for (size_t i = 0; i < number_of_workers; i++) {
-                std::cout << std::setw(width) << workers[i].step;
-            }
+            //for (size_t i = 0; i < number_of_workers; i++) {
+            //    std::cout << std::setw(width) << workers[i].step;
+            //}
 
-            std::cout << std::setw(width) << result << std::endl;
+            //std::cout << std::setw(width) << result << std::endl;
 
             time++;
         }
@@ -89,9 +91,11 @@ namespace day07 {
         //    result += c;
         //}
 
-        for (const auto& c : to) {
-            result += c;
-        }
+        //for (const auto& c : to) {
+        //    result += c;
+        //}
+        result += last;
+        time += delay + last - 'A';
 
         return {result, time};
     }
