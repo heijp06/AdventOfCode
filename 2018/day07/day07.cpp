@@ -17,7 +17,7 @@ namespace day07 {
 
     std::pair<std::string, int> solve(const std::vector<std::string>& rows, int number_of_workers, int delay) {
         const int width = 16;
-        auto& pairs = parse(rows);
+        auto pairs = parse(rows);
         std::string result{};
         std::set<char> available{};
         std::set<char> to{};
