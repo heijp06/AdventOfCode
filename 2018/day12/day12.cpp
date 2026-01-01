@@ -66,7 +66,7 @@ namespace day12 {
     std::vector<bool> parse_clues(const std::vector<std::string>& rows) {
         std::vector<bool> clues(32, false);
 
-        for (auto& it = rows.cbegin() + 2; it < rows.cend(); it++) {
+        for (auto it = rows.cbegin() + 2; it < rows.cend(); it++) {
             const auto& row = *it;
             int clue = 0;
             int bit = 1;
