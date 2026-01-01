@@ -151,6 +151,26 @@ TEST_CASE("coord + direction") {
     REQUIRE(position == advent::coord{0, 1});
 }
 
+TEST_CASE("negate direction") {
+    REQUIRE(advent::direction::up() == -advent::direction::down());
+    REQUIRE(advent::direction::down() == -advent::direction::up());
+    REQUIRE(advent::direction::right() == -advent::direction::left());
+    REQUIRE(advent::direction::left() == -advent::direction::right());
+}
+
+TEST_CASE("coord - direction") {
+    auto position = advent::coord{1, 1};
+
+    REQUIRE(position - advent::direction::up() == advent::coord{2, 1});
+    REQUIRE(position - advent::direction::down() == advent::coord{0, 1});
+    REQUIRE(position - advent::direction::left() == advent::coord{1, 2});
+    REQUIRE(position - advent::direction::right() == advent::coord{1, 0});
+
+    position -= advent::direction::up();
+
+    REQUIRE(position == advent::coord{2, 1});
+}
+
 //TEST_CASE("direction.turn") {
 //    REQUIRE(advent::direction.up().turn_left() == advent::direction::left());
 //    REQUIRE(advent::direction.up().turn_right() == advent::direction::right());
