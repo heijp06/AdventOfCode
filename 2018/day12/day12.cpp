@@ -1,20 +1,22 @@
+#include <algorithm>
 #include <numeric>
 #include <set>
 
 #include "day12.h"
 
 namespace day12 {
-    int part1(const std::vector<std::string>& rows) {
+    std::int64_t part1(const std::vector<std::string>& rows) {
+        return solve(rows, false);
+    }
+
+    std::int64_t part2(const std::vector<std::string>& rows) {
+        return solve(rows, true);
+    }
+
+    std::int64_t solve(const std::vector<std::string>& rows, bool part2) {
         const int offset = 15;
-        std::set<int> current{};
+
         std::vector<bool> clues(32, false);
-
-        for (size_t i = offset; i < rows[0].size(); i++) {
-            if (rows[0][i] == '#') {
-                current.insert(i - offset);
-            }
-        }
-
         for (auto& it = rows.cbegin() + 2; it < rows.cend(); it++) {
             const auto& row = *it;
             int clue = 0;
@@ -28,13 +30,21 @@ namespace day12 {
             clues[clue] = row[9] == '#';
         }
 
-        std::set<int> next{};
+        std::set<std::int64_t> current{};
 
-        for (size_t i = 0; i < 20; i++) {
-            int min = *current.cbegin() - 2;
-            int max = *current.crbegin() + 2;
+        for (size_t i = offset; i < rows[0].size(); i++) {
+            if (rows[0][i] == '#') {
+                current.insert(i - offset);
+            }
+        }
+
+        std::set<std::int64_t> next{};
+
+        for (size_t i = 0; part2 || i < 20; i++) {
+            std::int64_t min = *current.cbegin() - 2;
+            std::int64_t max = *current.crbegin() + 2;
             int key{};
-            for (int pot = min; pot <= max; pot++) {
+            for (std::int64_t pot = min; pot <= max; pot++) {
                 key >>= 1;
 
                 if (current.count(pot + 2)) {
@@ -45,15 +55,22 @@ namespace day12 {
                     next.insert(pot);
                 }
             }
+
+            if (part2) {
+                if (current.size() == next.size()) {
+                    if (std::all_of(current.cbegin(), current.cend(), [&](std::int64_t pot) { return next.count(pot + 1); })) {
+                        std::int64_t sum = std::reduce(current.cbegin(), current.cend());
+                        std::int64_t todo = 50'000'000'000 - i;
+                        std::int64_t count = current.size();
+                        return sum + todo * count;
+                    }
+                }
+            }
+
             std::swap(current, next);
             next.clear();
         }
 
         return std::reduce(current.cbegin(), current.cend());
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 }
