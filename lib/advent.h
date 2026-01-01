@@ -72,6 +72,9 @@ namespace advent {
         friend direction operator*(const int times, const direction& dir) {
             return {dir.delta_row * times, dir.delta_column * times};
         }
+        friend direction operator-(const direction& dir) {
+            return -1 * dir;
+        }
     };
 
     struct coord {
@@ -96,8 +99,15 @@ namespace advent {
         friend coord operator+(const coord& l, const direction& r) {
             return {l.row + r.delta_row, l.column + r.delta_column};
         }
+        friend coord operator-(const coord& l, const direction& r) {
+            return l + (-r);
+        }
         friend coord& operator+=(coord& position, const direction& rhs) {
             position = position + rhs;
+            return position;
+        }
+        friend coord& operator-=(coord& position, const direction& rhs) {
+            position = position - rhs;
             return position;
         }
         friend coord operator-(const coord& l, const coord& r) {
