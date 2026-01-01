@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include <string>
 
 #include "day11.h"
@@ -12,8 +13,20 @@ namespace day11 {
     }
 
     std::string part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return "";
+        const auto& grid = create_grid(rows);
+
+        std::pair<std::string, int> max{};
+        for (int block_size = 1; block_size <= size; block_size++) {
+            std::cout << block_size << " ";
+            const auto& solution = solve(grid, block_size);
+            if (max.second < solution.second) {
+                max = {solution.first + "," + std::to_string(block_size), solution.second};
+            }
+        }
+
+        std::cout << std::endl;
+
+        return max.first;
     }
 
     std::pair<std::string, int> solve(const std::vector<std::vector<int>>& grid, int block_size) {
