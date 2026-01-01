@@ -14,23 +14,11 @@ namespace day12 {
     }
 
     std::int64_t solve(const std::vector<std::string>& rows, bool part2) {
-        const int offset = 15;
-
-        std::vector<bool> clues(32, false);
-        for (auto& it = rows.cbegin() + 2; it < rows.cend(); it++) {
-            const auto& row = *it;
-            int clue = 0;
-            int bit = 1;
-            for (size_t i = 0; i < 5; i++) {
-                if (row[i] == '#') {
-                    clue += bit;
-                }
-                bit <<= 1;
-            }
-            clues[clue] = row[9] == '#';
-        }
+        const auto& clues = parse_clues(rows);
 
         std::set<std::int64_t> current{};
+
+        const int offset = 15;
 
         for (size_t i = offset; i < rows[0].size(); i++) {
             if (rows[0][i] == '#') {
@@ -72,5 +60,24 @@ namespace day12 {
         }
 
         return std::reduce(current.cbegin(), current.cend());
+    }
+
+    std::vector<bool> parse_clues(const std::vector<std::string>& rows) {
+        std::vector<bool> clues(32, false);
+
+        for (auto& it = rows.cbegin() + 2; it < rows.cend(); it++) {
+            const auto& row = *it;
+            int clue = 0;
+            int bit = 1;
+            for (size_t i = 0; i < 5; i++) {
+                if (row[i] == '#') {
+                    clue += bit;
+                }
+                bit <<= 1;
+            }
+            clues[clue] = row[9] == '#';
+        }
+
+        return clues;
     }
 }

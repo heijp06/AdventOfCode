@@ -9,4 +9,5 @@ namespace day12 {
     std::int64_t part2(const std::vector<std::string>& rows);
 
     std::int64_t solve(const std::vector<std::string>& rows, bool part2);
+    std::vector<bool> parse_clues(const std::vector<std::string>& rows);
 }
