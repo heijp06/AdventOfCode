@@ -10,9 +10,19 @@ namespace day11 {
 
         const auto& grid = create_grid(serial_number);
 
+        return solve(grid);
+    }
+
+    int part2(const std::vector<std::string>& rows) {
+        (void)rows;
+        return -1;
+    }
+
+    std::string solve(const std::vector<std::vector<int>>& grid) {
         int max{-300 * 300 * 5};
         int x_max = 0;
         int y_max = 0;
+
         for (int x = 1; x <= size - 2; x++) {
             for (int y = 1; y <= size - 2; y++) {
                 int total{};
@@ -30,11 +40,6 @@ namespace day11 {
         }
 
         return std::to_string(x_max) + "," + std::to_string(y_max);
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 
     std::vector<std::vector<int>> create_grid(const int serial_number) {
