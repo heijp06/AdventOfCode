@@ -14,7 +14,7 @@ namespace day12 {
 
     std::int64_t solve(const std::vector<std::string>& rows, bool part2) {
         const auto& clues = parse_clues(rows);
-        auto& current = parse_initial_state(rows);
+        auto current = parse_initial_state(rows);
         std::set<std::int64_t> next{};
 
         for (size_t i = 0; part2 || i < 20; i++) {
