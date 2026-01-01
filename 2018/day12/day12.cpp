@@ -15,7 +15,6 @@ namespace day12 {
     std::int64_t solve(const std::vector<std::string>& rows, bool part2) {
         const auto& clues = parse_clues(rows);
         auto& current = parse_initial_state(rows);
-
         std::set<std::int64_t> next{};
 
         for (size_t i = 0; part2 || i < 20; i++) {
@@ -34,15 +33,14 @@ namespace day12 {
                 }
             }
 
-            if (part2) {
-                if (current.size() == next.size()) {
-                    if (std::all_of(current.cbegin(), current.cend(), [&](std::int64_t pot) { return next.count(pot + 1); })) {
-                        std::int64_t sum = std::reduce(current.cbegin(), current.cend());
-                        std::int64_t todo = 50'000'000'000 - i;
-                        std::int64_t count = current.size();
-                        return sum + todo * count;
-                    }
-                }
+            if (part2 && current.size() == next.size()
+                && std::all_of(current.cbegin(), current.cend(), [&](std::int64_t pot) {
+                    return next.count(pot + 1);
+                    })) {
+                std::int64_t sum = std::reduce(current.cbegin(), current.cend());
+                std::int64_t todo = 50'000'000'000 - i;
+                std::int64_t count = current.size();
+                return sum + todo * count;
             }
 
             std::swap(current, next);
