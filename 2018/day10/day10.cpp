@@ -7,6 +7,7 @@ namespace day10 {
     int part1(const std::vector<std::string>& rows) {
         auto lights = std::vector<Light>{};
         lights.reserve(rows.size());
+        int seconds{};
 
         for (const auto& row : rows) {
             const auto& fields = advent::ints(row);
@@ -18,6 +19,7 @@ namespace day10 {
         int min_row{};
         int max_row{};
         do {
+            seconds++;
             previous_height = height;
             for (auto& light : lights) {
                 light.position = light.position + light.velocity;
@@ -58,11 +60,10 @@ namespace day10 {
         std::cout << std::endl;
         grid.draw();
 
-        return -1;
+        return seconds - 1;
     }
 
     int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        return part1(rows);
     }
 }
