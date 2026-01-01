@@ -6,9 +6,7 @@
 
 namespace day11 {
     std::string part1(const std::vector<std::string>& rows) {
-        const auto serial_number = advent::ints(rows.front()).front();
-
-        const auto& grid = create_grid(serial_number);
+        const auto& grid = create_grid(rows);
 
         return solve(grid, 3).first;
     }
@@ -42,7 +40,8 @@ namespace day11 {
         return {std::to_string(x_max) + "," + std::to_string(y_max), max};
     }
 
-    std::vector<std::vector<int>> create_grid(const int serial_number) {
+    std::vector<std::vector<int>> create_grid(const std::vector<std::string>& rows) {
+        const auto serial_number = advent::ints(rows.front()).front();
         std::vector<std::vector<int>> grid{size + 1, std::vector(size + 1, 0)};
 
         for (int x = 1; x <= size; x++) {
