@@ -10,7 +10,7 @@ namespace day11 {
 
         const auto& grid = create_grid(serial_number);
 
-        int max{-90};
+        int max{-300 * 300 * 5};
         int x_max = 0;
         int y_max = 0;
         for (int x = 1; x <= size - 2; x++) {
