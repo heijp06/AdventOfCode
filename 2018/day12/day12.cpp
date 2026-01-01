@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <numeric>
-#include <set>
 
 #include "day12.h"
 
@@ -15,16 +14,7 @@ namespace day12 {
 
     std::int64_t solve(const std::vector<std::string>& rows, bool part2) {
         const auto& clues = parse_clues(rows);
-
-        std::set<std::int64_t> current{};
-
-        const int offset = 15;
-
-        for (size_t i = offset; i < rows[0].size(); i++) {
-            if (rows[0][i] == '#') {
-                current.insert(i - offset);
-            }
-        }
+        auto& current = parse_initial_state(rows);
 
         std::set<std::int64_t> next{};
 
@@ -60,6 +50,19 @@ namespace day12 {
         }
 
         return std::reduce(current.cbegin(), current.cend());
+    }
+
+    std::set<std::int64_t> parse_initial_state(const std::vector<std::string>& rows) {
+        const int offset = 15;
+        std::set<std::int64_t> initial_state{};
+
+        for (size_t i = offset; i < rows[0].size(); i++) {
+            if (rows[0][i] == '#') {
+                initial_state.insert(i - offset);
+            }
+        }
+
+        return initial_state;
     }
 
     std::vector<bool> parse_clues(const std::vector<std::string>& rows) {
