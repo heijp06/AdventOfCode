@@ -10,7 +10,7 @@ namespace day11 {
 
         const auto& grid = create_grid(serial_number);
 
-        return solve(grid).first;
+        return solve(grid, 3).first;
     }
 
     std::string part2(const std::vector<std::string>& rows) {
@@ -18,16 +18,16 @@ namespace day11 {
         return "";
     }
 
-    std::pair<std::string, int> solve(const std::vector<std::vector<int>>& grid) {
+    std::pair<std::string, int> solve(const std::vector<std::vector<int>>& grid, int block_size) {
         int max{-300 * 300 * 5};
         int x_max = 0;
         int y_max = 0;
 
-        for (int x = 1; x <= size - 2; x++) {
-            for (int y = 1; y <= size - 2; y++) {
+        for (int x = 1; x <= size - (block_size - 1); x++) {
+            for (int y = 1; y <= size - (block_size - 1); y++) {
                 int total{};
-                for (int delta_x = 0; delta_x < 3; delta_x++) {
-                    for (int delta_y = 0; delta_y < 3; delta_y++) {
+                for (int delta_x = 0; delta_x < block_size; delta_x++) {
+                    for (int delta_y = 0; delta_y < block_size; delta_y++) {
                         total += grid[x + delta_x][y + delta_y];
                     }
                 }

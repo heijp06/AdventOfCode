@@ -23,5 +23,15 @@ TEST_CASE("part1") {
 }
 
 TEST_CASE("part2") {
-    REQUIRE(day11::part2(rows) == -1);
+    struct testdata {
+        std::vector<std::string> rows;
+        std::string result;
+    };
+
+    const auto& item = GENERATE(
+        testdata{{"18"}, "90,269,16"},
+        testdata{{"42"}, "232,251,12"}
+    );
+
+    REQUIRE(day11::part2(item.rows) == item.result);
 }

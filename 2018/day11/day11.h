@@ -11,5 +11,5 @@ namespace day11 {
     std::string part2(const std::vector<std::string>& rows);
 
     std::vector<std::vector<int>> create_grid(const int serial_number);
-    std::pair<std::string, int> solve(const std::vector<std::vector<int>>& grid);
+    std::pair<std::string, int> solve(const std::vector<std::vector<int>>& grid, int block_size);
 }
