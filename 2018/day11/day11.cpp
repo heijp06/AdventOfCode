@@ -6,31 +6,19 @@
 
 namespace day11 {
     std::string part1(const std::vector<std::string>& rows) {
-        const int size = 300;
+        const size_t size = 300;
         const auto serial_number = advent::ints(rows.front()).front();
-        std::vector<std::vector<int>> grid{size + 1, std::vector(size + 1, 0)};
 
-        for (size_t x = 1; x <= size; x++) {
-            int rack_id = x + 10;
-            for (size_t y = 1; y <= size; y++) {
-                int power_level = rack_id * y;
-                power_level += serial_number;
-                power_level *= rack_id;
-                power_level %= 1000;
-                power_level /= 100;
-                power_level -= 5;
-                grid[x][y] = power_level;
-            }
-        }
+        const auto& grid = create_grid(size, serial_number);
 
         int max{-90};
         int x_max = 0;
         int y_max = 0;
-        for (size_t x = 1; x <= size - 2; x++) {
-            for (size_t y = 1; y <= size - 2; y++) {
+        for (int x = 1; x <= size - 2; x++) {
+            for (int y = 1; y <= size - 2; y++) {
                 int total{};
-                for (size_t delta_x = 0; delta_x < 3; delta_x++) {
-                    for (size_t delta_y = 0; delta_y < 3; delta_y++) {
+                for (int delta_x = 0; delta_x < 3; delta_x++) {
+                    for (int delta_y = 0; delta_y < 3; delta_y++) {
                         total += grid[x + delta_x][y + delta_y];
                     }
                 }
@@ -48,5 +36,24 @@ namespace day11 {
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    std::vector<std::vector<int>> create_grid(const size_t size, const int serial_number) {
+        std::vector<std::vector<int>> grid{size + 1, std::vector(size + 1, 0)};
+
+        for (int x = 1; x <= size; x++) {
+            int rack_id = x + 10;
+            for (int y = 1; y <= size; y++) {
+                int power_level = rack_id * y;
+                power_level += serial_number;
+                power_level *= rack_id;
+                power_level %= 1000;
+                power_level /= 100;
+                power_level -= 5;
+                grid[x][y] = power_level;
+            }
+        }
+
+        return grid;
     }
 }
