@@ -48,8 +48,8 @@ namespace day11 {
     }
 
     std::vector<std::vector<int>> create_grid(const std::vector<std::string>& rows) {
-        // A cell (x, y) in the grid contains the sum of all power levels in the rectangle from 1 to x and 1 to y.
-        // This is somewhat complex but allows calculating sums of blocks fast.
+        // A cell (x, y) in the grid contains the sum of all power levels in the top left rectangle
+        // from (1, 1) to (x, y). This is somewhat complex but allows calculating sums of power levels in blocks fast.
         const auto serial_number = advent::ints(rows.front()).front();
         std::vector<std::vector<int>> grid{size + 1, std::vector(size + 1, 0)};
 
