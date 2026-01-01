@@ -11,7 +11,7 @@ std::vector<std::string> rows{
 TEST_CASE("part1") {
     struct testdata {
         std::vector<std::string> game;
-        int score;
+        std::int64_t score;
     };
 
     const auto& item = GENERATE(
@@ -24,8 +24,4 @@ TEST_CASE("part1") {
     );
 
     REQUIRE(day09::part1(item.game) == item.score);
-}
-
-TEST_CASE("part2") {
-    REQUIRE(day09::part2(rows) == -1);
 }

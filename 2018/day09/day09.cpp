@@ -4,21 +4,29 @@
 #include "../../lib/advent.h"
 
 namespace day09 {
-    int part1(const std::vector<std::string>& rows) {
-        const auto& fields = advent::ints(rows.front());
+    std::int64_t part1(const std::vector<std::string>& rows) {
+        return solve(rows, 1);
+    }
 
-        int players = fields[0];
-        int last = fields[1];
+    std::int64_t part2(const std::vector<std::string>& rows) {
+        return solve(rows, 100);
+    }
 
-        std::vector<int> scores(players, 0);
+    std::int64_t solve(const std::vector<std::string>& rows, std::int64_t multiplier) {
+        const auto& fields = advent::ints<std::int64_t>(rows.front());
+
+        std::int64_t players = fields[0];
+        std::int64_t last = fields[1] * multiplier;
+
+        std::vector<std::int64_t> scores(players, 0);
 
         auto current = std::make_shared<Node>();
         current->value = 0;
         current->next = current;
         current->previous = current;
 
-        int current_player{};
-        for (int marble = 1; marble <= last; marble++) {
+        std::int64_t current_player{};
+        for (std::int64_t marble = 1; marble <= last; marble++) {
             if (marble % 23) {
                 auto to_add = std::make_shared<Node>();
                 auto& where = current->next;
@@ -50,10 +58,5 @@ namespace day09 {
         }
 
         return *std::max_element(scores.cbegin(), scores.cend());
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 }
