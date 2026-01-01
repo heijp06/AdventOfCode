@@ -5,8 +5,6 @@
 
 namespace day10 {
     int part1(const std::vector<std::string>& rows) {
-        const int expected_height = 10;
-
         auto lights = std::vector<Light>{};
         lights.reserve(rows.size());
 
@@ -15,10 +13,12 @@ namespace day10 {
             lights.push_back({{fields[1], fields[0]}, {fields[3], fields[2]}});
         }
 
-        int actual_height{};
+        int previous_height{};
+        int height{-1};
         int min_row{};
         int max_row{};
         do {
+            previous_height = height;
             for (auto& light : lights) {
                 light.position = light.position + light.velocity;
             }
@@ -29,10 +29,19 @@ namespace day10 {
             max_row = std::max_element(lights.cbegin(), lights.cend(), [](const auto& left, const auto& right) {
                 return left.position.row < right.position.row;
                 })->position.row;
-            actual_height = max_row - min_row + 1;
+            height = max_row - min_row + 1;
+        } while (previous_height == -1 || height < previous_height);
 
-        } while (actual_height > expected_height);
+        for (auto& light : lights) {
+            light.position = light.position - light.velocity;
+        }
 
+        min_row = std::min_element(lights.cbegin(), lights.cend(), [](const auto& left, const auto& right) {
+            return left.position.row < right.position.row;
+            })->position.row;
+        max_row = std::max_element(lights.cbegin(), lights.cend(), [](const auto& left, const auto& right) {
+            return left.position.row < right.position.row;
+            })->position.row;
         const auto& min_column = std::min_element(lights.cbegin(), lights.cend(), [](const auto& left, const auto& right) {
             return left.position.column < right.position.column;
             })->position.column;
@@ -45,6 +54,7 @@ namespace day10 {
         for (auto& light : lights) {
             grid[{light.position.row - min_row, light.position.column - min_column}] = '#';
         }
+
         std::cout << std::endl;
         grid.draw();
 
