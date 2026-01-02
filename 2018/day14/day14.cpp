@@ -55,7 +55,7 @@ namespace day14 {
         return {result, 0};
     }
 
-    size_t day14::check(const std::string& row, const std::vector<int>& scores) {
+    size_t check(const std::string& row, const std::vector<int>& scores) {
         if (row.size() > scores.size()) {
             return 0;
         }
