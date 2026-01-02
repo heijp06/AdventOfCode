@@ -6,13 +6,13 @@ namespace day14 {
         return solve(rows, false).first;
     }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+    size_t part2(const std::vector<std::string>& rows) {
+        return solve(rows, true).second;
     }
 
     std::pair<std::string, size_t> solve(const std::vector<std::string>& rows, bool part2) {
-        const auto number = advent::ints(rows.front()).front();
+        const auto& row = rows.front();
+        const auto number = advent::ints(row).front();
         std::vector<int> scores{};
         scores.reserve(number + 11);
 
@@ -22,14 +22,26 @@ namespace day14 {
         size_t elve1{0};
         size_t elve2{1};
 
-        while (scores.size() < number + 10) {
+        while (scores.size() < number + 10 || part2) {
             int sum = scores[elve1] + scores[elve2];
             int d1 = sum / 10;
             int d2 = sum % 10;
             if (d1) {
                 scores.push_back(d1);
+                if (part2) {
+                    auto index = check(row, scores);
+                    if (index) {
+                        return {"", index};
+                    }
+                }
             }
             scores.push_back(d2);
+            if (part2) {
+                auto index = check(row, scores);
+                if (index) {
+                    return {"", index};
+                }
+            }
             elve1 = (elve1 + scores[elve1] + 1) % scores.size();
             elve2 = (elve2 + scores[elve2] + 1) % scores.size();
         }
@@ -41,5 +53,20 @@ namespace day14 {
         }
 
         return {result, 0};
+    }
+
+    size_t day14::check(const std::string& row, const std::vector<int>& scores) {
+        if (row.size() > scores.size()) {
+            return 0;
+        }
+
+        auto it_scores = scores.crbegin();
+        for (auto it_row = row.crbegin(); it_row != row.crend(); it_row++, it_scores++) {
+            if (*it_row - '0' != *it_scores) {
+                return 0;
+            }
+        }
+
+        return scores.size() - row.size();
     }
 }
