@@ -5,33 +5,46 @@
 
 namespace day13 {
     std::string part1(const std::vector<std::string>& rows) {
-        return solve(rows);
+        return solve(rows, false);
     }
 
     std::string part2(const std::vector<std::string>& rows) {
-        return solve(rows);
+        return solve(rows, true);
     }
 
-    const std::string solve(const std::vector<std::string>& rows) {
+    const std::string solve(const std::vector<std::string>& rows, bool part2) {
         advent::grid grid{rows};
         auto current = parse_carts(grid);
         std::map<advent::coord, Cart> next{};
 
-        while (true) {
+        while (current.size() > 1) {
             std::vector<std::pair<advent::coord, Cart>> carts(current.cbegin(), current.cend());
-            draw(grid, current);
+            //draw(grid, current);
             for (const auto& cart : carts) {
+                if (!current.count(cart.first)) {
+                    continue;
+                }
+
                 current.erase(cart.first);
                 const auto& moved = cart.second.move(grid);
                 if (current.count(moved.position) || next.count(moved.position)) {
-                    return std::to_string(moved.position.column) + ',' + std::to_string(moved.position.row);
+                    if (part2) {
+                        current.erase(moved.position);
+                        next.erase(moved.position);
+                    }
+                    else {
+                        return std::to_string(moved.position.column) + ',' + std::to_string(moved.position.row);
+                    }
                 }
-                next[moved.position] = moved;
+                else {
+                    next[moved.position] = moved;
+                }
             }
             std::swap(current, next);
         }
 
-        return "";
+        const auto& last = *current.cbegin();
+        return std::to_string(last.first.column) + ',' + std::to_string(last.first.row);
     }
 
     std::map<advent::coord, Cart> parse_carts(advent::grid& grid) {
