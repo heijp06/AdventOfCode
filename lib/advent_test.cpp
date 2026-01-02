@@ -180,12 +180,12 @@ TEST_CASE("coord - direction") {
     REQUIRE(position == advent::coord{2, 1});
 }
 
-//TEST_CASE("direction.turn") {
-//    REQUIRE(advent::direction.up().turn_left() == advent::direction::left());
-//    REQUIRE(advent::direction.up().turn_right() == advent::direction::right());
-//    REQUIRE(advent::direction.left().turn_left() == advent::direction::down());
-//    REQUIRE(advent::direction.left().turn_right() == advent::direction::up());
-//}
+TEST_CASE("direction.turn") {
+    REQUIRE(advent::direction::up().turn_left() == advent::direction::left());
+    REQUIRE(advent::direction::up().turn_right() == advent::direction::right());
+    REQUIRE(advent::direction::left().turn_left() == advent::direction::down());
+    REQUIRE(advent::direction::left().turn_right() == advent::direction::up());
+}
 
 TEST_CASE("split") {
     const auto item = GENERATE(
