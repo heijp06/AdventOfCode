@@ -3,6 +3,15 @@
 
 namespace day14 {
     std::string part1(const std::vector<std::string>& rows) {
+        return solve(rows, false).first;
+    }
+
+    int part2(const std::vector<std::string>& rows) {
+        (void)rows;
+        return -1;
+    }
+
+    std::pair<std::string, size_t> solve(const std::vector<std::string>& rows, bool part2) {
         const auto number = advent::ints(rows.front()).front();
         std::vector<int> scores{};
         scores.reserve(number + 11);
@@ -31,11 +40,6 @@ namespace day14 {
             result += std::to_string(scores[number + i]);
         }
 
-        return result;
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        return {result, 0};
     }
 }
