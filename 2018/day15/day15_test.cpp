@@ -9,7 +9,23 @@ std::vector<std::string> rows{
 };
 
 TEST_CASE("part1") {
-    REQUIRE(day15::part1(rows) == -1);
+    struct testdata {
+        std::vector<std::string> rows;
+        int outcome;
+    };
+
+    const auto& item = GENERATE(
+        testdata{{
+            "#######",
+            "#.G...#",
+            "#...EG#",
+            "#.#.#G#",
+            "#..G#E#",
+            "#.....#",
+            "#######"}, 27730}
+            );
+
+    REQUIRE(day15::part1(item.rows) == item.outcome);
 }
 
 TEST_CASE("part2") {
