@@ -138,6 +138,15 @@ TEST_CASE("directions") {
     REQUIRE(advent::direction::right() == advent::direction{0, 1});
 }
 
+TEST_CASE("directions not equal") {
+    REQUIRE(advent::direction::up() != advent::direction::down());
+    REQUIRE(advent::direction::up() != advent::direction::left());
+    REQUIRE(advent::direction::up() != advent::direction::right());
+    REQUIRE(advent::direction::down() != advent::direction::left());
+    REQUIRE(advent::direction::down() != advent::direction::right());
+    REQUIRE(advent::direction::left() != advent::direction::right());
+}
+
 TEST_CASE("coord + direction") {
     auto position = advent::coord{1, 1};
 
@@ -171,12 +180,12 @@ TEST_CASE("coord - direction") {
     REQUIRE(position == advent::coord{2, 1});
 }
 
-//TEST_CASE("direction.turn") {
-//    REQUIRE(advent::direction.up().turn_left() == advent::direction::left());
-//    REQUIRE(advent::direction.up().turn_right() == advent::direction::right());
-//    REQUIRE(advent::direction.left().turn_left() == advent::direction::down());
-//    REQUIRE(advent::direction.left().turn_right() == advent::direction::up());
-//}
+TEST_CASE("direction.turn") {
+    REQUIRE(advent::direction::up().turn_left() == advent::direction::left());
+    REQUIRE(advent::direction::up().turn_right() == advent::direction::right());
+    REQUIRE(advent::direction::left().turn_left() == advent::direction::down());
+    REQUIRE(advent::direction::left().turn_right() == advent::direction::up());
+}
 
 TEST_CASE("split") {
     const auto item = GENERATE(
