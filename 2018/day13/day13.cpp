@@ -5,13 +5,21 @@
 
 namespace day13 {
     std::string part1(const std::vector<std::string>& rows) {
+        return solve(rows);
+    }
+
+    std::string part2(const std::vector<std::string>& rows) {
+        return solve(rows);
+    }
+
+    const std::string solve(const std::vector<std::string>& rows) {
         advent::grid grid{rows};
         auto current = parse_carts(grid);
         std::map<advent::coord, Cart> next{};
 
         while (true) {
             std::vector<std::pair<advent::coord, Cart>> carts(current.cbegin(), current.cend());
-            //draw(grid, current);
+            draw(grid, current);
             for (const auto& cart : carts) {
                 current.erase(cart.first);
                 const auto& moved = cart.second.move(grid);
@@ -24,11 +32,6 @@ namespace day13 {
         }
 
         return "";
-    }
-
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
     }
 
     std::map<advent::coord, Cart> parse_carts(advent::grid& grid) {

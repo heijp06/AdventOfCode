@@ -18,8 +18,9 @@ namespace day13 {
     };
 
     std::string part1(const std::vector<std::string>& rows);
-    int part2(const std::vector<std::string>& rows);
+    std::string part2(const std::vector<std::string>& rows);
 
+    const std::string solve(const std::vector<std::string>& rows);
     std::map<advent::coord, Cart> parse_carts(advent::grid& grid);
     void draw(advent::grid grid, const std::map<advent::coord, Cart>& carts);
 }
