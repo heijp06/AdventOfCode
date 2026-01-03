@@ -10,6 +10,8 @@ namespace day15 {
         positions.reserve(units.size());
         int round{};
 
+        grid.draw();
+
         while (true) {
             for (const auto& pair : units) {
                 positions.push_back(pair.first);
@@ -22,15 +24,17 @@ namespace day15 {
                     return score(units, round);
                 }
 
-                // Find square in range
-                auto& square = find_step(grid, unit);
+                auto& step = find_step(grid, unit);
+                move(grid, unit, step);
 
-                // Move
                 // If in range attack
             }
 
             break;
         }
+
+        grid.draw();
+        std::cout << std::endl;
 
         return -1;
     }
@@ -99,6 +103,16 @@ namespace day15 {
         return unit.get_position();
     }
 
+    void move(advent::grid& grid, Unit& unit, const advent::coord& step) {
+        if (unit.get_position() == step) {
+            return;
+        }
+
+        grid[unit.get_position()] = '.';
+        grid[step] = unit.is_elve() ? 'E' : 'G';
+        unit.set_position(step);
+    }
+
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
@@ -134,6 +148,10 @@ namespace day15 {
 
     const advent::coord Unit::get_position() const {
         return position_;
+    }
+
+    void Unit::set_position(const advent::coord& position) {
+        position_ = position;
     }
 
     const bool day15::Unit::is_elve() const {

@@ -12,6 +12,7 @@ namespace day15 {
         Unit();
         Unit(advent::coord position, bool is_elve);
         const advent::coord get_position() const;
+        void set_position(const advent::coord& position);
         const bool is_elve() const;
         const int get_hit_points() const;
         void damage();
@@ -28,4 +29,5 @@ namespace day15 {
     bool has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit);
     int score(std::map<advent::coord, day15::Unit>& units, int round);
     advent::coord find_step(const advent::grid& grid, const Unit& unit);
+    void move(advent::grid& grid, Unit& unit, const advent::coord& step);
 }
