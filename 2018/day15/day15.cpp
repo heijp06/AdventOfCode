@@ -24,7 +24,7 @@ namespace day15 {
                 }
 
                 // Find square in range
-                auto& square = find_square(grid, unit);
+                auto& square = find_step(grid, unit);
                 // Move
                 // If in range attack
             }
@@ -46,7 +46,9 @@ namespace day15 {
         return score;
     }
 
-    advent::coord find_square(const advent::grid& grid, const Unit& unit) {
+    advent::coord find_step(const advent::grid& grid, const Unit& unit) {
+        auto symbol = unit.is_elve() ? 'E' : 'G';
+
         return advent::coord();
     }
 

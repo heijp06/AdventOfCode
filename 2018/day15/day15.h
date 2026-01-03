@@ -27,5 +27,5 @@ namespace day15 {
     std::map<advent::coord, Unit> get_units(const advent::grid& grid);
     bool has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit);
     int score(std::map<advent::coord, day15::Unit>& units, int round);
-    advent::coord find_square(const advent::grid& grid, const Unit& unit);
+    advent::coord find_step(const advent::grid& grid, const Unit& unit);
 }
