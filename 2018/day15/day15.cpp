@@ -1,6 +1,5 @@
-#include "day15.h"
-#include "day15.h"
-#include "day15.h"
+#include <iostream>
+
 #include "day15.h"
 
 namespace day15 {
@@ -25,6 +24,7 @@ namespace day15 {
 
                 // Find square in range
                 auto& square = find_step(grid, unit);
+
                 // Move
                 // If in range attack
             }
@@ -47,9 +47,56 @@ namespace day15 {
     }
 
     advent::coord find_step(const advent::grid& grid, const Unit& unit) {
-        auto symbol = unit.is_elve() ? 'E' : 'G';
+        auto enemy = unit.is_elve() ? 'G' : 'E';
+        for (const auto& direction : advent::direction::nwes()) {
+            if (grid[unit.get_position() + direction] == enemy) {
+                return unit.get_position();
+            }
+        }
 
-        return advent::coord();
+        advent::grid copy = grid;
+        copy[unit.get_position()] = 'X';
+        std::vector<std::pair<advent::coord, advent::coord>> current{};
+        current.reserve(100);
+        std::vector<std::pair<advent::coord, advent::coord>> next{};
+        next.reserve(100);
+
+        for (const auto& direction : advent::direction::nwes()) {
+            const auto& new_position = unit.get_position() + direction;
+            if (copy[new_position] == '.') {
+                current.push_back({new_position, new_position});
+            }
+        }
+
+        while (!current.empty()) {
+            for (const auto& pair : current) {
+                advent::coord start{};
+                advent::coord end{};
+                bool found{};
+                for (const auto& direction : advent::direction::nwes()) {
+                    const auto& new_position = pair.second + direction;
+                    if (copy[new_position] == enemy) {
+                        if (!found || pair.second < end) {
+                            start = pair.first;
+                            end = pair.second;
+                            found = true;
+                        }
+                    }
+                    else if (copy[new_position] == '.') {
+                        next.push_back({pair.first, new_position});
+                        copy[new_position] = 'X';
+                    }
+                }
+                if (found) {
+                    return start;
+                }
+            }
+
+            std::swap(current, next);
+            next.clear();
+        }
+
+        return unit.get_position();
     }
 
     int part2(const std::vector<std::string>& rows) {
