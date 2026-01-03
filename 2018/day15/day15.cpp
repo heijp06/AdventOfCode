@@ -3,6 +3,7 @@
 namespace day15 {
     int part1(const std::vector<std::string>& rows) {
         advent::grid grid{rows};
+        auto current = get_units(grid);
 
         return -1;
     }
@@ -10,6 +11,16 @@ namespace day15 {
     int part2(const std::vector<std::string>& rows) {
         (void)rows;
         return -1;
+    }
+
+    std::map<advent::coord, Unit> get_units(const advent::grid& grid) {
+        std::map<advent::coord, Unit> units{};
+
+        for (const auto& pair : grid.find_all("GE")) {
+            units.insert({pair.first, Unit{pair.first, pair.second == 'E'}});
+        }
+
+        return units;
     }
 
     Unit::Unit(advent::coord position, bool is_elve)

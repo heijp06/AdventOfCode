@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -21,4 +22,6 @@ namespace day15 {
 
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
+
+    std::map<advent::coord, Unit> get_units(const advent::grid& grid);
 }
