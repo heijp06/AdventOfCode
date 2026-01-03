@@ -58,7 +58,7 @@ namespace day06 {
                 }
 
                 for (const auto& coord : region.edge) {
-                    for (const auto& direction : advent::direction::nsew()) {
+                    for (const auto& direction : advent::direction::nwes()) {
                         const auto pos = coord + direction;
                         if (pos.column < min_column || pos.column > max_column || pos.row < min_row || pos.row > max_row) {
                             region.infinite = true;
