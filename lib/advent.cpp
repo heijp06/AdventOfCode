@@ -189,7 +189,7 @@ namespace advent {
         return left();
     }
 
-    const std::vector<direction> direction::nsew() {
-        return std::vector<direction>{north(), south(), east(), west()};
+    const std::vector<direction> direction::nwes() {
+        return std::vector<direction>{north(), west(), east(), south()};
     }
 }

@@ -98,6 +98,8 @@ namespace day13 {
             case day13::Right:
                 return {new_position, direction.turn_right(), day13::Left};
             }
+        default:
+            return *this;
         }
     }
 }
