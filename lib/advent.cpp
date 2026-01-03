@@ -115,11 +115,25 @@ namespace advent {
     }
 
     std::vector<advent::coord> grid::find_all(const char c) const {
+        const auto& found = find_all(std::string{c});
         std::vector<advent::coord> result;
+        result.reserve(found.size());
+
+        for (const auto& pair : found) {
+            result.push_back(pair.first);
+        }
+
+        return result;
+    }
+
+    std::vector<std::pair<advent::coord, char>> grid::find_all(const std::string& s) const {
+        std::vector<std::pair<advent::coord, char>> result;
 
         for (const auto& position : get_positions()) {
-            if (rows_[position.row][position.column] == c) {
-                result.push_back(position);
+            for (const auto& c : s) {
+                if (rows_[position.row][position.column] == c) {
+                    result.push_back({position, c});
+                }
             }
         }
 
