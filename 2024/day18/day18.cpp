@@ -30,7 +30,7 @@ namespace day18 {
         while (!queue.empty() && queue.top().first < min_cost) {
             const auto current_state = queue.top().second;
             queue.pop();
-            for (const auto& direction : advent::direction::nsew()) {
+            for (const auto& direction : advent::direction::nwes()) {
                 const auto& new_position = current_state.position + direction;
                 if (new_position.row < 0 || new_position.row > size ||
                     new_position.column < 0 || new_position.column > size) {

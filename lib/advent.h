@@ -58,7 +58,7 @@ namespace advent {
         const static direction south();
         const static direction east();
         const static direction west();
-        const static std::vector<direction> nsew();
+        const static std::vector<direction> nwes();
 
         friend bool operator==(const direction& l, const direction& r) {
             return l.delta_row == r.delta_row && l.delta_column == r.delta_column;
