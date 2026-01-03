@@ -2,13 +2,11 @@
 
 #include <functional>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 namespace day16 {
     struct Device {
         Device();
-        void execute(const std::string& opcode, int a, int b, int c);
         void addr(int a, int b, int c);
         void addi(int a, int b, int c);
         void mulr(int a, int b, int c);
@@ -27,7 +25,7 @@ namespace day16 {
         void eqrr(int a, int b, int c);
         std::vector<int> registers;
 
-        static std::unordered_map<std::string, std::function<void(Device&, int, int, int)>> functions;
+        static std::vector<std::function<void(Device&, int, int, int)>> functions;
     };
 
     int part1(const std::vector<std::string>& rows);

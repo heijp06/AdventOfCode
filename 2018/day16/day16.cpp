@@ -15,10 +15,10 @@ namespace day16 {
             const auto& after = advent::ints(*it++);
             int counter{};
 
-            for (const auto& pair : Device::functions) {
+            for (const auto& function : Device::functions) {
                 Device device{};
                 device.registers = before;
-                pair.second(device, instruction[1], instruction[2], instruction[3]);
+                function(device, instruction[1], instruction[2], instruction[3]);
                 if (device.registers == after) {
                     counter++;
                 }
@@ -38,10 +38,6 @@ namespace day16 {
     }
 
     Device::Device() : registers(4, 0) {
-    }
-
-    void Device::execute(const std::string& opcode, int a, int b, int c) {
-        functions[opcode](*this, a, b, c);
     }
 
     void Device::addr(int a, int b, int c) {
@@ -110,22 +106,22 @@ namespace day16 {
         registers[c] = registers[a] == registers[b] ? 1 : 0;
     }
 
-    std::unordered_map<std::string, std::function<void(Device&, int, int, int)>> Device::functions = {
-        {"addr", &Device::addr},
-        {"addi", &Device::addi},
-        {"mulr", &Device::mulr},
-        {"muli", &Device::muli},
-        {"banr", &Device::banr},
-        {"bani", &Device::bani},
-        {"borr", &Device::borr},
-        {"bori", &Device::bori},
-        {"setr", &Device::setr},
-        {"seti", &Device::seti},
-        {"gtir", &Device::gtir},
-        {"gtri", &Device::gtri},
-        {"gtrr", &Device::gtrr},
-        {"eqir", &Device::eqir},
-        {"eqri", &Device::eqri},
-        {"eqrr", &Device::eqrr}
+    std::vector<std::function<void(Device&, int, int, int)>> Device::functions = {
+        &Device::addr,
+        &Device::addi,
+        &Device::mulr,
+        &Device::muli,
+        &Device::banr,
+        &Device::bani,
+        &Device::borr,
+        &Device::bori,
+        &Device::setr,
+        &Device::seti,
+        &Device::gtir,
+        &Device::gtri,
+        &Device::gtrr,
+        &Device::eqir,
+        &Device::eqri,
+        &Device::eqrr
     };
 }
