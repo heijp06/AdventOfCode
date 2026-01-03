@@ -9,6 +9,7 @@
 namespace day15 {
     class Unit {
     public:
+        Unit();
         Unit(advent::coord position, bool is_elve);
         const advent::coord get_position() const;
         const bool is_elve() const;
@@ -24,4 +25,7 @@ namespace day15 {
     int part2(const std::vector<std::string>& rows);
 
     std::map<advent::coord, Unit> get_units(const advent::grid& grid);
+    bool has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit);
+    int score(std::map<advent::coord, day15::Unit>& units, int round);
+    advent::coord find_square(const advent::grid& grid, const Unit& unit);
 }

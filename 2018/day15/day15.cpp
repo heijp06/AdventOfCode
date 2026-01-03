@@ -1,11 +1,53 @@
 #include "day15.h"
+#include "day15.h"
+#include "day15.h"
+#include "day15.h"
 
 namespace day15 {
     int part1(const std::vector<std::string>& rows) {
         advent::grid grid{rows};
-        auto current = get_units(grid);
+        auto units = get_units(grid);
+        std::vector<advent::coord> positions;
+        positions.reserve(units.size());
+        int round{};
+
+        while (true) {
+            for (const auto& pair : units) {
+                positions.push_back(pair.first);
+            }
+
+            for (const auto& position : positions) {
+                auto& unit = units[position];
+
+                if (!has_targets(units, unit)) {
+                    return score(units, round);
+                }
+
+                // Find square in range
+                auto& square = find_square(grid, unit);
+                // Move
+                // If in range attack
+            }
+
+            break;
+        }
 
         return -1;
+    }
+
+    int score(std::map<advent::coord, day15::Unit>& units, int round) {
+        int score{};
+
+        for (const auto& pair : units) {
+            score += pair.second.get_hit_points();
+        }
+        score *= round;
+
+        return score;
+    }
+
+    advent::coord find_square(const advent::grid& grid, const Unit& unit) {
+        return advent::coord();
     }
 
     int part2(const std::vector<std::string>& rows) {
@@ -21,6 +63,20 @@ namespace day15 {
         }
 
         return units;
+    }
+
+    bool day15::has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit) {
+        for (const auto& pair : units) {
+            if (unit.is_elve() != pair.second.is_elve()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    Unit::Unit()
+        : position_{0, 0}, is_elve_{false}, hit_points_{} {
     }
 
     Unit::Unit(advent::coord position, bool is_elve)
