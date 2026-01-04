@@ -1,3 +1,4 @@
+#include "day15.h"
 #include <iostream>
 
 #include "day15.h"
@@ -18,6 +19,10 @@ namespace day15 {
             }
 
             for (const auto& position : positions) {
+                if (!units.count(position)) {
+                    continue;
+                }
+
                 auto& unit = units[position];
 
                 if (!has_targets(units, unit)) {
@@ -26,8 +31,6 @@ namespace day15 {
 
                 auto& step = find_step(grid, unit);
                 move(grid, unit, step);
-
-                // If in range attack
             }
 
             break;
@@ -111,6 +114,19 @@ namespace day15 {
         grid[unit.get_position()] = '.';
         grid[step] = unit.is_elve() ? 'E' : 'G';
         unit.set_position(step);
+    }
+
+    void attack(advent::grid& grid, std::map<advent::coord, Unit>& units, Unit& unit) {
+        auto enemy = unit.is_elve() ? 'G' : 'E';
+        for (const auto& direction : advent::direction::nwes()) {
+            advent::direction direction{};
+            int hp{};
+            advent::coord& new_position = unit.get_position() + direction;
+            if (grid[new_position] == enemy && (hp == 0 || units[new_position].get_hit_points() < hp)) {
+                hp = units[new_position].get_hit_points();
+                direction = 
+            }
+        }
     }
 
     int part2(const std::vector<std::string>& rows) {

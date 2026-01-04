@@ -30,4 +30,5 @@ namespace day15 {
     int score(std::map<advent::coord, day15::Unit>& units, int round);
     advent::coord find_step(const advent::grid& grid, const Unit& unit);
     void move(advent::grid& grid, Unit& unit, const advent::coord& step);
+    void attack(advent::grid& grid, std::map<advent::coord, Unit>& units, Unit& unit);
 }
