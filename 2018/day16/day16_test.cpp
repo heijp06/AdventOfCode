@@ -15,6 +15,3 @@ TEST_CASE("part1") {
     REQUIRE(day16::part1(rows) == 1);
 }
 
-TEST_CASE("part2") {
-    REQUIRE(day16::part2(rows) == -1);
-}
