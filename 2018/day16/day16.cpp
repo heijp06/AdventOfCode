@@ -47,10 +47,10 @@ namespace day16 {
         });
 
         std::vector<std::vector<int>> current;
-        current.reserve(100);
+        current.reserve(1'000'000);
         current.push_back(std::vector<int>(16, -1));
         std::vector<std::vector<int>> next;
-        next.reserve(100);
+        next.reserve(1'000'000);
 
         Device device{};
         for (const auto& test : tests) {
@@ -83,7 +83,14 @@ namespace day16 {
             next.clear();
         }
 
-        return -1;
+        device.registers = {0, 0, 0, 0};
+        const auto& jump_table = current[0];
+        for (const auto& instruction : program) {
+            int index = jump_table[instruction[0]];
+            Device::functions[index](device, instruction[1], instruction[2], instruction[3]);
+        }
+
+        return device.registers[0];
     }
 
     void parse(const std::vector<std::string>& rows, std::vector<Test>& tests, std::vector<std::vector<int>>& program) {
