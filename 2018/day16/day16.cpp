@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "day16.h"
 #include "../../lib/advent.h"
 
