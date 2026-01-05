@@ -3,23 +3,22 @@
 
 namespace day16 {
     int part1(const std::vector<std::string>& rows) {
+        std::vector<Test> tests{};
+        tests.reserve(rows.size());
+        std::vector<std::vector<int>> program{};
+        program.reserve(rows.size());
         int result{};
 
-        for (auto it = rows.cbegin(); it != rows.cend(); ++it) {
-            if (it->empty()) {
-                break;
-            }
+        parse(rows, tests, program);
 
-            const auto& before = advent::ints(*it++);
-            const auto& instruction = advent::ints(*it++);
-            const auto& after = advent::ints(*it++);
+        for (const auto& test : tests) {
             int counter{};
 
             for (const auto& function : Device::functions) {
                 Device device{};
-                device.registers = before;
-                function(device, instruction[1], instruction[2], instruction[3]);
-                if (device.registers == after) {
+                device.registers = test.before;
+                function(device, test.instruction[1], test.instruction[2], test.instruction[3]);
+                if (device.registers == test.after) {
                     counter++;
                 }
             }
@@ -37,8 +36,25 @@ namespace day16 {
         return -1;
     }
 
-    Device::Device() : registers(4, 0) {
+    void parse(const std::vector<std::string>& rows, std::vector<Test>& tests, std::vector<std::vector<int>>& program) {
+        bool parse_tests{ true };
+
+        for (auto it = rows.cbegin(); it != rows.cend(); ++it) {
+            if (it->empty()) {
+                parse_tests = false;
+                continue;
+            }
+
+            if (parse_tests) {
+                tests.push_back({ advent::ints(*it++), advent::ints(*it++), advent::ints(*it++) });
+            }
+            else {
+                program.push_back(advent::ints(*it));
+            }
+        }
     }
+
+    Device::Device() : registers(4, 0) {}
 
     void Device::addr(int a, int b, int c) {
         registers[c] = registers[a] + registers[b];

@@ -5,6 +5,12 @@
 #include <vector>
 
 namespace day16 {
+    struct Test {
+        std::vector<int> before;
+        std::vector<int> instruction;
+        std::vector<int> after;
+    };
+
     struct Device {
         Device();
         void addr(int a, int b, int c);
@@ -30,4 +36,6 @@ namespace day16 {
 
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
+
+    void parse(const std::vector<std::string>& rows, std::vector<Test>& tests, std::vector<std::vector<int>>& program);
 }
