@@ -43,7 +43,7 @@ namespace day16 {
         parse(rows, tests, program);
 
         std::sort(tests.begin(), tests.end(), [](const auto& left, const auto& right) {
-            return left.instruction < right.instruction;
+            return left.instruction > right.instruction;
         });
 
         std::vector<std::vector<int>> current;
