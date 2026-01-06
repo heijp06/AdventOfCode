@@ -67,24 +67,18 @@ namespace day16 {
         auto jump_table = std::vector<int>(16, -1);
 
         for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                if (counts[j] == 1) {
-                    for (int k = 0; k < 16; k++) {
-                        if (matrix[j][k]) {
-                            jump_table[j] = k;
+            const auto& it1 = std::find(counts.cbegin(), counts.cend(), 1);
+            int row = it1 - counts.cbegin();
 
-                            for (int l = 0; l < 16; l++) {
-                                if (matrix[l][k]) {
-                                    matrix[l][k] = false;
-                                    counts[l]--;
-                                }
-                            }
+            const auto& it2 = std::find(matrix[row].cbegin(), matrix[row].cend(), true);
+            int column = it2 - matrix[row].cbegin();
 
-                            break;
-                        }
-                    }
+            jump_table[row] = column;
 
-                    break;
+            for (int r = 0; r < 16; r++) {
+                if (matrix[r][column]) {
+                    matrix[r][column] = false;
+                    counts[r]--;
                 }
             }
         }
