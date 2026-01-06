@@ -67,15 +67,6 @@ namespace day16 {
         auto jump_table = std::vector<int>(16, -1);
 
         for (int i = 0; i < 16; i++) {
-
-            std::cout << std::endl;
-            for (const auto& row : matrix) {
-                for (const auto& cell : row) {
-                    std::cout << std::setw(2) << cell;
-                }
-                std::cout << std::endl;
-            }
-
             for (int j = 0; j < 16; j++) {
                 if (counts[j] == 1) {
                     for (int k = 0; k < 16; k++) {
@@ -98,60 +89,13 @@ namespace day16 {
             }
         }
 
-        std::cout << std::endl;
-        for (const auto& row : matrix) {
-            for (const auto& cell : row) {
-                std::cout << std::setw(2) << cell;
-            }
-            std::cout << std::endl;
-        }
-
-        //std::vector<std::vector<int>> current;
-        //current.reserve(1'000'000);
-        //current.push_back(std::vector<int>(16, -1));
-        //std::vector<std::vector<int>> next;
-        //next.reserve(1'000'000);
-
-        //Device device{};
-        //for (const auto& test : tests) {
-        //    for (const auto& jump_table : current) {
-        //        int index = jump_table[test.instruction[0]];
-        //        if (index >= 0) {
-        //            device.registers = test.before;
-        //            Device::functions[index](device, test.instruction[1], test.instruction[2], test.instruction[3]);
-        //            if (device.registers == test.after) {
-        //                next.push_back(jump_table);
-        //            }
-        //            continue;
-        //        }
-
-        //        for (int i = 0; i < 16; i++) {
-        //            if (std::find(jump_table.cbegin(), jump_table.cend(), i) != jump_table.cend()) {
-        //                continue;
-        //            }
-        //            device.registers = test.before;
-        //            Device::functions[i](device, test.instruction[1], test.instruction[2], test.instruction[3]);
-        //            if (device.registers == test.after) {
-        //                auto copy = jump_table;
-        //                copy[test.instruction[0]] = i;
-        //                next.push_back(copy);
-        //            }
-        //        }
-        //    }
-
-        //    std::swap(current, next);
-        //    next.clear();
-        //}
-
         device.registers = {0, 0, 0, 0};
-        //const auto& jump_table = current[0];
         for (const auto& instruction : program) {
             int index = jump_table[instruction[0]];
             Device::functions[index](device, instruction[1], instruction[2], instruction[3]);
         }
 
         return device.registers[0];
-        //return 4;
     }
 
     void parse(const std::vector<std::string>& rows, std::vector<Test>& tests, std::vector<std::vector<int>>& program) {
