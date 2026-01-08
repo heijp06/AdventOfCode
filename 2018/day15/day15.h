@@ -30,6 +30,6 @@ namespace day15 {
     bool has_targets(const std::map<advent::coord, std::shared_ptr<Unit>>& units, const std::shared_ptr<Unit> unit);
     int score(std::map<advent::coord, std::shared_ptr<Unit>>& units, int round);
     advent::coord find_step(const advent::grid& grid, const std::shared_ptr<Unit> unit);
-    void move(advent::grid& grid, std::shared_ptr<Unit> unit, const advent::coord& step);
+    void move(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit, const advent::coord& step);
     void attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit);
 }
