@@ -32,4 +32,5 @@ namespace day15 {
     advent::coord find_step(const advent::grid& grid, const std::shared_ptr<Unit> unit);
     void move(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit, const advent::coord& step);
     void attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit);
+    void dump_hp(std::map<advent::coord, std::shared_ptr<Unit>>& units);
 }

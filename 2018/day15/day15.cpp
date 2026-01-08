@@ -1,3 +1,4 @@
+#include "day15.h"
 #include <iostream>
 
 #include "day15.h"
@@ -10,7 +11,8 @@ namespace day15 {
         positions.reserve(units.size());
         int round{};
 
-        grid.draw();
+        //grid.draw();
+        //dump_hp(units);
 
         while (true) {
             for (const auto& pair : units) {
@@ -31,12 +33,17 @@ namespace day15 {
                 auto& step = find_step(grid, unit);
                 move(grid, units, unit, step);
 
-                grid.draw();
-
                 attack(grid, units, unit);
+
+                //grid.draw();
+                //dump_hp(units);
             }
 
-            break;
+            //grid.draw();
+            //dump_hp(units);
+
+            positions.clear();
+            round++;
         }
 
         std::cout << std::endl;
@@ -120,6 +127,13 @@ namespace day15 {
         units.insert({unit->get_position(), unit});
     }
 
+    void dump_hp(std::map<advent::coord, std::shared_ptr<Unit>>& units) {
+        for (const auto& pair : units) {
+            std::cout << pair.first.row << ',' << pair.first.column << ' ' << pair.second->get_hit_points() << "   ";
+        }
+        std::cout << std::endl;
+    }
+
     void attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit) {
         auto enemy_symbol = unit->is_elve() ? 'G' : 'E';
         std::shared_ptr<Unit> enemy = nullptr;
@@ -135,6 +149,10 @@ namespace day15 {
 
         if (enemy) {
             enemy->damage();
+            if (enemy->get_hit_points() <= 0) {
+                grid[enemy->get_position()] = '.';
+                units.erase(enemy->get_position());
+            }
         }
     }
 
