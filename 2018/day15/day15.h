@@ -26,10 +26,10 @@ namespace day15 {
     int part1(const std::vector<std::string>& rows);
     int part2(const std::vector<std::string>& rows);
 
-    std::map<advent::coord, Unit> get_units(const advent::grid& grid);
-    bool has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit);
-    int score(std::map<advent::coord, Unit>& units, int round);
-    advent::coord find_step(const advent::grid& grid, const Unit& unit);
-    void move(advent::grid& grid, Unit& unit, const advent::coord& step);
-    void attack(advent::grid& grid, std::map<advent::coord, Unit>& units, Unit& unit);
+    std::map<advent::coord, std::shared_ptr<Unit>> get_units(const advent::grid& grid);
+    bool has_targets(const std::map<advent::coord, std::shared_ptr<Unit>>& units, const std::shared_ptr<Unit> unit);
+    int score(std::map<advent::coord, std::shared_ptr<Unit>>& units, int round);
+    advent::coord find_step(const advent::grid& grid, const std::shared_ptr<Unit> unit);
+    void move(advent::grid& grid, std::shared_ptr<Unit> unit, const advent::coord& step);
+    void attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit);
 }

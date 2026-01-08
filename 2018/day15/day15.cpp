@@ -30,6 +30,8 @@ namespace day15 {
 
                 auto& step = find_step(grid, unit);
                 move(grid, unit, step);
+
+                attack(grid, units, unit);
             }
 
             break;
@@ -41,34 +43,34 @@ namespace day15 {
         return -1;
     }
 
-    int score(std::map<advent::coord, Unit>& units, int round) {
+    int score(std::map<advent::coord, std::shared_ptr<Unit>>& units, int round) {
         int score{};
 
         for (const auto& pair : units) {
-            score += pair.second.get_hit_points();
+            score += pair.second->get_hit_points();
         }
         score *= round;
 
         return score;
     }
 
-    advent::coord find_step(const advent::grid& grid, const Unit& unit) {
-        auto enemy = unit.is_elve() ? 'G' : 'E';
+    advent::coord find_step(const advent::grid& grid, const std::shared_ptr<Unit> unit) {
+        auto enemy = unit->is_elve() ? 'G' : 'E';
         for (const auto& direction : advent::direction::nwes()) {
-            if (grid[unit.get_position() + direction] == enemy) {
-                return unit.get_position();
+            if (grid[unit->get_position() + direction] == enemy) {
+                return unit->get_position();
             }
         }
 
         advent::grid copy = grid;
-        copy[unit.get_position()] = 'X';
+        copy[unit->get_position()] = 'X';
         std::vector<std::pair<advent::coord, advent::coord>> current{};
         current.reserve(100);
         std::vector<std::pair<advent::coord, advent::coord>> next{};
         next.reserve(100);
 
         for (const auto& direction : advent::direction::nwes()) {
-            const auto& new_position = unit.get_position() + direction;
+            const auto& new_position = unit->get_position() + direction;
             if (copy[new_position] == '.') {
                 current.push_back({new_position, new_position});
             }
@@ -102,20 +104,20 @@ namespace day15 {
             next.clear();
         }
 
-        return unit.get_position();
+        return unit->get_position();
     }
 
-    void move(advent::grid& grid, Unit& unit, const advent::coord& step) {
-        if (unit.get_position() == step) {
+    void move(advent::grid& grid, std::shared_ptr<Unit> unit, const advent::coord& step) {
+        if (unit->get_position() == step) {
             return;
         }
 
-        grid[unit.get_position()] = '.';
-        grid[step] = unit.is_elve() ? 'E' : 'G';
-        unit.set_position(step);
+        grid[unit->get_position()] = '.';
+        grid[step] = unit->is_elve() ? 'E' : 'G';
+        unit->set_position(step);
     }
 
-    void attack(advent::grid& grid, std::map<advent::coord, Unit>& units, Unit& unit) {
+    void attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit) {
         //auto enemy = unit.is_elve() ? 'G' : 'E';
         //for (const auto& direction : advent::direction::nwes()) {
         //    advent::direction direction{};
@@ -133,19 +135,19 @@ namespace day15 {
         return -1;
     }
 
-    std::map<advent::coord, Unit> get_units(const advent::grid& grid) {
-        std::map<advent::coord, Unit> units{};
+    std::map<advent::coord, std::shared_ptr<Unit>> get_units(const advent::grid& grid) {
+        std::map<advent::coord, std::shared_ptr<Unit>> units{};
 
         for (const auto& pair : grid.find_all("GE")) {
-            units.insert({pair.first, Unit{pair.first, pair.second == 'E'}});
+            units.insert({pair.first, std::make_shared<Unit>(pair.first, pair.second == 'E')});
         }
 
         return units;
     }
 
-    bool has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit) {
+    bool has_targets(const std::map<advent::coord, std::shared_ptr<Unit>>& units, const std::shared_ptr<Unit> unit) {
         for (const auto& pair : units) {
-            if (unit.is_elve() != pair.second.is_elve()) {
+            if (unit->is_elve() != pair.second->is_elve()) {
                 return true;
             }
         }
