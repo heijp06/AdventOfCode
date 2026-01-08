@@ -1,4 +1,3 @@
-#include "day15.h"
 #include <iostream>
 
 #include "day15.h"
@@ -117,16 +116,16 @@ namespace day15 {
     }
 
     void attack(advent::grid& grid, std::map<advent::coord, Unit>& units, Unit& unit) {
-        auto enemy = unit.is_elve() ? 'G' : 'E';
-        for (const auto& direction : advent::direction::nwes()) {
-            advent::direction direction{};
-            int hp{};
-            advent::coord& new_position = unit.get_position() + direction;
-            if (grid[new_position] == enemy && (hp == 0 || units[new_position].get_hit_points() < hp)) {
-                hp = units[new_position].get_hit_points();
-                direction = 
-            }
-        }
+        //auto enemy = unit.is_elve() ? 'G' : 'E';
+        //for (const auto& direction : advent::direction::nwes()) {
+        //    advent::direction direction{};
+        //    int hp{};
+        //    advent::coord& new_position = unit.get_position() + direction;
+        //    if (grid[new_position] == enemy && (hp == 0 || units[new_position].get_hit_points() < hp)) {
+        //        hp = units[new_position].get_hit_points();
+        //        direction = 
+        //    }
+        //}
     }
 
     int part2(const std::vector<std::string>& rows) {
