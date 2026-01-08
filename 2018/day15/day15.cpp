@@ -41,7 +41,7 @@ namespace day15 {
         return -1;
     }
 
-    int score(std::map<advent::coord, day15::Unit>& units, int round) {
+    int score(std::map<advent::coord, Unit>& units, int round) {
         int score{};
 
         for (const auto& pair : units) {
@@ -143,7 +143,7 @@ namespace day15 {
         return units;
     }
 
-    bool day15::has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit) {
+    bool has_targets(const std::map<advent::coord, Unit>& units, const Unit& unit) {
         for (const auto& pair : units) {
             if (unit.is_elve() != pair.second.is_elve()) {
                 return true;
@@ -169,15 +169,15 @@ namespace day15 {
         position_ = position;
     }
 
-    const bool day15::Unit::is_elve() const {
+    const bool Unit::is_elve() const {
         return is_elve_;
     }
 
-    const int day15::Unit::get_hit_points() const {
+    const int Unit::get_hit_points() const {
         return hit_points_;
     }
 
-    void day15::Unit::damage() {
+    void Unit::damage() {
         hit_points_ -= 3;
     }
 }
