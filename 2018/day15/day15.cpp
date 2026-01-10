@@ -1,14 +1,42 @@
-#include "day15.h"
 #include <iostream>
 
 #include "day15.h"
 
 namespace day15 {
     int part1(const std::vector<std::string>& rows) {
-        return solve(rows);
+        return solve(rows).first;
     }
 
-    int solve(const std::vector<std::string>& rows, int elves_power) {
+    int part2(const std::vector<std::string>& rows) {
+        auto below{3};
+        auto above{6};
+
+        std::cout << below << " < " << above << std::endl;
+
+        while (!solve(rows, above).second) {
+            above *= 2;
+
+            std::cout << below << " < " << above << std::endl;
+        }
+
+        while (below < above - 1) {
+            auto middle = (below + above) / 2;
+            if (solve(rows, middle).second) {
+                above = middle;
+            }
+            else {
+                below = middle;
+            }
+
+            std::cout << below << " < " << above << std::endl;
+        }
+
+        std::cout << above << std::endl << std::endl;
+
+        return solve(rows, above).first;
+    }
+
+    std::pair<int, bool> solve(const std::vector<std::string>& rows, int elves_power) {
         advent::grid grid{rows};
         auto units = get_units(grid, elves_power);
         std::vector<advent::coord> positions;
@@ -31,13 +59,15 @@ namespace day15 {
                 auto unit = units[position];
 
                 if (!has_targets(units, unit)) {
-                    return score(units, round);
+                    return {score(units, round), true};
                 }
 
                 auto& step = find_step(grid, unit);
                 move(grid, units, unit, step);
 
-                attack(grid, units, unit);
+                if (!attack(grid, units, unit)) {
+                    return {-1, false};
+                }
 
                 //grid.draw();
                 //dump_hp(units);
@@ -50,7 +80,7 @@ namespace day15 {
             round++;
         }
 
-        return -1;
+        return {-1, false};
     }
 
     int score(std::map<advent::coord, std::shared_ptr<Unit>>& units, int round) {
@@ -136,7 +166,7 @@ namespace day15 {
         std::cout << std::endl;
     }
 
-    void attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit) {
+    bool attack(advent::grid& grid, std::map<advent::coord, std::shared_ptr<Unit>>& units, std::shared_ptr<Unit> unit) {
         auto enemy_symbol = unit->is_elve() ? 'G' : 'E';
         std::shared_ptr<Unit> enemy = nullptr;
         int hp{};
@@ -154,13 +184,13 @@ namespace day15 {
             if (enemy->get_hit_points() <= 0) {
                 grid[enemy->get_position()] = '.';
                 units.erase(enemy->get_position());
+                if (enemy->is_elve() && enemy->get_attack_power() != 3) {
+                    return false;
+                }
             }
         }
-    }
 
-    int part2(const std::vector<std::string>& rows) {
-        (void)rows;
-        return -1;
+        return true;
     }
 
     std::map<advent::coord, std::shared_ptr<Unit>> get_units(const advent::grid& grid, int elves_power) {
@@ -169,7 +199,7 @@ namespace day15 {
         for (const auto& pair : grid.find_all("GE")) {
             auto is_elve = pair.second == 'E';
             auto power = is_elve ? elves_power : 3;
-            units.insert({pair.first, std::make_shared<Unit>(pair.first, pair.second == 'E', elves_power)});
+            units.insert({pair.first, std::make_shared<Unit>(pair.first, pair.second == 'E', power)});
         }
 
         return units;
