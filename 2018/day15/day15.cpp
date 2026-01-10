@@ -5,8 +5,12 @@
 
 namespace day15 {
     int part1(const std::vector<std::string>& rows) {
+        return solve(rows);
+    }
+
+    int solve(const std::vector<std::string>& rows, int elves_power) {
         advent::grid grid{rows};
-        auto units = get_units(grid);
+        auto units = get_units(grid, elves_power);
         std::vector<advent::coord> positions;
         positions.reserve(units.size());
         int round{};
@@ -45,8 +49,6 @@ namespace day15 {
             positions.clear();
             round++;
         }
-
-        std::cout << std::endl;
 
         return -1;
     }
@@ -148,7 +150,7 @@ namespace day15 {
         }
 
         if (enemy) {
-            enemy->damage();
+            enemy->damage(unit->get_attack_power());
             if (enemy->get_hit_points() <= 0) {
                 grid[enemy->get_position()] = '.';
                 units.erase(enemy->get_position());
@@ -161,11 +163,13 @@ namespace day15 {
         return -1;
     }
 
-    std::map<advent::coord, std::shared_ptr<Unit>> get_units(const advent::grid& grid) {
+    std::map<advent::coord, std::shared_ptr<Unit>> get_units(const advent::grid& grid, int elves_power) {
         std::map<advent::coord, std::shared_ptr<Unit>> units{};
 
         for (const auto& pair : grid.find_all("GE")) {
-            units.insert({pair.first, std::make_shared<Unit>(pair.first, pair.second == 'E')});
+            auto is_elve = pair.second == 'E';
+            auto power = is_elve ? elves_power : 3;
+            units.insert({pair.first, std::make_shared<Unit>(pair.first, pair.second == 'E', elves_power)});
         }
 
         return units;
@@ -181,12 +185,8 @@ namespace day15 {
         return false;
     }
 
-    Unit::Unit()
-        : position_{0, 0}, is_elve_{false}, hit_points_{} {
-    }
-
-    Unit::Unit(advent::coord position, bool is_elve)
-        : position_{position}, is_elve_{is_elve}, hit_points_{200} {
+    Unit::Unit(advent::coord position, bool is_elve, int attack_power)
+        : position_{position}, is_elve_{is_elve}, hit_points_{200}, attack_power_{attack_power} {
     }
 
     const advent::coord Unit::get_position() const {
@@ -205,7 +205,11 @@ namespace day15 {
         return hit_points_;
     }
 
-    void Unit::damage() {
-        hit_points_ -= 3;
+    void Unit::damage(int attack_power) {
+        hit_points_ -= attack_power;
+    }
+
+    int Unit::get_attack_power() const {
+        return attack_power_;
     }
 }
