@@ -130,6 +130,7 @@ namespace advent {
         std::vector<coord> get_positions() const;
         advent::coord find(const char c) const;
         std::vector<advent::coord> find_all(const char c) const;
+        std::vector<std::pair<advent::coord, char>> find_all(const std::string& s) const;
         void draw() const;
 
         char& operator[](const advent::coord& index) {
