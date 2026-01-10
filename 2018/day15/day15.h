@@ -14,8 +14,8 @@ namespace day15 {
         Unit(advent::coord position, bool is_elve, int attack_power);
         const advent::coord get_position() const;
         void set_position(const advent::coord& position);
-        const bool is_elve() const;
-        const int get_hit_points() const;
+        bool is_elve() const;
+        int get_hit_points() const;
         void damage(int attack_power);
         int get_attack_power() const;
     private:

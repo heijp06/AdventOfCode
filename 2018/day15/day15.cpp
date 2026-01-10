@@ -228,11 +228,11 @@ namespace day15 {
         position_ = position;
     }
 
-    const bool Unit::is_elve() const {
+    bool Unit::is_elve() const {
         return is_elve_;
     }
 
-    const int Unit::get_hit_points() const {
+    int Unit::get_hit_points() const {
         return hit_points_;
     }
 
