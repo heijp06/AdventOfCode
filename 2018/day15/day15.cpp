@@ -63,7 +63,7 @@ namespace day15 {
                     return {score(units, round), true};
                 }
 
-                auto& step = find_step(grid, unit);
+                auto step = find_step(grid, unit);
                 move(grid, units, unit, step);
 
                 if (!attack(grid, units, unit)) {
@@ -173,7 +173,7 @@ namespace day15 {
         int hp{};
 
         for (const auto& direction : advent::direction::nwes()) {
-            advent::coord& new_position = unit->get_position() + direction;
+            advent::coord new_position = unit->get_position() + direction;
             if (grid[new_position] == enemy_symbol && (hp == 0 || units[new_position]->get_hit_points() < hp)) {
                 hp = units[new_position]->get_hit_points();
                 enemy = units[new_position];
