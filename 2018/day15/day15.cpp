@@ -11,13 +11,13 @@ namespace day15 {
         auto below{3};
         auto above{6};
 
-        std::cout << below << " < " << above << std::endl;
+        // std::cout << below << " < " << above << std::endl;
 
         while (!solve(rows, above).second) {
             below = above;
             above *= 2;
 
-            std::cout << below << " < " << above << std::endl;
+            //std::cout << below << " < " << above << std::endl;
         }
 
         while (below < above - 1) {
@@ -29,10 +29,10 @@ namespace day15 {
                 below = middle;
             }
 
-            std::cout << below << " < " << above << std::endl;
+            //std::cout << below << " < " << above << std::endl;
         }
 
-        std::cout << above << std::endl << std::endl;
+        //std::cout << above << std::endl << std::endl;
 
         return solve(rows, above).first;
     }
