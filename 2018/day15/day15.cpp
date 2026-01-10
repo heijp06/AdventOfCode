@@ -14,6 +14,7 @@ namespace day15 {
         std::cout << below << " < " << above << std::endl;
 
         while (!solve(rows, above).second) {
+            below = above;
             above *= 2;
 
             std::cout << below << " < " << above << std::endl;
