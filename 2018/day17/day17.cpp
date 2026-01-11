@@ -7,11 +7,75 @@
 namespace day17 {
     int part1(const std::vector<std::string>& rows) {
         auto grid = parse(rows);
+        std::vector<advent::coord> drops;
+        drops.reserve(100);
+        int counter{};
+        std::string line;
 
-        std::cout << std::endl;
-        grid.draw();
+        const auto& spring = grid.find('+');
+        drops.push_back(spring + advent::direction::down());
 
-        return -1;
+        //grid.draw();
+        //std::getline(std::cin, line);
+
+        while (!drops.empty()) {
+            auto drop = drops.back();
+            drops.pop_back();
+
+            //grid.draw();
+            //std::getline(std::cin, line);
+
+            while (drop.row < grid.get_height() && grid[drop] == '.') {
+                counter++;
+                grid[drop] = '~';
+                drop += advent::direction::down();
+
+                //grid.draw();
+                //std::getline(std::cin, line);
+            }
+
+            if (drop.row == grid.get_height() || grid[drop] != '#') {
+                continue;
+            }
+
+            auto stop{false};
+            while (!stop) {
+                drop += advent::direction::up();
+                auto left = drop + advent::direction::left();
+
+                while (grid[left] == '.' && grid[left + advent::direction::down()] != '.') {
+                    counter++;
+                    grid[left] = '~';
+                    left += advent::direction::left();
+
+                    //grid.draw();
+                    //std::getline(std::cin, line);
+                }
+
+                if (grid[left + advent::direction::down()] == '.') {
+                    stop = true;
+                    drops.push_back(left);
+                }
+
+                auto right = drop + advent::direction::right();
+
+                while (grid[right] == '.' && grid[right + advent::direction::down()] != '.') {
+                    counter++;
+                    grid[right] = '~';
+                    right += advent::direction::right();
+
+                    //grid.draw();
+                    //std::getline(std::cin, line);
+                }
+
+                if (grid[right + advent::direction::down()] == '.') {
+                    stop = true;
+                    drops.push_back(right);
+                }
+            }
+        }
+
+        return counter;
     }
 
     int part2(const std::vector<std::string>& rows) {
