@@ -49,7 +49,7 @@ TEST_CASE("extra") {
                 ".......",
                 ".#...#.",
                 ".#####.",
-            }, 16}
+            }, 19}
         );
 
     REQUIRE(day17::solve(advent::grid(item.rows)) == item.water);

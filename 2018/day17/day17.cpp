@@ -5,6 +5,7 @@
 #include "day17.h"
 
 namespace day17 {
+    // 44215: Too high.
     int part1(const std::vector<std::string>& rows) {
         auto grid = parse(rows);
         return solve(grid);
@@ -29,13 +30,13 @@ namespace day17 {
 
             while (drop.row < grid.get_height() && grid[drop] == '.') {
                 counter++;
-                grid[drop] = '~';
+                grid[drop] = '|';
                 drop += advent::direction::down();
 
                 //grid.draw();
             }
 
-            if (drop.row == grid.get_height()) {
+            if (drop.row == grid.get_height() || grid[drop] == '|') {
                 continue;
             }
 
@@ -45,8 +46,8 @@ namespace day17 {
 
                 if (grid[drop] == '.') {
                     counter++;
-                    grid[drop] = '~';
                 }
+                grid[drop] = '~';
 
                 auto left = drop + advent::direction::left();
 
@@ -77,11 +78,21 @@ namespace day17 {
                     stop = true;
                     drops.push_back(right);
                 }
+
+                if (stop) {
+                    auto pos = left + advent::direction::right();
+                    while (pos != right) {
+                        grid[pos] = '|';
+                        pos += advent::direction::right();
+                    }
+
+                    //grid.draw();
+                }
             }
         }
 
-        grid.draw();
-        std::cout << std::endl;
+        //grid.draw();
+        //std::cout << std::endl;
 
         return counter;
     }
