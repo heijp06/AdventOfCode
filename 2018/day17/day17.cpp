@@ -45,6 +45,12 @@ namespace day17 {
             auto stop{false};
             while (!stop) {
                 drop += advent::direction::up();
+
+                if (grid[drop] == '.') {
+                    counter++;
+                    grid[drop] = '~';
+                }
+
                 auto left = drop + advent::direction::left();
 
                 while (grid[left] == '.' && grid[left + advent::direction::down()] != '.') {
