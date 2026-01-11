@@ -22,3 +22,18 @@ TEST_CASE("part1") {
 TEST_CASE("part2") {
     REQUIRE(day17::part2(rows) == -1);
 }
+
+TEST_CASE("extra") {
+    advent::grid grid{{
+        ".....+.....",
+        "...........",
+        ".#.......#.",
+        ".#..###..#.",
+        ".#..#.#..#.",
+        ".#..###..#.",
+        ".#.......#.",
+        ".#########."
+    }};
+
+    REQUIRE(day17::solve(grid) == 49);
+}

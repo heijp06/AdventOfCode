@@ -7,6 +7,10 @@
 namespace day17 {
     int part1(const std::vector<std::string>& rows) {
         auto grid = parse(rows);
+        return solve(grid);
+    }
+
+    int solve(advent::grid& grid) {
         std::vector<advent::coord> drops;
         drops.reserve(100);
         int counter{};
@@ -76,6 +80,7 @@ namespace day17 {
         }
 
         grid.draw();
+        std::cout << std::endl;
 
         return counter;
     }
