@@ -38,7 +38,7 @@ namespace day17 {
                 //std::getline(std::cin, line);
             }
 
-            if (drop.row == grid.get_height() || grid[drop] != '#') {
+            if (drop.row == grid.get_height()) {
                 continue;
             }
 
