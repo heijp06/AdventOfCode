@@ -75,6 +75,8 @@ namespace day17 {
             }
         }
 
+        grid.draw();
+
         return counter;
     }
 
