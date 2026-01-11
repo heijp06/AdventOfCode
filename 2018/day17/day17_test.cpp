@@ -24,16 +24,33 @@ TEST_CASE("part2") {
 }
 
 TEST_CASE("extra") {
-    advent::grid grid{{
-        ".....+.....",
-        "...........",
-        ".#.......#.",
-        ".#..###..#.",
-        ".#..#.#..#.",
-        ".#..###..#.",
-        ".#.......#.",
-        ".#########."
-    }};
+    struct testdata {
+        std::vector<std::string> rows;
+        int water;
+    };
 
-    REQUIRE(day17::solve(grid) == 49);
+    const auto& item = GENERATE(
+        testdata{
+            {
+                ".....+.....",
+                "...........",
+                ".#.......#.",
+                ".#..###..#.",
+                ".#..#.#..#.",
+                ".#..###..#.",
+                ".#.......#.",
+                ".#########."
+            }, 49},
+        testdata{
+            {
+                "...+...",
+                ".......",
+                "...#...",
+                ".......",
+                ".#...#.",
+                ".#####.",
+            }, 16}
+        );
+
+    REQUIRE(day17::solve(advent::grid(item.rows)) == item.water);
 }
