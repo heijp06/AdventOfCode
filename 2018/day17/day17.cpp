@@ -20,14 +20,12 @@ namespace day17 {
         drops.push_back(spring + advent::direction::down());
 
         //grid.draw();
-        //std::getline(std::cin, line);
 
         while (!drops.empty()) {
             auto drop = drops.back();
             drops.pop_back();
 
             //grid.draw();
-            //std::getline(std::cin, line);
 
             while (drop.row < grid.get_height() && grid[drop] == '.') {
                 counter++;
@@ -35,7 +33,6 @@ namespace day17 {
                 drop += advent::direction::down();
 
                 //grid.draw();
-                //std::getline(std::cin, line);
             }
 
             if (drop.row == grid.get_height()) {
@@ -59,7 +56,6 @@ namespace day17 {
                     left += advent::direction::left();
 
                     //grid.draw();
-                    //std::getline(std::cin, line);
                 }
 
                 if (grid[left + advent::direction::down()] == '.') {
@@ -75,7 +71,6 @@ namespace day17 {
                     right += advent::direction::right();
 
                     //grid.draw();
-                    //std::getline(std::cin, line);
                 }
 
                 if (grid[right + advent::direction::down()] == '.') {
